@@ -1,5 +1,7 @@
 // 引入子路由
-
+import trackList from '../pages/trackList'
+import message from '../pages/message'
+import user from '../pages/user'
 import track from '../pages/track'
 import uploadData from '../pages/uploadData'
 import Vue from 'vue'
@@ -84,8 +86,24 @@ Vue.filter('orderTypeName', function(value) {
   return valueTypeName
 });
 
-export default new Router({
+export default new Router(
+  {
   routes: [
+    {
+      path:'/trackList',
+      name:'trackList',
+      component:trackList,
+    },
+    {
+      path:'/message',
+      name:'message',
+      component:message,
+    },
+    {
+      path:'/user',
+      name:'user',
+      component:user,
+    },
     {
       path: '/uploadData',
       name: 'uploadData',

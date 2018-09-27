@@ -3,7 +3,7 @@
     <div id="appBox">
     <div id="carTitleBox">
       <div class="carTitleBox">
-        <div class="carTitleback" @click="goback()"></div>
+        <div class="carTitleback" @click="goback()" ></div>
         <p>{{title}}</p>
         <h3  id="manage" class="asd"  v-if="doNow==1"><span>管理</span></h3>
         <h3 id="siteCar"  style="display: none" class="asd"  v-if="doNow==2"></h3>
@@ -42,12 +42,18 @@
         sessionStorage.setItem("token",response.userCode);
         sessionStorage.setItem("source",response.source);
       });
+      androidIos.bridge(_this);
     },
     updated: function () {
       var _this = this;
       _this.$nextTick(function () {
         _this.title = document.title;
         _this.html = location.href;
+        if(_this.html.indexOf("robbingList") != -1 || _this.html.indexOf("trackList") != -1 || _this.html.indexOf("message") != -1 || _this.html.indexOf("user") != -1 ){
+          $(".carTitleback").hide();
+        }else{
+          $(".carTitleback").show();
+        }
         if(_this.html.indexOf("chooseSite") != -1 || _this.html.indexOf("/car/changeCarpeople") != -1){
           _this.doNow = 1;
         }else if(_this.html.indexOf("robbingMore") != -1){
@@ -62,6 +68,10 @@
       })
     },
     methods:{
+      go:function () {
+        var _this = this;
+        _this.$router.push({ path: '/trackList'});
+      },
       goback:function () {
            var _this = this;
            androidIos.gobackFrom(_this);
@@ -69,7 +79,7 @@
     }
   }
 </script>
-
+x
 <style>
   @import "./css/myScroll.css";
   @import "./css/mobiscroll.css";

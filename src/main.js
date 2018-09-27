@@ -10,6 +10,14 @@ import {bomb} from "./js/zujian";
 import {androidIos} from "./js/app";
 Vue.config.productionTip = false
 Vue.use(Toast)
+
+import components from './components/tem'
+//对导入的组件进行全局组件注册
+Object.keys(components).forEach((key) => {
+  Vue.component(key, components[key])
+});
+
+
 /* eslint-disable no-new */
 const  renderApp = () => {
   new Vue({
