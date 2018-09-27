@@ -174,6 +174,7 @@ import bridge from "../../js/bridge";
 import { androidIos } from "../../js/app";
 import { bomb } from "../../js/zujian.js";
 import PinchZoom from "../../js/pinchzoom";
+import {myScroll} from "../../js/myScroll";
 export default {
   name: "uploadDataT",
   data() {
