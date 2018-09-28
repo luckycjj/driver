@@ -1,5 +1,6 @@
 // 引入子路由
 import trackList from '../pages/trackList'
+import login from '../pages/login'
 import message from '../pages/message'
 import user from '../pages/user'
 import track from '../pages/track'
@@ -12,6 +13,9 @@ import  trackT from '@/components/track/qrcode'
 import  trackFo from  '@/components/track/uploadBill'
 import  trackSi from '@/components/track/uploadImg'
 import uploadDataT from '@/components/uploadData/uploadDataT'
+import forgetPassword from '@/components/loginBox/forgetPassword'
+import register from '@/components/loginBox/register'
+import listMessage from '@/components/message/messageList'
 Vue.use(Router);
 
 Vue.directive('title', {
@@ -90,6 +94,21 @@ export default new Router(
   {
   routes: [
     {
+      path:'/login',
+      name:'login',
+      component:login,
+    },
+    {
+      path:'/forgetPassword',
+      name:'forgetPassword',
+      component:forgetPassword,
+    },
+    {
+      path:'/register',
+      name:'register',
+      component:register,
+    },
+    {
       path:'/trackList',
       name:'trackList',
       component:trackList,
@@ -111,6 +130,11 @@ export default new Router(
       children: [
         {path: 'uploadDataT', component: uploadDataT}
       ]
+    },
+    {
+      path:'/listMessage',
+      name:'listMessage',
+      component:listMessage
     },
     {
       path: '/track',

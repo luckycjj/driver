@@ -37,11 +37,15 @@
       var _this = this;
       _this.title = document.title;
       bridge.invoke('stoploading');
-      bridge.invoke('token','',function(response) {
-        response = JSON.parse(response);
-        sessionStorage.setItem("token",response.userCode);
-        sessionStorage.setItem("source",response.source);
-      });
+      var cookie = androidIos.getcookie("MESSAGEDRIVER");
+      sessionStorage.setItem("source",3);
+      if(cookie != ""){
+        cookie = JSON.parse(cookie);
+        sessionStorage.setItem("token",cookie.token);
+        _this.$router.push({ path: '/trackList'});
+      }else{
+        _this.$router.push({ path: '/login'});
+      }
       androidIos.bridge(_this);
     },
     updated: function () {
@@ -49,7 +53,12 @@
       _this.$nextTick(function () {
         _this.title = document.title;
         _this.html = location.href;
-        if(_this.html.indexOf("robbingList") != -1 || _this.html.indexOf("trackList") != -1 || _this.html.indexOf("message") != -1 || _this.html.indexOf("user") != -1 ){
+        if(_this.html.indexOf("/login") != -1){
+          $("#appBox").hide();
+        }else{
+          $("#appBox").show();
+        }
+        if(_this.html.indexOf("/robbingList") != -1 || _this.html.indexOf("/trackList") != -1 || _this.html.indexOf("/message") != -1  || _this.html.indexOf("/login") != -1){
           $(".carTitleback").hide();
         }else{
           $(".carTitleback").show();
@@ -70,7 +79,6 @@
     methods:{
       go:function () {
         var _this = this;
-        _this.$router.push({ path: '/trackList'});
       },
       goback:function () {
            var _this = this;
@@ -125,7 +133,7 @@ x
     margin:0;
   }
   html,body{
-    background-color: #f6f6f6!important;
+    background-color: #f6f6f6;
     touch-action: none;
   }
   body ::-webkit-scrollbar{

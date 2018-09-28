@@ -2,7 +2,7 @@
   <div id="footer">
     <ul>
       <li v-for='(item,index) of items' :class='[{on:index === idx} ]' @click="$router.push(item.push)">
-        <div class="imgBox"  :class='[ item.cls , {imgSure:index === idx} ]'><div :style="{marginRight:item.marginRight}" class="corner" v-show="index == 0">{{item.number}}</div></div>
+        <div class="imgBox"  :class='[ item.cls , {imgSure:index === idx} ]'><div :style="{marginRight:item.marginRight}" class="corner" v-show="index == 0 && item.number > 0">{{item.number}}</div></div>
         {{item.name}}
       </li>
       <div class="clearBoth"></div>

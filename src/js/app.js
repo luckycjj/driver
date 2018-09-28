@@ -185,26 +185,9 @@ var androidIos = {
       "</div>");
   },
   bridge:function (that) {
-    new Promise(function (resolve,reject) {
-      /*if(bridge.invoke('token') != undefined){*/
-        bridge.invoke('token','',function(response) {
-          resolve(response);
-        })
-      /*}else{
-        reject(2)
-      }*/
-    }).then(function (data) {
-      data = JSON.parse(data);
-      sessionStorage.setItem("token", data.userCode);
-      sessionStorage.setItem("source", data.source);
-      that.$nextTick(function() {
-        that.go();
-      });
-    }).catch(function (error) {
-      that.$nextTick(function() {
-        that.go();
-      });
-    })
+    that.$nextTick(function() {
+      that.go();
+    });
   },
   jsonsort: function (obj) {
     var keys = [];
@@ -312,6 +295,14 @@ var androidIos = {
     return true;
   }
 },
+  telCheck:function (tel) {
+    var reg = /^1([3|5|8][0-9]|4[5|7|9]|66|7[0|1|3|5|6|7|8]|9[8|9])[0-9]{8}$/;
+    if(!reg.test(tel)){
+      return false;
+    }else{
+       return true;
+    }
+  },
   idCardCheck:function (id) {
     // 1 "验证通过!", 0 //校验不通过
     var format = /^(([1][1-5])|([2][1-3])|([3][1-7])|([4][1-6])|([5][0-4])|([6][1-5])|([7][1])|([8][1-2]))\d{4}(([1][9]\d{2})|([2]\d{3}))(([0][1-9])|([1][0-2]))(([0][1-9])|([1-2][0-9])|([3][0-1]))\d{3}[0-9xX]$/;
@@ -455,6 +446,27 @@ var androidIos = {
     } catch (e) {
     }
     return Number(num1.toString().replace(".", "")) * Number(num2.toString().replace(".", "")) / Math.pow(10, baseNum);
+  },
+  setcookie:function (c_name,value,time) {
+    var exdate=new Date();
+    exdate.setDate(exdate.getDate() + time);
+    document.cookie =  c_name + "="  + escape(value)+ ( (time == null) ?  ""  : ";expires="+exdate.toGMTString());
+  },
+  getcookie:function (c_name) {
+    if (document.cookie.length>0){
+       var c_start=document.cookie.indexOf(c_name + "=")
+      if (c_start != -1 ) {
+        c_start=c_start + c_name.length+1
+        var c_end=document.cookie.indexOf(";",c_start)
+        if (c_end==-1){
+          c_end=document.cookie.length
+        }
+        return unescape(document.cookie.substring(c_start,c_end))
+      }else{
+        return ""
+      }
+    }
+    return ""
   },
 };
 export {
