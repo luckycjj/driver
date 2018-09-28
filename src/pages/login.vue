@@ -35,8 +35,12 @@
       },
       methods:{
          go:function () {
-            document.getElementById("appBox").style.display = "none";
-            document.getElementsByTagName("html")[0].style.backgroundColor = "white";
+           var _this = this;
+           if( sessionStorage.getItem("tokenBefore") != null){
+             _this.mobile = sessionStorage.getItem("tokenBefore");
+           }
+           document.getElementById("appBox").style.display = "none";
+           document.getElementsByTagName("html")[0].style.backgroundColor = "white";
            document.getElementsByTagName("body")[0].style.backgroundColor = "white";
          },
         registerGo:function (type) {

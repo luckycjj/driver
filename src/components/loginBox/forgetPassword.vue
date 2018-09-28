@@ -125,6 +125,7 @@
           success: function (userRegister) {
             if (userRegister.success == "1") {
               _this.$cjj("修改成功");
+              sessionStorage.setItem("tokenBefore",_this.mobile);
               setTimeout(function () {
                 androidIos.gobackFrom(_this);
               },500)
