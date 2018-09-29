@@ -171,7 +171,9 @@
      width:8.5rem;
     margin:1.04rem auto 0 auto ;
     display: block;
-    background: #2c9cff;
+    background-image: url("../images/backgroundJB.png");
+    background-repeat:repeat-y;
+    background-size:8.5rem;
     color:white;
     font-size: 0.48rem;
     letter-spacing: 2px;

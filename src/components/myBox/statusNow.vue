@@ -140,11 +140,11 @@
           }
         },
         imgLook:function (img) {
+          var _this = this;
             $("#imgBigbox").remove();
             $("body").append(
               "<div id='imgBigbox'><div class='pinch-zoom'><img id='zoomimg'  src=" +
-              img +
-              " '></div><div id='zhezhaoImg'></div></div>"
+              img + " '  onerror='"+ _this.errorlogo+"'></div><div id='zhezhaoImg'></div></div>"
             );
             $("#imgBigbox").css({
               width: "100%",
