@@ -62,6 +62,14 @@
 </script>
 
 <style scoped>
+  #message{
+    background: #f6f6f6;
+    position:absolute;
+    top:1.3rem;
+    bottom:0;
+    height: auto;
+    width:100%;
+  }
   #messageBox ul{
      width:100%;
   }

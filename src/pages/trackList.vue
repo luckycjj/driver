@@ -265,6 +265,7 @@
     bottom:0;
     height: auto;
     width:100%;
+    background: #f6f6f6;
   }
   .mescroll{
     position: absolute;

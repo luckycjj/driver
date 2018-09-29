@@ -108,9 +108,17 @@
 </script>
 
 <style scoped>
+  #messageList{
+    background: #f6f6f6;
+    position: absolute;
+    top:1.3rem;
+    bottom:0;
+    height: auto;
+    width:100%;
+  }
 #mescroll{
   position: absolute;
-  top:1.7rem;
+  top:0.4rem;
   bottom:0;
   height: auto;
   width:100%;

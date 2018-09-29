@@ -21,6 +21,7 @@
     position: absolute;
     overflow: scroll;
     margin-top: 0.03125rem;
+    background: #f6f6f6;
   }
   #track .set_image_all {
     cursor: pointer;
