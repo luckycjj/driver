@@ -487,6 +487,14 @@ var androidIos = {
     }
     return ""
   },
+  delCookie:function (name){
+      var exp = new Date();
+      exp.setTime(exp.getTime() - 1);
+      var cval=androidIos.getcookie(name);
+      if(cval!=null){
+        document.cookie= name + "="+cval+";expires="+exp.toGMTString();
+      }
+    }
 };
 export {
   androidIos

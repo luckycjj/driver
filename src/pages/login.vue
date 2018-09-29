@@ -78,6 +78,7 @@
             success: function (login) {
               if (login.success == "1") {
                 sessionStorage.setItem("token",login.data.userCode);
+                sessionStorage.setItem("tokenBefore",login.data.userCode);
                 androidIos.setcookie("MESSAGEDRIVER",JSON.stringify({
                    token:login.data.userCode,
                 }),80);
@@ -90,6 +91,7 @@
               }
             },
             complete: function (XMLHttpRequest, status) { //请求完成后最终执行参数
+              $("#common-blackBox").remove();
               if (status == 'timeout') { //超时,status还有success,error等值的情况
                 androidIos.second("当前状况下网络状态差，请检查网络！");
               } else if (status == "error") {
