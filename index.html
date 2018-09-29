@@ -8,6 +8,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black" />
     <script src="static/js/aes.js"></script>
+    <script src="static/js/jq.js"></script>
     <link rel="stylesheet" href="https://cache.amap.com/lbs/static/main1119.css"/>
     <script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.8&key=59885854e2467040c16b111de77d8f00&plugin=AMap.Driving"></script>
     <script type="text/javascript" src="https://cache.amap.com/lbs/static/addToolbar.js"></script>
@@ -16,5 +17,109 @@
   </head>
   <body>
     <div id="app"></div>
+    <script>
+      var androidIos = {
+        addClass:function(obj,cls){//增加class
+          var id =  document.getElementById(obj);
+          var idJson = id.className.split(" ");
+          for(var i=0;i<idJson.length;i++){
+            if(idJson[i]==cls){
+              return false;
+            }
+          }
+          idJson.push(cls);
+          id.className = idJson.join(" ");
+          return true;
+        },
+        removeClass:function(obj,cls){//删除class
+          var id =  document.getElementById(obj);
+          var idJson = id.className.split(" ");
+          for(var i=0;i<idJson.length;i++){
+            if(idJson[i]==cls){
+              idJson.splice(i,1)
+            }
+          }
+          id.className = idJson.join(" ");
+        },
+        hasClass:function(obj,cls){//判断是不是有这个class
+          var idJson = document.getElementById(obj).className.split(" ");
+          for(var i=0;i<idJson.length;i++){
+            if(idJson[i]==cls){
+              return true;
+            }
+          }
+          return false;
+        },
+        first:function(message){
+          $(".tanBox-bigBox").remove();
+          $("body").append("<div class='tanBox-bigBox'>" +
+            "<div class='tanBox-box'>" +
+            "<p>温馨提示</p>"+
+            "<div class='tanBox-class'>" +
+            "<h3 style='width: 80%;margin-left: 10%;line-height: 0.6rem;padding: 0.3rem 0;'>" + message + "</h3>"+
+            "<div class='clearBoth'></div>"+
+            "</div>"+
+            "<div class='tanBox-button'><button class='tanBox-close'>取消</button><div class='tanBox-shuxian'></div><button id='tanBox-yes' class='tanBox-yes tanBox-yesGo'>确定</button></div>"+
+            "</div>"+
+            "</div>");
+          $(".tanBox-close").unbind('click').click(function(){
+            $(".tanBox-bigBox").remove();
+          });
+        },
+        GetQueryString: function (name) {
+          var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+          var s = window.location.href.indexOf("?");
+          var r = window.location.href.substr(s + 1).match(reg);
+          if (r != null) return unescape(r[2]);
+          return null;
+        },
+        gogogogo:function () {
+          var addPageList = sessionStorage.getItem("addPageList");
+          if (addPageList * 1 > 0) {
+            var number = addPageList * 1 - 1;
+            sessionStorage.setItem("addPageList", number);
+            window.history.go(-1);
+            setTimeout(function () {
+              androidIos.addClass("app","appBox");
+            },500)
+          } else {
+            androidIos.addClass("app","appBox");
+            console.log("要出去了")
+          }
+        },
+      }
+       function goback() {
+         if(androidIos.hasClass("app","appBox")){
+           $("#errorwifeBox").remove();
+           $("#common-blackBox").remove();
+           $(".tanBox-bigBox").remove();
+           var http =  location.href;
+           if(http.indexOf("/uploadData/uploadDataT") != -1){
+             var message = sessionStorage.getItem("source") == "2" ? JSON.parse(localStorage.getItem("UPMESSA")) :  JSON.parse(localStorage.getItem("DRIVERMESSA"));
+             var type = androidIos.GetQueryString("type");
+             if(type != null && message != null && (message.Drivepic != "" || message.IDpic != "" || message.Licensepic != "" || message.Roadpic != "" || message.Travelpic != "" || message.bank != "" || message.bankNumber != "" || message.company != "" || message.name != "" || (message.nvitationodeIC != null &&  message.nvitationodeIC != "" )|| message.peopleNumber != "" )){
+               androidIos.first("信息尚未上传，需要保存吗？");
+               $(".tanBox-close").unbind('click').click(function(){
+                 $(".tanBox-bigBox").remove();
+                 if(sessionStorage.getItem("source") == 2){
+                   localStorage.removeItem("UPMESSA");
+                 }else if(sessionStorage.getItem("source") == 3){
+                   localStorage.removeItem("DRIVERMESSA");
+                 }
+                 androidIos.gogogogo();
+               });
+               $(".tanBox-yes").unbind('click').click(function(){
+                 $(".tanBox-bigBox").remove();
+                 androidIos.gogogogo();
+               });
+             }else{
+               androidIos.gogogogo();
+             }
+           }else{
+             androidIos.gogogogo();
+           }
+         }
+       }
+    </script>
   </body>
 </html>
