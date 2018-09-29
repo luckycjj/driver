@@ -16,6 +16,9 @@ import uploadDataT from '@/components/uploadData/uploadDataT'
 import forgetPassword from '@/components/loginBox/forgetPassword'
 import register from '@/components/loginBox/register'
 import listMessage from '@/components/message/messageList'
+import aboutUs from '@/components/myBox/aboutUs'
+import setup from '@/components/myBox/setup'
+import suggestion from '@/components/myBox/suggestion'
 Vue.use(Router);
 
 Vue.directive('title', {
@@ -93,6 +96,21 @@ Vue.filter('orderTypeName', function(value) {
 export default new Router(
   {
   routes: [
+    {
+      path:'/aboutUs',
+      name:'aboutUs',
+      component:aboutUs,
+    },
+    {
+      path:'/setup',
+      name:'setup',
+      component:setup,
+    },
+    {
+      path:'/suggestion',
+      name:'suggestion',
+      component:suggestion,
+    },
     {
       path:'/login',
       name:'login',

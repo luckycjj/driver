@@ -523,7 +523,7 @@
         }
       },
       telphone:function(tel){
-        bridge.invoke('callTelephone',tel);
+        androidIos.telCall(tel);
       },
       logisticsBoxDown:function () {
         var _this = this;

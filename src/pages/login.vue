@@ -64,6 +64,7 @@
             bomb.first("请输入正确的手机号!");
             return false;
           };
+          androidIos.loading("正在登录");
           $.ajax({
             type: "POST",
             url: androidIos.ajaxHttp() + "/login",
@@ -80,7 +81,10 @@
                 androidIos.setcookie("MESSAGEDRIVER",JSON.stringify({
                    token:login.data.userCode,
                 }),80);
-                _this.$router.push({ path: '/trackList'});
+                _this.$cjj("登录成功");
+                setTimeout(function () {
+                  _this.$router.push({ path: '/trackList'});
+                },500)
               }else{
                 androidIos.second(login.message);
               }

@@ -9,6 +9,7 @@
         <h3 id="siteCar"  style="display: none" class="asd"  v-if="doNow==2"></h3>
         <h3  id="search" class="asd"  v-if="doNow==3" ><h5 id="searchSpan"></h5></h3>
         <img id="erweimaLook"  src="./images/erweima.png" v-if="doNow==4" style="display: none">
+        <div id="setUp"  v-if="doNow == 5" @click="setUpgo()"></div>
       </div>
       <div id="table"></div>
     </div>
@@ -71,6 +72,8 @@
           _this.doNow = 3;
         }else if( _this.html.indexOf("/track/trackMore") != -1){
           _this.doNow = 4;
+        }else if( _this.html.indexOf("/user") != -1){
+          _this.doNow = 5;
         }else{
           _this.doNow = "";
         }
@@ -83,11 +86,15 @@
       goback:function () {
            var _this = this;
            androidIos.gobackFrom(_this);
+      },
+      setUpgo:function () {
+        var _this = this;
+        androidIos.addPageList();
+        _this.$router.push({ path: "/setUp"});
       }
     }
   }
 </script>
-x
 <style>
   @import "./css/myScroll.css";
   @import "./css/mobiscroll.css";
@@ -370,6 +377,17 @@ x
     right:0.3rem;
     width:0.7rem;
     top:0.25rem;
+  }
+  #setUp{
+    position: absolute;
+    right:0.3rem;
+    width:1rem;
+    top:0rem;
+    height: 100%;
+    background-image: url("./images/setUp.png");
+    background-position: 100% 50%;
+    background-size: 0.4rem;
+    background-repeat: no-repeat;
   }
   #siteCar{
     background-image: url("./images/sitechoosesite.png");

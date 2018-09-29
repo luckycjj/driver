@@ -160,6 +160,25 @@ var androidIos = {
       $(".tanBox-bigBox").remove();
     });
   },
+  telCall:function (tel) {
+    $(".tanBox-bigBox").remove();
+    $("body").append("<div class='tanBox-bigBox'>" +
+      "<div class='tanBox-box'>" +
+      "<p>温馨提示</p>"+
+      "<div class='tanBox-class'>" +
+      "<h3 style='width: 80%;margin-left: 10%;line-height: 0.6rem;padding: 0.3rem 0;'>" + tel + "</h3>"+
+      "<div class='clearBoth'></div>"+
+      "</div>"+
+      "<div class='tanBox-button'><button class='tanBox-close'>取消</button><div class='tanBox-shuxian'></div><button id='tanBox-yes' class='tanBox-yes tanBox-yesGo'>拨打</button></div>"+
+      "</div>"+
+      "</div>");
+      $(".tanBox-close").unbind('click').click(function(){
+        $(".tanBox-bigBox").remove();
+      });
+      $(".tanBox-yes").unbind('click').click(function(){
+         window.location.href = "tel://" + tel;
+      });
+  },
   third:function (message) {
     $(".tanBox-bigBox").remove();
     $("body").append("<div class='tanBox-bigBox'>" +
