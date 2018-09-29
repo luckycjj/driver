@@ -128,8 +128,8 @@
        position: absolute;
        top:0;
        right:0rem;
-       padding: 0.01rem 0.13rem;
-       border-radius: 0.2rem;
+       padding: 0.01rem 0.2rem;
+       border-radius: 0.3rem;
      }
      .robbing{
        background-image: url("../../images/robbing.png");

@@ -19,6 +19,7 @@ import listMessage from '@/components/message/messageList'
 import aboutUs from '@/components/myBox/aboutUs'
 import setup from '@/components/myBox/setup'
 import suggestion from '@/components/myBox/suggestion'
+import changePassword from '@/components/myBox/changePassword'
 Vue.use(Router);
 
 Vue.directive('title', {
@@ -96,6 +97,11 @@ Vue.filter('orderTypeName', function(value) {
 export default new Router(
   {
   routes: [
+    {
+      path:'/changePassword',
+      name:'changePassword',
+      component:changePassword,
+    },
     {
       path:'/aboutUs',
       name:'aboutUs',

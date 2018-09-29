@@ -2,7 +2,7 @@
   <div id="setup">
     <div id="title" v-title data-title="设置"></div>
     <ul>
-      <li @click="lookMore(item.url)" v-for="(item,index) in tabList" :class="index % 2 == 0 ? (tabList.length -1 == index ? 'marTop' : 'marTop borderShow') : ''">
+      <li @click="urlGo(item.url)" v-for="(item,index) in tabList" :class="index % 2 == 0 ? (tabList.length -1 == index ? 'marTop' : 'marTop borderShow') : ''">
         <p>{{item.name}}</p>
         <h1>{{item.message}}</h1>
         <div class="lookMore" v-if="item.message == ''"></div>
@@ -23,11 +23,11 @@
           return{
              tabList:[{
                name:"修改密码",
-               url:"",
+               url:"/changePassword",
                message:""
              },{
                name:"当前版本",
-               url:"/suggestion",
+               url:"",
                message:"1.0.0"
              },]
           }
@@ -40,6 +40,13 @@
            go:function () {
 
            },
+          urlGo:function (url) {
+             var _this = this;
+             if(url != ""){
+               androidIos.addPageList();
+               _this.$router.push({path:url})
+             }
+          },
           loginOut:function () {
              var _this = this;
              sessionStorage.setItem("addPageList",0);

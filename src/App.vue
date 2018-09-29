@@ -268,7 +268,7 @@
   .asd{
     text-align: right;
     font-size: 0.375rem;
-    line-height: 1.25rem;
+    line-height: 1.3rem;
     color:#333;
     position: absolute;
     right: 0.3rem;

@@ -79,8 +79,10 @@
     color:#999;
   }
   button{
-    width:94%;
-    background: #2c9cff;
+    width:9.1rem;
+    background-image: url("../../images/backgroundJB.png");
+    background-repeat:repeat-y;
+    background-size:9.1rem;
     color:white;
     display: block;
     margin: 0 auto;
