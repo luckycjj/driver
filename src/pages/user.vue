@@ -4,12 +4,12 @@
     <div id="userBox">
        <div id="head">
          <div id="photo" class="imgBox">
-           <img :src="message.photo"  :onerror="errorlogo">
-           <input type="file">
+           <img :src="message.photo"   :onerror="errorlogo">
+           <input type="file" @change="imgChange($event)">
          </div>
          <p>{{message.name}}</p>
-         <h1 v-html="message.status == '0' ? '未审核' :message.status == '1' ? '待审核' : message.status == '2' ? '已审核' : ''"></h1>
-         <div class="lookMore"></div>
+         <h1 v-html="message.status == '0' ? '未认证' :message.status == '1' ? '待审核' : message.status == '2' ? '已审核' : message.status == '3' ? '已驳回' : message.status == '4' ? '已禁用' : ''"></h1>
+         <div class="lookMore"  @click="lookMore('/statusNow')"><span v-if="message.status == 0">去认证</span></div>
          <div class="clearBoth"></div>
        </div>
        <ul>
@@ -52,17 +52,18 @@
                url:"/aboutUs"
              }],
              errorlogo: 'this.src="' + require('../images/userImg.png') + '"',
+             httpurl:"",
            }
         },
       mounted:function () {
         var _this = this;
         var driverMessage = sessionStorage.getItem("driverMessage");
-        if(driverMessage != null){
+        if(driverMessage != null) {
           driverMessage = JSON.parse(driverMessage);
-          _this.message.photo =   driverMessage.photo;
-          _this.message.name =   driverMessage.name;
-          _this.message.status =   driverMessage.status;
-        }else{
+          _this.message.photo = driverMessage.photo;
+          _this.message.name = driverMessage.name;
+          _this.message.status = driverMessage.status;
+        }
           $.ajax({
             type: "POST",
             url: androidIos.ajaxHttp() + "/getUserInfo",
@@ -75,7 +76,7 @@
             timeout: 30000,
             success: function (getUserInfo) {
               if (getUserInfo.success == "1") {
-                _this.message.photo =   getUserInfo.photo;
+                _this.message.photo =  getUserInfo.photo;
                 _this.message.name =   getUserInfo.name;
                 _this.message.status =   getUserInfo.status;
                 sessionStorage.setItem("driverMessage",JSON.stringify({
@@ -97,13 +98,38 @@
               }
             }
           });
-        }
 
         androidIos.bridge(_this);
       },
       methods:{
         go:function () {
           var _this = this;
+          $.ajax({
+            type: "POST",
+            url: androidIos.ajaxHttp() + "/settings/findParamValueByName ",
+            data: JSON.stringify({
+              userCode:sessionStorage.getItem("token"),
+              source:sessionStorage.getItem("source"),
+              paramName:"resourcePath"
+            }),
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            timeout:30000,
+            success: function(findParamValueByName){
+              if(findParamValueByName.success == "1"){
+                _this.httpurl = findParamValueByName.paramValue;
+              }else{
+                androidIos.second(findParamValueByName.message);
+              }
+            },
+            complete : function(XMLHttpRequest,status){ //请求完成后最终执行参数
+              if(status=='timeout'){//超时,status还有success,error等值的情况
+                androidIos.second("当前状况下网络状态差，请检查网络！")
+              }else if(status=="error"){
+                androidIos.errorwife();
+              }
+            }
+          });
         },
         lookMore:function (url) {
           var _this = this;
@@ -111,7 +137,125 @@
             androidIos.addPageList();
             _this.$router.push({ path: url});
           }
-        }
+        },
+        imgChange:function (e) {
+          var _this = this;
+          androidIos.loading("正在上传");
+          for (var i = 0; i < e.target.files.length; i++) {
+              _this.compress(_this.getObjectURL(e.target.files[i]),"1000","1000",2);
+          }
+          e.target.value = "";
+        },
+        getObjectURL:function(file) {
+          var url = null;
+          if (window.createObjectURL != undefined) { // basic
+            url = window.createObjectURL(file);
+          } else if (window.URL != undefined) { // mozilla(firefox)
+            url = window.URL.createObjectURL(file);
+          } else if (window.webkitURL != undefined) { // webkit or chrome
+            url = window.webkitURL.createObjectURL(file);
+          }
+          return url;
+        },
+        compress:function(img, MaximgW, MaximgH,type) {
+          var _this = this;
+          var image = new Image();
+          image.src = img ;
+          var imageWidth =  "";
+          var imageHeight = "";
+          image.onload = function () {
+            var canvas = document.createElement('canvas');
+            if (image.width < MaximgW && image.height < MaximgH) {
+              imageWidth = image.width;
+              imageHeight = image.height;
+            } else {
+              if (image.width > image.height) {
+                imageWidth = MaximgW;
+                imageHeight = MaximgW * (image.height / image.width);
+              } else if (image.width < image.height) {
+                imageHeight = MaximgH;
+                imageWidth = MaximgH * (image.width / image.height);
+              } else {
+                imageWidth = MaximgW;
+                imageHeight = MaximgH;
+              }
+            }
+            canvas.width = imageWidth;
+            canvas.height = imageHeight;
+            var con = canvas.getContext('2d');
+            con.clearRect(0, 0, canvas.width, canvas.height);
+            con.drawImage(image, 0, 0, imageWidth, imageHeight);
+            var base64 = canvas.toDataURL('image/jpeg', 0.5).substr(0);
+            if(type == 2){
+              var photoUrl = "";
+              $.ajax({
+                type: "POST",
+                url: androidIos.ajaxHttp() + "/uploadFile",
+                data:JSON.stringify({
+                  type: "TX" ,
+                  file: base64.substr(23),
+                  userCode:sessionStorage.getItem("token"),
+                  source:sessionStorage.getItem("source")
+                }),
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                async:false,
+                timeout: 30000,
+                success: function (json) {
+                  if (json.success == "1") {
+                    photoUrl = json.path;
+                  } else{
+                    androidIos.second(json.message);
+                  }
+                },
+                complete: function (XMLHttpRequest, status) { //请求完成后最终执行参数
+                  if (status == 'timeout') { //超时,status还有success,error等值的情况
+                    androidIos.second("当前状况下网络状态差，请检查网络！")
+                  } else if (status == "error") {
+                    androidIos.errorwife();
+                  }
+                }
+              });
+              $.ajax({
+                type: "POST",
+                url: androidIos.ajaxHttp() + "/uploadAvatar",
+                data:JSON.stringify({
+                  path:photoUrl,
+                  userCode:sessionStorage.getItem("token"),
+                  source:sessionStorage.getItem("source")
+                }),
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                async:false,
+                timeout: 30000,
+                success: function (uploadAvatar) {
+                  if (uploadAvatar.success == "1") {
+                    _this.$cjj("上传成功");
+                    _this.message.photo = _this.httpurl + photoUrl;
+                    var driverMessage = sessionStorage.getItem("driverMessage");
+                    if( driverMessage != null){
+                      driverMessage = JSON.parse(driverMessage);
+                      driverMessage.photo = _this.message.photo;
+                      sessionStorage.setItem("driverMessage",JSON.stringify(driverMessage));
+                    }
+                  } else{
+                    androidIos.second(uploadAvatar.message);
+                  }
+                },
+                complete: function (XMLHttpRequest, status) { //请求完成后最终执行参数
+                  $("#common-blackBox").remove();
+                  if (status == 'timeout') { //超时,status还有success,error等值的情况
+                    androidIos.second("当前状况下网络状态差，请检查网络！")
+                  } else if (status == "error") {
+                    androidIos.errorwife();
+                  }
+                }
+              });
+            }else{
+              _this.message.photo = base64;
+            }
+          }
+        },
       }
     }
 </script>
@@ -124,6 +268,10 @@
   height: auto;
   width:100%;
   background: #f6f6f6;
+}
+.imgBox img{
+  width:1.6rem;
+  height: 1.6rem;
 }
   #head{
      width:100%;
@@ -162,9 +310,12 @@
   font-size: 0.3125rem;
 }
   .lookMore{
-     width:10%;
+    width:15%;
     height: 100%;
+    line-height: 2.3rem;
+    color:#999;
     position: absolute;
+    font-size: 0.3125rem;
     background-image: url("../images/lookMore.png");
     right: 4%;
     top:0;

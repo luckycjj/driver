@@ -20,6 +20,7 @@ import aboutUs from '@/components/myBox/aboutUs'
 import setup from '@/components/myBox/setup'
 import suggestion from '@/components/myBox/suggestion'
 import changePassword from '@/components/myBox/changePassword'
+import statusNow from '@/components/myBox/statusNow'
 Vue.use(Router);
 
 Vue.directive('title', {
@@ -101,6 +102,11 @@ export default new Router(
       path:'/changePassword',
       name:'changePassword',
       component:changePassword,
+    },
+    {
+      path:'/statusNow',
+      name:'statusNow',
+      component:statusNow,
     },
     {
       path:'/aboutUs',

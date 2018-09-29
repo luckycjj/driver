@@ -1377,7 +1377,9 @@
   }
   #sure button{
     width:100%;
-    background:#3492ff;
+    background-image: url("../../images/backgroundJB.png");
+    background-repeat:repeat-y;
+    background-size:10rem;
     color:white;
     font-size: 0.4rem;
     letter-spacing: 0.0625rem;

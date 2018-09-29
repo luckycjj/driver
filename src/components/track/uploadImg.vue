@@ -601,7 +601,9 @@
     margin: 0.2rem auto;
     width:90%;
     color:white;
-    background: #2c9cff;
+    background-image: url("../../images/backgroundJB.png");
+    background-repeat:repeat-y;
+    background-size: 9rem;
     font-size: 0.4rem;
     letter-spacing: 2px;
     border-radius: 0.1rem;

@@ -450,7 +450,9 @@ export default {
   width:92%;
   margin:0.25rem auto 0 auto;
   display: block;
-  background: #2d9cff;
+  background-image: url("../../images/backgroundJB.png");
+  background-repeat:repeat-y;
+  background-size: 9.2rem;
   color:white;
   line-height: 1rem;
   font-size: 0.4rem;

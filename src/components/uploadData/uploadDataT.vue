@@ -1000,6 +1000,7 @@ a {
   bottom:0;
   height: auto;
   overflow-y: scroll;
+  background: #f6f6f6;
 }
 .hello {
   background: white;
@@ -1096,16 +1097,17 @@ a {
   text-align: center;
 }
 #submit {
-  width: 93%;
+  width:9.1rem;
+  background-image: url("../../images/backgroundJB.png");
+  background-repeat:repeat-y;
+  background-size:9.1rem;
+  color:white;
   display: block;
-  margin: 0.86rem auto 0.1rem auto;
-  height: 1rem;
-  background: #3399FF;
-  color: white;
-  font-size: 0.375rem;
-  letter-spacing: 0.03125rem;
-  border-radius: 0.5rem;
-  box-shadow: 0 0.1rem 0.1rem #ccc;
+  margin: 0 auto;
+  line-height: 1.2rem;
+  font-size: 0.4rem;
+  border-radius: 0.2rem;
+  margin-top:0.86rem;
 }
 .file {
   position: absolute;

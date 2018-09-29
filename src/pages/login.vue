@@ -31,6 +31,9 @@
       },
       mounted:function () {
           var _this = this;
+          sessionStorage.removeItem("token");
+          androidIos.delCookie("MESSAGEDRIVER");
+          sessionStorage.removeItem("driverMessage");
           androidIos.bridge(_this);
       },
       methods:{

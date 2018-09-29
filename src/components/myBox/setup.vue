@@ -49,10 +49,12 @@
           },
           loginOut:function () {
              var _this = this;
-             sessionStorage.setItem("addPageList",0);
-             sessionStorage.removeItem("token");
-             androidIos.delCookie("MESSAGEDRIVER");
-             _this.$router.push({path:"/login"})
+             androidIos.first("确定要退出吗?");
+            $(".tanBox-yes").unbind('click').click(function(){
+              $(".tanBox-bigBox").remove();
+              sessionStorage.setItem("addPageList",0);
+              _this.$router.push({path:"/login"});
+            });
           },
         }
     }
