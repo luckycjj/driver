@@ -87,9 +87,8 @@
           success: function (getBulletin) {
             if (getBulletin.success == "1") {
               for(var i = 0;i < getBulletin.list.length;i++){
-                var date = new Date(getBulletin.list[i].time);
-                getBulletin.list[i].time = thisThat.ten(date.getDate()) + "/" + thisThat.ten((date.getMonth() + 1)) + "/" + thisThat.ten(date.getFullYear());
-              }
+                getBulletin.list[i].time = getBulletin.list[i].time.split(".")[0];
+               }
               successCallback&&successCallback(getBulletin.list);//成功回调
             }else{
               androidIos.second(getBulletin.message);

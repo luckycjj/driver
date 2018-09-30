@@ -7,9 +7,11 @@
            <img :src="message.photo"   :onerror="errorlogo">
            <input type="file" @change="imgChange($event)">
          </div>
-         <p>{{message.name}}</p>
-         <h1 v-html="message.status == '0' ? '未认证' :message.status == '1' ? '待审核' : message.status == '2' ? '已审核' : message.status == '3' ? '已驳回' : message.status == '4' ? '已禁用' : ''"></h1>
-         <div class="lookMore"  @click="lookMore('/statusNow')"><span v-if="message.status == 0">去认证</span></div>
+         <div style="float: left;width:50%;">
+           <p>{{message.name}}</p>
+           <h1 v-html="message.status == '0' ? '未认证' :message.status == '1' ? '待审核' : message.status == '2' ? '已审核' : message.status == '3' ? '已驳回' : message.status == '4' ? '已禁用' : ''"></h1>
+         </div>
+        <div class="lookMore"  @click="lookMore('/statusNow')"><span v-if="message.status == 0">去认证</span></div>
          <div class="clearBoth"></div>
        </div>
        <ul>
@@ -348,7 +350,7 @@
   font-size: 0.3125rem;
 }
   .lookMore{
-    width:15%;
+    width:50%;
     height: 100%;
     line-height: 2.3rem;
     color:#999;
