@@ -574,7 +574,7 @@
     }
 
     // 拦截touchmove事件
-    isPrevent && me.preventDefault(e)
+   /* isPrevent && me.preventDefault(e)*/
   }
 
   /* 触发上拉加载 */

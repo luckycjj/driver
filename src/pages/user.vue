@@ -22,6 +22,21 @@
        </ul>
     </div>
     <footComponent :idx='2'></footComponent>
+    <transition name="slide-fade">
+        <div id="shareBox" v-if="shareListTrue">
+          <div id="shareBody">
+            <div id="shareBodyTab">
+              <p>分享至...</p>
+              <label :style="{width:100 / shareList.length + '%'}" v-for="(item,index) in shareList">
+                <img :src="item.icon" @click="shareType(index)">
+                <h6>{{item.name}}</h6>
+              </label>
+              <div class="clearBoth"></div>
+            </div>
+            <button @click="shareYes(false)">取消</button>
+          </div>
+        </div>
+    </transition>
   </div>
 </template>
 
@@ -38,6 +53,16 @@
                  name : "",
                  status : "",
               },
+             shareList:[{
+                 name:"微信",
+                 icon:require("../images/weChat.png"),
+             },{
+               name:"朋友圈",
+               icon:require("../images/friendCircle.png"),
+             },{
+               name:"短信",
+               icon:require("../images/shortMessage.png"),
+             }],
              tabList:[{
                name:"分享",
                icon:require("../images/share.png"),
@@ -53,6 +78,7 @@
              }],
              errorlogo: 'this.src="' + require('../images/userImg.png') + '"',
              httpurl:"",
+             shareListTrue:false,
            }
         },
       mounted:function () {
@@ -136,6 +162,18 @@
           if(url != ""){
             androidIos.addPageList();
             _this.$router.push({ path: url});
+          }else{
+           _this.shareListTrue = true;
+          }
+        },
+        shareYes:function (type) {
+          var _this = this;
+          _this.shareListTrue = type;
+        },
+        shareType:function (index) {
+          var _this = this;
+          if(index == 0){
+
           }
         },
         imgChange:function (e) {
@@ -352,4 +390,65 @@
   .borderShow{
     border-bottom: 1px solid #E5E5E5;
   }
+  #shareBox{
+    position: fixed;
+    top:0;
+    bottom: 0;
+    left:0;
+    right:0;
+    height:auto;
+    width:auto;
+    background-color: rgba(0,0,0,0.6);
+  }
+  #shareBody{
+    position: absolute;
+    bottom:0;
+    width:92%;
+    left:4%;
+  }
+#shareBody button{
+   width:100%;
+  margin: 0.2rem 0;
+  line-height: 1rem;
+  font-size: 0.35rem;
+  letter-spacing: 2px;
+  background:#ebebeb ;
+  border-radius: 0.2rem;
+}
+  #shareBodyTab{
+     background:#ebebeb ;
+     padding: 0.2rem 0 0.3rem 0;
+    border-radius: 0.2rem;
+  }
+#shareBodyTab p{
+  text-align: center;
+  font-size: 0.35rem;
+  color:#333;
+  line-height: 1rem;
+}
+#shareBodyTab label{
+  float: left;
+}
+#shareBodyTab label img{
+   width:30%;
+  margin: 0.3rem auto 0.15rem auto;
+}
+#shareBodyTab label h6{
+   font-size: 0.3125rem;
+  color:#333;
+  text-align: center;
+}
+/* 可以设置不同的进入和离开动画 */
+/* 设置持续时间和动画函数 */
+.slide-fade-enter-active {
+  transition: all .3s ease;
+}
+.slide-fade-leave-active {
+  transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+}
+.slide-fade-enter, .slide-fade-leave-to
+  /* .slide-fade-leave-active for below version 2.1.8 */ {
+  transform: translateY(0.13rem);
+  opacity: 0;
+}
 </style>

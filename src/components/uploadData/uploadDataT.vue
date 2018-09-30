@@ -72,13 +72,7 @@
           <div style="margin-left: 0.18rem;margin-top: 0.3rem;">
             <div class="imgBoxBigs" style="float: left;margin-left: 0.18rem; ">
               <div class="imgBox">
-                <div @click="cleanIDcode(1)" v-if="water.IDpic != ''" style="position:absolute;right:0rem;top:0rem;font-size: 0.3125rem;border-radius: 50%;color:white;width:0.5rem;height: 0.5rem;text-align: center;line-height: 0.45rem;z-index: 3;background: rgba(0,0,0,0.5);">x</div>
-                <img id="IDCODEIMG" :src="httpurl + water.IDpic"  :onerror="errorlogo"  v-if="water.IDpic != ''">
-                <div id="box2"  @click="recognition(1)" style=" width: 4rem; height: 2.6rem; " class="imgUpload" v-show="water.IDpic == ''">
-                  <div class="cjjimgbox" style="display: none;">
-                    <h1 class="h5u_options_hiddenP">{{water.IDpic}}</h1>
-                  </div>
-                </div>
+                <div id="box2" class="imgUpload"></div>
               </div>
               <h5 style="font-size: 0.3125rem;text-align: center;width:4rem;"><span style="font-size: 0.3125rem;color:#ff803c;">*</span>正面</h5>
             </div>
@@ -520,6 +514,20 @@ export default {
               "<p class='h5u_options_hiddenP'>" + _this.water.authorization + "</p>"
             );
           }
+        }
+        $("#box2").aiiUpload({
+          action: androidIos.ajaxHttp() + "/uploadFile",
+          max_w: 1000,
+          max_h: 1000
+        });
+        if (_this.water.IDpic != null && _this.water.IDpic != "") {
+          $("#box2 img").attr("src", _this.httpurl + _this.water.IDpic);
+          $("#box2 img").show();
+          $("#box2 .closed").show();
+          $("#box2 .cjjimgbox").css("display", "none");
+          $("#box2 .cjjimgbox").html(
+            "<p class='h5u_options_hiddenP'>" + _this.water.IDpic + "</p>"
+          );
         }
         $("#box5").aiiUpload({
           action: androidIos.ajaxHttp() + "/uploadFile",
@@ -973,7 +981,7 @@ export default {
     iknow: function() {
       var _this = this;
       _this.tanBox = false;
-      bridge.invoke('gobackfrom');
+      androidIos.gobackFrom(_this);
     }
   }
 };
