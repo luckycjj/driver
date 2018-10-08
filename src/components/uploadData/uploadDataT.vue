@@ -216,6 +216,7 @@ export default {
             var UPMESSA = localStorage.getItem("UPMESSA");
             if(UPMESSA != undefined || UPMESSA != null){
               UPMESSA = JSON.parse(UPMESSA);
+              _this.water.IDpic = UPMESSA.IDpic;
               _this.water.IDpicfan = UPMESSA.IDpicfan;
               _this.water.authorization = UPMESSA.authorization;
               _this.water.Drivepic = UPMESSA.Drivepic;
@@ -227,6 +228,7 @@ export default {
             var DRIVERMESSA = localStorage.getItem("DRIVERMESSA");
             if(DRIVERMESSA != undefined || DRIVERMESSA != null){
               DRIVERMESSA = JSON.parse(DRIVERMESSA);
+              _this.water.IDpic = DRIVERMESSA.IDpic;
               _this.water.IDpicfan = DRIVERMESSA.IDpicfan;
               _this.water.authorization = DRIVERMESSA.authorization;
               _this.water.Drivepic = DRIVERMESSA.Drivepic;
