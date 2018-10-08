@@ -49,6 +49,34 @@
       }
       androidIos.bridge(_this);
     },
+    beforeUpdate:function () {
+      var _this = this;
+      _this.title = document.title;
+      _this.html = location.href;
+      if(_this.html.indexOf("/login") != -1){
+        $("#appBox").hide();
+      }else{
+        $("#appBox").show();
+      }
+      if(_this.html.indexOf("/robbingList") != -1 || _this.html.indexOf("/user") != -1 || _this.html.indexOf("/trackList") != -1 || _this.html.indexOf("/message") != -1  || _this.html.indexOf("/login") != -1){
+        $(".carTitleback").hide();
+      }else{
+        $(".carTitleback").show();
+      }
+      if(_this.html.indexOf("chooseSite") != -1 || _this.html.indexOf("/car/changeCarpeople") != -1){
+        _this.doNow = 1;
+      }else if(_this.html.indexOf("robbingMore") != -1){
+        _this.doNow = 2;
+      }else if(_this.html.indexOf("/site/car") != -1){
+        _this.doNow = 3;
+      }else if( _this.html.indexOf("/track/trackMore") != -1){
+        _this.doNow = 4;
+      }else if( _this.html.indexOf("/user") != -1){
+        _this.doNow = 5;
+      }else{
+        _this.doNow = "";
+      }
+    },
     updated: function () {
       var _this = this;
       _this.$nextTick(function () {
