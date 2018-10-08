@@ -40,11 +40,11 @@
       bridge.invoke('stoploading');
       var cookie = androidIos.getcookie("MESSAGEDRIVER");
       sessionStorage.setItem("source",3);
-      if(cookie != ""){
+      if(cookie != "" && sessionStorage.getItem("addPageList")*1 == 0){
         cookie = JSON.parse(cookie);
         sessionStorage.setItem("token",cookie.token);
         _this.$router.push({ path: '/trackList'});
-      }else{
+      }else if(cookie == ""){
         _this.$router.push({ path: '/login'});
       }
       androidIos.bridge(_this);
