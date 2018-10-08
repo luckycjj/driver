@@ -433,7 +433,7 @@ var androidIos = {
     }
     baseNum = Math.pow(10, Math.max(baseNum1, baseNum2));
     precision = (baseNum1 >= baseNum2) ? baseNum1 : baseNum2;
-    return ((num1 * baseNum - num2 * baseNum) / baseNum).toFixed(precision);
+    return ((num1 * baseNum + num2 * baseNum) / baseNum).toFixed(precision);
   },
   numSub:function (num1, num2) {
     //减法精度
