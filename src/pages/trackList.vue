@@ -24,7 +24,7 @@
         </ul>
       </div>
     </div>
-    <footComponent :idx='0'></footComponent>
+    <footComponent ref="footcomponent" :idx='0'></footComponent>
   </div>
 </template>
 
@@ -162,6 +162,9 @@
              function getListDataFromNet(curNavIndex,pageNum,pageSize,successCallback,errorCallback) {
                //延时一秒,模拟联网
                setTimeout(function () {
+                 if(pageNum == 1){
+                   _this.$refs.footcomponent.go();
+                 }
                  $.ajax({
                    type: "POST",
                    url: androidIos.ajaxHttp() + "/order/loadEntrust",
