@@ -308,6 +308,7 @@
   height: auto;
   width:100%;
   background: #f6f6f6;
+  overflow: scroll;
 }
 .imgBox img{
   width:1.6rem;
