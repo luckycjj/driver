@@ -14,6 +14,7 @@ import  trackFo from  '@/components/track/uploadBill'
 import  trackSi from '@/components/track/uploadImg'
 import uploadDataT from '@/components/uploadData/uploadDataT'
 import forgetPassword from '@/components/loginBox/forgetPassword'
+import  orderScreen from '@/components/track/orderScreen'
 import register from '@/components/loginBox/register'
 import listMessage from '@/components/message/messageList'
 import aboutUs from '@/components/myBox/aboutUs'
@@ -98,6 +99,11 @@ Vue.filter('orderTypeName', function(value) {
 export default new Router(
   {
   routes: [
+    {
+      path:'/orderScreen',
+      name:'orderScreen',
+      component:orderScreen,
+    },
     {
       path:'/changePassword',
       name:'changePassword',
