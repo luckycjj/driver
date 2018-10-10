@@ -535,7 +535,10 @@ var androidIos = {
       var imgBase64 = this.canvas.toDataURL();
       console.log(imgBase64);
     }.bind(this), false);
-  }
+  },
+  checkText:function (text) {
+    return text.replace(/[^\a-\z\A-\Z0-9\u4E00-\u9FA5\,\，\.\。\;\!\[\]\【\】\-]/g,'')
+  },
 };
 export {
   androidIos

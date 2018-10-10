@@ -366,6 +366,10 @@
     background-repeat: no-repeat;
     background-position: 100% 50%;
     background-size:0.25rem;
+    text-align: right;
+  }
+  .lookMore span{
+    margin-right: 0.5rem;
   }
   ul{
     width:100%;

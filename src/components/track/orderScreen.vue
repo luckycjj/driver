@@ -143,7 +143,7 @@
           state:0,
           userCode:sessionStorage.getItem("token"),
           source:sessionStorage.getItem("source"),
-          keyword:thisthatsecond.address == "" ? "HDSDDD" : thisthatsecond.address,
+          keyword:thisthatsecond.address == "" ? "HDSDDD" : androidIos.checkText(thisthatsecond.address),
         }),
         contentType: "application/json;charset=utf-8",
         dataType: "json",
