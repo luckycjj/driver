@@ -177,6 +177,7 @@
           }
         },
         jiexi:function (enevt) {
+          androidIos.loading("正在扫描");
           var getObjectURL = function (file) {
             var url = null;
             if (window.createObjectURL != undefined) { // basic
@@ -197,6 +198,7 @@
             } catch (e) {
               img = "";
             }
+            $("#common-blackBox").remove();
             if(img == ""){
                androidIos.second("扫描二维码失败,请重试!");
             }else{
@@ -206,6 +208,7 @@
                  androidIos.first("确定交接吗？");
                  $(".tanBox-yes").unbind('click').click(function(){
                    $(".tanBox-bigBox").remove();
+                   androidIos.loading("正在交接");
                    $.ajax({
                      type: "POST",
                      url: androidIos.ajaxHttp() + "/order/handover",
@@ -220,12 +223,13 @@
                      timeout:30000,
                      success: function(handover){
                        if(handover.success == "1"){
-                         androidIos.second("交接成功，请查看订单跟踪列表");
+                         _this.$cjj("交接成功");
                        }else{
                          androidIos.second(handover.message);
                        }
                      },
                      complete : function(XMLHttpRequest,status){ //请求完成后最终执行参数
+                       $("#common-blackBox").remove();
                        if(status=='timeout'){//超时,status还有success,error等值的情况
                          androidIos.second("当前状况下网络状态差，请检查网络！")
                        }else if(status=="error"){
