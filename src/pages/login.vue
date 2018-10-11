@@ -68,6 +68,7 @@
             return false;
           };
           androidIos.loading("正在登录");
+          var userCodeFirst,status;
           $.ajax({
             type: "POST",
             url: androidIos.ajaxHttp() + "/login",
@@ -78,17 +79,12 @@
             contentType: "application/json;charset=utf-8",
             dataType: "json",
             timeout: 30000,
+            async:false,
             success: function (login) {
               if (login.success == "1") {
                 sessionStorage.setItem("token",login.data.userCode);
                 sessionStorage.setItem("tokenBefore",login.data.userCode);
-                androidIos.setcookie("MESSAGEDRIVER",JSON.stringify({
-                   token:login.data.userCode,
-                }),80);
-                _this.$cjj("登录成功");
-                setTimeout(function () {
-                  _this.$router.push({ path: '/trackList'});
-                },500)
+                userCodeFirst = login.data.userCode;
               }else{
                 androidIos.second(login.message);
               }
@@ -102,6 +98,47 @@
               }
             }
           });
+          $.ajax({
+            type: "POST",
+            url: androidIos.ajaxHttp() + "/getUserInfo",
+            data:JSON.stringify({
+              userCode:sessionStorage.getItem("token"),
+              source:sessionStorage.getItem("source")
+            }),
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            timeout: 30000,
+            async:false,
+            success: function (getUserInfo) {
+              if (getUserInfo.success == "1") {
+                sessionStorage.setItem("driverMessage",JSON.stringify({
+                  licType: getUserInfo.licType,
+                  name:  getUserInfo.name,
+                  photo:  getUserInfo.photo,
+                  status:  getUserInfo.status,
+                  corpName:  getUserInfo.corpName,
+                }));
+                status =   getUserInfo.status;
+              }else{
+                androidIos.second(getUserInfo.message);
+              }
+            },
+            complete: function (XMLHttpRequest, status) { //请求完成后最终执行参数
+              if (status == 'timeout') { //超时,status还有success,error等值的情况
+                androidIos.second("当前状况下网络状态差，请检查网络！");
+              } else if (status == "error") {
+                androidIos.errorwife();
+              }
+            }
+          });
+          androidIos.setcookie("MESSAGEDRIVER",JSON.stringify({
+            token:userCodeFirst,
+            status:status,
+          }),80);
+          _this.$cjj("登录成功");
+          setTimeout(function () {
+            _this.$router.push({ path: '/trackList'});
+          },500)
         },
         lookpass:function () {
           var _this = this;

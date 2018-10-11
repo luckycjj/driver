@@ -168,38 +168,44 @@
                  if(pageNum == 1){
                    _this.$refs.footcomponent.go();
                  }
-                 $.ajax({
-                   type: "POST",
-                   url: androidIos.ajaxHttp() + "/order/loadEntrust",
-                   data:JSON.stringify({
-                     page:pageNum,
-                     size:pageSize,
-                     type:1,
-                     state:curNavIndex,
-                     userCode:sessionStorage.getItem("token"),
-                     source:sessionStorage.getItem("source")
-                   }),
-                   contentType: "application/json;charset=utf-8",
-                   dataType: "json",
-                   timeout: 30000,
-                   success: function (loadEntrust) {
-                     if (loadEntrust.success == "1") {
-                       successCallback(loadEntrust.list);
-                     }else{
-                       androidIos.second(loadEntrust.message);
-                       successCallback([]);
+                 var status = JSON.parse(androidIos.getcookie("MESSAGEDRIVER")).status;
+                 if(status != 0){
+                   $.ajax({
+                     type: "POST",
+                     url: androidIos.ajaxHttp() + "/order/loadEntrust",
+                     data:JSON.stringify({
+                       page:pageNum,
+                       size:pageSize,
+                       type:1,
+                       state:curNavIndex,
+                       userCode:sessionStorage.getItem("token"),
+                       source:sessionStorage.getItem("source")
+                     }),
+                     contentType: "application/json;charset=utf-8",
+                     dataType: "json",
+                     timeout: 30000,
+                     success: function (loadEntrust) {
+                       if (loadEntrust.success == "1") {
+                         successCallback(loadEntrust.list);
+                       }else{
+                         androidIos.second(loadEntrust.message);
+                         successCallback([]);
+                       }
+                     },
+                     complete: function (XMLHttpRequest, status) { //请求完成后最终执行参数
+                       if (status == 'timeout') { //超时,status还有success,error等值的情况
+                         androidIos.second("当前状况下网络状态差，请检查网络！");
+                         successCallback([]);
+                       } else if (status == "error") {
+                         androidIos.errorwife();
+                         successCallback([]);
+                       }
                      }
-                   },
-                   complete: function (XMLHttpRequest, status) { //请求完成后最终执行参数
-                     if (status == 'timeout') { //超时,status还有success,error等值的情况
-                       androidIos.second("当前状况下网络状态差，请检查网络！");
-                       successCallback([]);
-                     } else if (status == "error") {
-                       androidIos.errorwife();
-                       successCallback([]);
-                     }
-                   }
-                 });
+                   });
+                 }else{
+                   successCallback([]);
+                 }
+
                },200)
              }
            },

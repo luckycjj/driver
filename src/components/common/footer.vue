@@ -55,35 +55,45 @@
       methods:{
           go:function () {
             var _this = this;
-            $.ajax({
-              type: "POST",
-              url: androidIos.ajaxHttp() + "/driver/driverBottomIcon",
-              data:JSON.stringify({
-                userCode:sessionStorage.getItem("token"),
-                source:sessionStorage.getItem("source")
-              }),
-              contentType: "application/json;charset=utf-8",
-              dataType: "json",
-              timeout: 30000,
-              success: function (driverBottomIcon) {
-                if (driverBottomIcon.success == "1") {
-                  _this.items[0].number = driverBottomIcon.orderCount*1;
-                  _this.$nextTick(function () {
-                    _this.marginWidth();
-                    sessionStorage.setItem("driverBottomIcon",JSON.stringify(_this.items));
-                  })
-                }else{
-                  androidIos.second(driverBottomIcon.message);
+            var status = JSON.parse(androidIos.getcookie("MESSAGEDRIVER")).status;
+            if(status != 0){
+              $.ajax({
+                type: "POST",
+                url: androidIos.ajaxHttp() + "/driver/driverBottomIcon",
+                data:JSON.stringify({
+                  userCode:sessionStorage.getItem("token"),
+                  source:sessionStorage.getItem("source")
+                }),
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                timeout: 30000,
+                success: function (driverBottomIcon) {
+                  if (driverBottomIcon.success == "1") {
+                    _this.items[0].number = driverBottomIcon.orderCount*1;
+                    _this.$nextTick(function () {
+                      _this.marginWidth();
+                      sessionStorage.setItem("driverBottomIcon",JSON.stringify(_this.items));
+                    })
+                  }else{
+                    androidIos.second(driverBottomIcon.message);
+                  }
+                },
+                complete: function (XMLHttpRequest, status) { //请求完成后最终执行参数
+                  if (status == 'timeout') { //超时,status还有success,error等值的情况
+                    androidIos.second("当前状况下网络状态差，请检查网络！");
+                  } else if (status == "error") {
+                    androidIos.errorwife();
+                  }
                 }
-              },
-              complete: function (XMLHttpRequest, status) { //请求完成后最终执行参数
-                if (status == 'timeout') { //超时,status还有success,error等值的情况
-                  androidIos.second("当前状况下网络状态差，请检查网络！");
-                } else if (status == "error") {
-                  androidIos.errorwife();
-                }
-              }
-            });
+              });
+            }else{
+              _this.items[0].number = 0;
+              _this.$nextTick(function () {
+                _this.marginWidth();
+                sessionStorage.setItem("driverBottomIcon",JSON.stringify(_this.items));
+              })
+            }
+
           },
         marginWidth:function () {
           var _this = this;
