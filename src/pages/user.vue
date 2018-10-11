@@ -11,15 +11,16 @@
            <p>{{message.name}}</p>
            <h1 v-html="message.status == '0' ? '未认证' :message.status == '1' ? '待审核' : message.status == '2' ? '已审核' : message.status == '3' ? '已驳回' : message.status == '4' ? '已禁用' : ''"></h1>
          </div>
-        <div class="lookMore"  @click="lookMore('/statusNow')"><span v-if="message.status == 0">去认证</span></div>
+        <div class="lookMore"  @click="$router.push({path:'/statusNow'})"><span v-if="message.status == 0">去认证</span></div>
          <div class="clearBoth"></div>
        </div>
        <ul>
-         <li @click="lookMore(item.url)" v-for="(item,index) in tabList" :class="index % 2 == 0 ? (tabList.length -1 == index ? 'marTop' : 'marTop borderShow') : ''">
+         <li @click="lookMore(item)" v-for="(item,index) in tabList" :class="index % 2 == 0 ? (tabList.length -1 == index ? 'marTop' : 'marTop borderShow') : ''">
            <div class="tableIcon" :style="{backgroundImage:'url(' + item.icon + ')'}"></div>
            <p>{{item.name}}</p>
            <div class="lookMore"></div>
            <div class="clearBoth"></div>
+           <input type="file" class="saoyisao"  @change="jiexi($event)" v-if="(item.name).indexOf('扫') != -1">
          </li>
        </ul>
     </div>
@@ -46,6 +47,7 @@
     import {androidIos} from "../js/app";
     import {bomb} from "../js/zujian";
     import bridge from '../js/bridge';
+    import reqrcode from  '../js/reqrcode'
     export default {
         name: "user",
         data(){
@@ -66,6 +68,10 @@
                icon:require("../images/shortMessage.png"),
              }],
              tabList:[{
+               name:"扫一扫",
+               icon:require("../images/saoyisao.png"),
+               url:""
+             },{
                name:"分享",
                icon:require("../images/share.png"),
                url:""
@@ -159,13 +165,77 @@
             }
           });
         },
-        lookMore:function (url) {
+        lookMore:function (item) {
           var _this = this;
-          if(url != ""){
+          if(item.url != ""){
             androidIos.addPageList();
-            _this.$router.push({ path: url});
+            _this.$router.push({ path: item.url});
           }else{
-           _this.shareListTrue = true;
+            if(item.name.indexOf("扫") == -1){
+              _this.shareListTrue = true;
+            }
+          }
+        },
+        jiexi:function (enevt) {
+          var getObjectURL = function (file) {
+            var url = null;
+            if (window.createObjectURL != undefined) { // basic
+              url = window.createObjectURL(file);
+            } else if (window.URL != undefined) { // mozilla(firefox)
+              url = window.URL.createObjectURL(file);
+            } else if (window.webkitURL != undefined) { // webkit or chrome
+              url = window.webkitURL.createObjectURL(file);
+            }
+            return url;
+          }
+          reqrcode.decode(getObjectURL(enevt.target.files[0]));
+          reqrcode.callback = function (imgMsg) {
+            enevt.target.value = "";
+            var img;
+            try {
+              img = JSON.parse(imgMsg);
+            } catch (e) {
+              img = "";
+            }
+            if(img == ""){
+               androidIos.second("扫描二维码失败,请重试!");
+            }else{
+               if(img.type != 0){
+                 androidIos.second("请扫描交接二维码!");
+               }else{
+                 androidIos.first("确定交接吗？");
+                 $(".tanBox-yes").unbind('click').click(function(){
+                   $(".tanBox-bigBox").remove();
+                   $.ajax({
+                     type: "POST",
+                     url: androidIos.ajaxHttp() + "/order/handover",
+                     data: JSON.stringify({
+                       userCode:sessionStorage.getItem("token"),
+                       source:sessionStorage.getItem("source"),
+                       pk:img.pk,
+                       transPlace:"",
+                     }),
+                     contentType: "application/json;charset=utf-8",
+                     dataType: "json",
+                     timeout:30000,
+                     success: function(handover){
+                       if(handover.success == "1"){
+                         androidIos.second("交接成功，请查看订单跟踪列表");
+                       }else{
+                         androidIos.second(handover.message);
+                       }
+                     },
+                     complete : function(XMLHttpRequest,status){ //请求完成后最终执行参数
+                       if(status=='timeout'){//超时,status还有success,error等值的情况
+                         androidIos.second("当前状况下网络状态差，请检查网络！")
+                       }else if(status=="error"){
+                         androidIos.errorwife();
+                       }
+                     }
+                   });
+                 });
+               }
+            }
           }
         },
         shareYes:function (type) {
@@ -312,6 +382,15 @@
   height: auto;
   width:100%;
   background: #f6f6f6;
+}
+.saoyisao{
+  position: absolute;
+  left:0;
+  top:0;
+  bottom:0;
+  height:auto;
+  width:100%;
+  opacity: 0;
 }
 .imgBox img{
   width:1.6rem;
