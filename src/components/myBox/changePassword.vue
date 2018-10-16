@@ -3,10 +3,10 @@
     <div id="title" v-title data-title="修改密码"></div>
     <ul>
       <li class="border">
-         <input type="password" placeholder="请输入旧密码" maxlength="50" v-model="oldPass"/>
+         <input type="password" placeholder="请输入旧密码" maxlength="25" v-model="oldPass"/>
       </li>
       <li class="border">
-        <input type="password" placeholder="请输入新密码（6-16位字符，区分大小写）"  maxlength="50" v-model="newPass"/>
+        <input type="password" placeholder="请输入新密码（6-25位字符，区分大小写）"  maxlength="25" v-model="newPass"/>
       </li>
       <li>
         <input type="password" placeholder="请确认新密码"  maxlength="50" v-model="newPassAgain"/>
@@ -40,12 +40,12 @@
         },
         saveGo:function () {
           var _this = this;
-          if(_this.oldPass == ""){
-             bomb.first("请输入旧密码");
+          if(_this.oldPass.length < 6){
+             bomb.first("旧密码不得小于6位");
              return false;
           }
-          if(_this.newPass == ""){
-            bomb.first("请输入新密码");
+          if(_this.newPass.length < 6){
+            bomb.first("新密码不得小于6位");
             return false;
           }
           if(_this.newPassAgain == ""){

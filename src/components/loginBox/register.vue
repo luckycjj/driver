@@ -8,7 +8,7 @@
       </div>
       <div class="modelView">
         <span class="w2">密码</span>
-        <input :type="lookPassWord ? 'text' : 'password' "  v-model="password" placeholder="请输入密码"/>
+        <input :type="lookPassWord ? 'text' : 'password' "  maxlength="25"  v-model="password" placeholder="请输入密码"/>
         <div id="lookPassWord" :class="lookPassWord ? 'lookPassWord' : '' " @click="lookpass()"></div>
         <div class="clearBoth"></div>
       </div>
@@ -112,8 +112,8 @@
              bomb.first("请输入正确的手机号");
              return false;
           }
-          if(_this.password == ""){
-            bomb.first("请输入密码");
+          if(_this.password.length < 6){
+            bomb.first("密码不得小于6位");
             return false;
           }
           if(_this.invitation.length <4){
