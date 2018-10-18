@@ -189,7 +189,7 @@
                 {{item.displayName}}
              </li>
              <div class="clearBoth"></div>
-             <input type="text" placeholder="其他异常" maxlength="100" v-model="errorabnormal">
+             <input type="text"   @keyup="filterInput()" placeholder="其他异常" maxlength="100" v-model="errorabnormal">
            </ul>
            <!--<div id="errorAbnormalChange">
              <span>是否需要更换运力</span>
@@ -210,7 +210,7 @@
             {{item.displayName}}
           </li>
           <div class="clearBoth"></div>
-          <input type="text" placeholder="填写原因" maxlength="40" style="margin-bottom: 0;" v-model="errorPricetype"/>
+          <input  @keyup="filterInput()" type="text" placeholder="填写原因" maxlength="40" style="margin-bottom: 0;" v-model="errorPricetype"/>
           <input type="text" placeholder="金额" maxlength="40" v-model="errorPrice"/>
         </ul>
         <button @click="errorPriceChange()" id="gogogo4" class="gogogo">提交</button>
@@ -315,6 +315,11 @@
             offset: 2.1 * $("html").css("font-size").replace("px", "")
           }
         });
+      },
+      filterInput:function () {
+        var _this = this;
+        _this.errorPricetype =  _this.errorPricetype.replace(/[^\a-\z\A-\Z0-9\u4E00-\u9FA5\,\，\.\。\;\!\[\]\【\】\-]/g,'');
+        _this.errorabnormal =  _this.errorabnormal.replace(/[^\a-\z\A-\Z0-9\u4E00-\u9FA5\,\，\.\。\;\!\[\]\【\】\-]/g,'');
       },
       upCallback: function(page) {
         //联网加载数据
