@@ -4,11 +4,11 @@
     <img src="../images/logo.png" id="logo">
     <div class="modelView">
       <span class="w3">手机号</span>
-      <input type="tel" v-model="mobile" placeholder="请输入手机号" maxlength="11"/>
+      <input  @keyup="filterInput()" type="tel" v-model="mobile" placeholder="请输入手机号" maxlength="11"/>
     </div>
     <div class="modelView">
       <span class="w2">密码</span>
-      <input :type="lookPassWord ? 'text' : 'password' "  v-model="password" placeholder="请输入密码"/>
+      <input  @keyup="filterInput()" :type="lookPassWord ? 'text' : 'password' "  v-model="password" placeholder="请输入密码"/>
       <div id="lookPassWord" :class="lookPassWord ? 'lookPassWord' : '' " @click="lookpass()"></div>
     </div>
     <button @click="loginOn()">登录</button>
@@ -46,6 +46,12 @@
            document.getElementsByTagName("html")[0].style.backgroundColor = "white";
            document.getElementsByTagName("body")[0].style.backgroundColor = "white";
          },
+        filterInput:function () {
+          var _this = this;
+          _this.mobile =  _this.mobile.replace(/[^\0-9]/g,'');
+          _this.password =  _this.password.replace(/[\u4E00-\u9FA5]/g,'');
+          _this.password =  _this.password.replace(/<script>/g,'');
+        },
         registerGo:function (type) {
           var _this = this;
           androidIos.addPageList();

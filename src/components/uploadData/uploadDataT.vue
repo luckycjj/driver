@@ -211,6 +211,11 @@ export default {
     water:{
       handler:function(val,oldval){
         var _this = this;
+        _this.water.name = _this.water.name.replace(/[^\a-\z\A-\Z0-9\u4E00-\u9FA5\,\，\.\。\;\!\[\]\【\】\-]/g,'');
+        _this.water.bank = _this.water.bank.replace(/[^\a-\z\A-\Z0-9\u4E00-\u9FA5\,\，\.\。\;\!\[\]\【\】\-]/g,'');
+        _this.water.creditCode = _this.water.creditCode.replace(/[^\a-\z\A-\Z0-9]/g,'');
+        _this.water.bankNumber = _this.water.bankNumber.replace(/[^\0-9]/g,'');
+        _this.water.peopleNumber = _this.water.peopleNumber.replace(/[^\X0-9\x]/g,'');
         if(_this.$route.query.type != undefined){
           if(sessionStorage.getItem("source") == 2){
             var UPMESSA = localStorage.getItem("UPMESSA");
