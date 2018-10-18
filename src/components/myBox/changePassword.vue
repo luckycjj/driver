@@ -3,13 +3,13 @@
     <div id="title" v-title data-title="修改密码"></div>
     <ul>
       <li class="border">
-         <input type="password" placeholder="请输入旧密码" maxlength="25" v-model="oldPass"/>
+         <input @keyup="filterInput()" type="password" placeholder="请输入旧密码" maxlength="25" v-model="oldPass"/>
       </li>
       <li class="border">
-        <input type="password" placeholder="请输入新密码（6-25位字符，区分大小写）"  maxlength="25" v-model="newPass"/>
+        <input @keyup="filterInput()" type="password" placeholder="请输入新密码（6-25位字符，区分大小写）"  maxlength="25" v-model="newPass"/>
       </li>
       <li>
-        <input type="password" placeholder="请确认新密码"  maxlength="50" v-model="newPassAgain"/>
+        <input @keyup="filterInput()" type="password" placeholder="请确认新密码"  maxlength="50" v-model="newPassAgain"/>
       </li>
     </ul>
     <button @click="saveGo()">保存</button>
@@ -37,6 +37,15 @@
       methods:{
         go:function () {
           var _this = this;
+        },
+        filterInput:function () {
+          var _this = this;
+          _this.oldPass =  _this.oldPass.replace(/[\u4E00-\u9FA5]/g,'');
+          _this.oldPass =  _this.oldPass.replace(/<script>/g,'');
+          _this.newPass =  _this.newPass.replace(/[\u4E00-\u9FA5]/g,'');
+          _this.newPass =  _this.newPass.replace(/<script>/g,'');
+          _this.newPassAgain =  _this.newPassAgain.replace(/[\u4E00-\u9FA5]/g,'');
+          _this.newPassAgain =  _this.newPassAgain.replace(/<script>/g,'');
         },
         saveGo:function () {
           var _this = this;
