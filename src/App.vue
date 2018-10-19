@@ -11,6 +11,7 @@
         <img id="erweimaLook"  src="./images/erweima.png" v-if="doNow==4" style="display: none">
         <div id="setUp"  v-if="doNow == 5" @click="setUpgo()"></div>
         <div id="orderScreenTitle"  v-if="doNow == 6" @click="orderScreen()"></div>
+        <h3  id="authenticationTab" style="display: none;" class="asd"  v-if="doNow==7"><span>上一步</span></h3>
       </div>
       <div id="table"></div>
     </div>
@@ -76,6 +77,8 @@
         _this.doNow = 5;
       }else if( _this.html.indexOf("/trackList") != -1){
         _this.doNow = 6;
+      }else if( _this.html.indexOf("/authentication") != -1){
+        _this.doNow = 7;
       }else{
         _this.doNow = "";
       }
@@ -107,6 +110,8 @@
           _this.doNow = 5;
         }else if( _this.html.indexOf("/trackList") != -1){
           _this.doNow = 6;
+        }else if( _this.html.indexOf("/authentication") != -1){
+          _this.doNow = 7;
         }else{
           _this.doNow = "";
         }

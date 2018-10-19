@@ -135,10 +135,10 @@
           var _this = this;
           if(type == 1){
             androidIos.addPageList();
-            _this.$router.push({path:'/uploadData/uploadDataT',query:{type:2}})
+            _this.$router.push({path:'/authenticationS',query:{type:2}})
           }else{
             androidIos.addPageList();
-            _this.$router.push({path:'/uploadData/uploadDataT'})
+            _this.$router.push({path:'/authenticationS'})
           }
         },
         imgLook:function (img) {

@@ -2,6 +2,7 @@
 import trackList from '../pages/trackList'
 import login from '../pages/login'
 import message from '../pages/message'
+import authenticationS from '@/components/authentication/authenticationS'
 import user from '../pages/user'
 import track from '../pages/track'
 import uploadData from '../pages/uploadData'
@@ -99,6 +100,11 @@ Vue.filter('orderTypeName', function(value) {
 export default new Router(
   {
   routes: [
+    {
+      path:'/authenticationS',
+      name:'authenticationS',
+      component:authenticationS,
+    },
     {
       path:'/orderScreen',
       name:'orderScreen',

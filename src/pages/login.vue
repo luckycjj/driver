@@ -34,6 +34,7 @@
           sessionStorage.removeItem("token");
           androidIos.delCookie("MESSAGEDRIVER");
           sessionStorage.removeItem("driverMessage");
+          localStorage.removeItem("DRIVERSFETMESSAGE");
           androidIos.bridge(_this);
       },
       methods:{
