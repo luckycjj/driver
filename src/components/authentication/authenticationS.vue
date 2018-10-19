@@ -157,6 +157,7 @@
             var _this = this;
             _this.message.first.name = _this.message.first.name.replace(/[^\a-\z\A-\Z\u4E00-\u9FA5]/g,'');
             _this.message.first.idCode = _this.message.first.idCode.replace(/[^\X0-9\x]/g,'');
+            _this.message.first.nvitationodeIC =  _this.message.first.nvitationodeIC.replace(/[^\a-\z\A-\Z0-9]/g,'');
             var type = _this.$route.query.type;
             if(type != undefined){
               localStorage.setItem("DRIVERSFETMESSAGE",JSON.stringify(_this.message));
