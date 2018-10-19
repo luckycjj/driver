@@ -13,7 +13,6 @@
         </li>
         <div class="clearBoth"></div>
       </ul>
-      <div id="stepBox">
         <div id="stepF" v-if="nowStep == 1">
           <div class="stepTtop">
             <p>请拍摄五官清晰头像照</p>
@@ -104,7 +103,6 @@
         </div>
         <h5 class="calltel">有问题请联系客服</h5>
         <button @click="goNext()" v-html="nowStep == 1 ? '下一步': '提交'"></button>
-      </div>
     </div>
 </template>
 

@@ -7,35 +7,22 @@ var androidIos = {
       $("#common-blackBox").remove();
       $(".tanBox-bigBox").remove();
       var http =  location.href;
-      if(http.indexOf("/uploadData/uploadDataT") != -1){
-       var message = sessionStorage.getItem("source") == "2" ? JSON.parse(localStorage.getItem("UPMESSA")) :  JSON.parse(localStorage.getItem("DRIVERMESSA"));
-       var type = androidIos.GetQueryString("type");
-       if(message != null && (message.Drivepic != "" || message.IDpic != "" || message.Licensepic != "" || message.Roadpic != "" || message.Travelpic != "" || message.bank != "" || message.bankNumber != "" || message.company != "" || message.name != "" || (message.nvitationodeIC != null &&  message.nvitationodeIC != "" )|| message.peopleNumber != "" )){
-         if(type != null){
-           androidIos.first("信息尚未上传，需要保存吗？");
-           $(".tanBox-close").unbind('click').click(function(){
-             $(".tanBox-bigBox").remove();
-             if(sessionStorage.getItem("source") == 2){
-               localStorage.removeItem("UPMESSA");
-             }else if(sessionStorage.getItem("source") == 3){
-               localStorage.removeItem("DRIVERMESSA");
-             }
-             androidIos.gogogogo();
-           });
-           $(".tanBox-yes").unbind('click').click(function(){
-             $(".tanBox-bigBox").remove();
-             androidIos.gogogogo();
-           });
-         }else{
-           if(sessionStorage.getItem("source") == 2){
-             localStorage.removeItem("UPMESSA");
-           }else if(sessionStorage.getItem("source") == 3){
-             localStorage.removeItem("DRIVERMESSA");
-           }
-         }
-       }else{
-         androidIos.gogogogo();
-       }
+      if(http.indexOf("/authenticationS") != -1){
+        var CARRIERSFETMESSAGE = localStorage.getItem("CARRIERSFETMESSAGE");
+        if(CARRIERSFETMESSAGE != undefined){
+          androidIos.first("信息尚未上传，需要保存吗？");
+          $(".tanBox-close").unbind('click').click(function(){
+            $(".tanBox-bigBox").remove();
+            localStorage.removeItem("CARRIERSFETMESSAGE")
+            androidIos.gogogogo();
+          });
+          $(".tanBox-yes").unbind('click').click(function(){
+            $(".tanBox-bigBox").remove();
+            androidIos.gogogogo();
+          });
+        }else{
+          androidIos.gogogogo();
+        }
       }else{
         androidIos.gogogogo();
       }
@@ -77,9 +64,9 @@ var androidIos = {
       return  bignumber/len;
   },
   ajaxHttp: function () {
-   var http = 'http://10.10.10.156:8085';
+   //var http = 'http://10.10.10.156:8085';
    // var http = 'http://10.10.10.224:8085';
-    //var http = 'http://222.73.159.76:8085';
+    var http = 'http://222.73.159.76:8085';
     return http;
   },
   addPageList: function () {
