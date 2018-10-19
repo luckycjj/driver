@@ -556,6 +556,30 @@
                    }else if(type == 2){
                      _this.message.first.idCardZ.bendi = base64;
                      _this.message.first.idCardZ.http = json.path;
+                     $.ajax({
+                       type: "POST",
+                       url: "https://aip.baidubce.com/rest/2.0/ocr/v1/idcard?access_token=24.05638c6fcadcd3a62711c6f9ca49c3b1.2592000.1542524863.282335-11688876",
+                       data:{
+                         "detect_direction":"true",
+                         "detect_risk":"true",
+                         "id_card_side": "front",
+                         "image":base64.substr(23),
+                       },
+                       contentType: "application/x-www-form-urlencoded",
+                       dataType: "json",
+                       timeout: 30000,
+                       success: function (json) {
+                             _this.message.first.name = json.words_result.姓名.words;
+                             _this.message.first.idCode = json.words_result.公民身份号码.words;
+                       },
+                       complete: function (XMLHttpRequest, status) { //请求完成后最终执行参数
+                         if (status == 'timeout') { //超时,status还有success,error等值的情况
+                           androidIos.second("当前状况下网络状态差，请检查网络！")
+                         } else if (status == "error") {
+                           androidIos.errorwife();
+                         }
+                       }
+                     });
                    }else if(type == 3){
                      _this.message.first.idCardF.bendi = base64;
                      _this.message.first.idCardF.http = json.path;
