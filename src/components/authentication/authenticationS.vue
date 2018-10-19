@@ -16,9 +16,9 @@
         <div id="stepF" v-if="nowStep == 1">
           <div class="stepTtop">
             <p>请拍摄五官清晰头像照</p>
-            <div class="fileup3">
+            <div class="fileup3" @click="BAIDURENLIAN()">
               <img src="../../images/addImg.png" v-if="message.first.people.bendi == ''">
-              <input type="file" @change="fileImgUp($event,1)"  accept="firstimage/*"  capture = "user">
+             <!-- <input type="file" @change="fileImgUp($event,1)"  accept="firstimage/*"  capture = "user">-->
               <img :onerror="errorlogo" class="fileImg3" :src="message.first.people.bendi" v-if="message.first.people.bendi != ''">
               <h6 v-if="message.first.people.bendi == ''">点击拍照</h6>
             </div>
@@ -102,7 +102,48 @@
           </div>
         </div>
         <h5 class="calltel">有问题请联系客服</h5>
-        <button @click="goNext()" v-html="nowStep == 1 ? '下一步': '提交'"></button>
+        <button id="gonext" @click="goNext()" v-html="nowStep == 1 ? '下一步': '提交'"></button>
+        <div v-if="baiduhuotiBox" id="baiduhuotiBox">
+            <div id="baiduhuoti">
+               <div id="baiduhuotiTop">
+                 <img src="../../images/baiduhuoti.png">
+                 <img src="../../images/closed.png" class="closedBaidu" @click="BAIDURENLIANLosed()">
+                 <h6>正面平视手机、保证光线充足<br>请勿遮挡面部</h6>
+               </div>
+               <div id="baiduhuotiBottom">
+                 <div class="prompt-box">
+                   <div class="prompt-box-text">
+                     <span class="prompt-box-text-number">1</span>
+                     <span class="prompt-box-text-content">牢记验证码，点击开始录制</span>
+                     <span class="prompt-box-text-border"></span>
+                   </div>
+                   <div class="prompt-box-text">
+                     <span class="prompt-box-text-number">2</span>
+                     <span class="prompt-box-text-content">开启前置摄像头，用普通话朗读数字</span>
+                     <span class="prompt-box-text-border"></span>
+                   </div>
+                   <div class="prompt-box-text">
+                     <span class="prompt-box-text-number">3</span>
+                     <span class="prompt-box-text-content">完成录制，等待验证结果</span>
+                     <!---->
+                   </div>
+                   <button @click="baidudumaNumber()">下一步</button>
+                 </div>
+               </div>
+            </div>
+        </div>
+        <div v-if="baidudumaBox" id="baidudumaBox">
+            <div id="baiduduma">
+              <p>请牢记以下验证码</p>
+              <h1>此验证码将于<span>{{daojishi}}</span>秒后过期<br>用普通话朗读数字，视频时长<span>3-8</span>秒最佳</h1>
+               <h2>{{baidudumaHaoma}}</h2>
+              <div id="fileVideo">
+                <button>记住了，开始录制</button>
+                <input type="file" accept="video/*"  capture = "camcorder" @change="video($event)">
+              </div>
+            </div>
+            <img @click="baidunumberClosed()" src="../../images/icon_close.png">
+        </div>
     </div>
 </template>
 
@@ -120,6 +161,9 @@
              nowStep:1,
              tranTypeList:[],
              tranTypeBox:false,
+            baiduhuotiBox:false,
+            baidudumaBox:false,
+            baidudumaHaoma:"",
              message:{
                 first:{
                   people:{
@@ -146,6 +190,8 @@
                  licType:"",
                }
              },
+            daojishi:0,
+            setTime:null,
             errorlogo: 'this.src="' + require('../../images/timg.jpg') + '"',
           }
         },
@@ -234,6 +280,118 @@
                  _this.showBefore();
              })
           },
+         video:function (e) {
+           var _this = this;
+           var file =   e.target.files[0];
+           var reader = new FileReader();
+           reader.readAsDataURL(file);
+           reader.onload = function(event) {
+             androidIos.loading("正在上传");
+             $.ajax({
+               type: "POST",
+               url: "https://aip.baidubce.com/rest/2.0/face/v1/faceliveness/verify",
+               data:{
+                 "access_token":"24.05638c6fcadcd3a62711c6f9ca49c3b1.2592000.1542524863.282335-11688876",
+                 "video_base64":reader.result.split(",")[1],
+               },
+               contentType: "application/x-www-form-urlencoded",
+               dataType: "json",
+               timeout: 30000,
+               success: function (json) {
+                   if(json.result.score > 0.95){
+                     $.ajax({
+                       type: "POST",
+                       url: androidIos.ajaxHttp() + "/uploadFile",
+                       data:JSON.stringify({
+                         type:  "USER",
+                         name:"",
+                         file:json.result.pic_list[1].pic,
+                         userCode:sessionStorage.getItem("token"),
+                         source:sessionStorage.getItem("source")
+                       }),
+                       contentType: "application/json;charset=utf-8",
+                       dataType: "json",
+                       timeout: 30000,
+                       success: function (uploadFile) {
+                         if (uploadFile.success == "1") {
+                             _this.message.first.people.bendi = "data:image/jpeg;base64," + json.result.pic_list[1].pic;
+                             _this.message.first.people.http = uploadFile.path;
+                         } else{
+                           androidIos.second(uploadFile.message);
+                         }
+                       },
+                       complete: function (XMLHttpRequest, status) { //请求完成后最终执行参数
+                         $("#common-blackBox").remove();
+                         if (status == 'timeout') { //超时,status还有success,error等值的情况
+                           androidIos.second("当前状况下网络状态差，请检查网络！")
+                         } else if (status == "error") {
+                           androidIos.errorwife();
+                         }
+                       }
+                     });
+                   }else{
+                      androidIos.second("检测失败");
+                   }
+                  _this.baiduhuotiBox  = false;
+                  _this.baidudumaBox = false;
+               },
+               complete: function (XMLHttpRequest, status) { //请求完成后最终执行参数
+                 if (status == 'timeout') { //超时,status还有success,error等值的情况
+                   androidIos.second("当前状况下网络状态差，请检查网络！")
+                 } else if (status == "error") {
+                   androidIos.errorwife();
+                 }
+               }
+             });
+           }
+         },
+         BAIDURENLIAN:function () {
+           var _this = this;
+           _this.baiduhuotiBox  = true;
+         },
+         BAIDURENLIANLosed:function () {
+           var _this = this;
+           _this.baiduhuotiBox  = false;
+         },
+         ajaxBaidu:function () {
+            var _this = this;
+           $.ajax({
+             type: "POST",
+             url: "https://aip.baidubce.com/rest/2.0/face/v1/faceliveness/sessioncode?access_token=24.2337ae84cff9e9a6e1dbc5cea10eb5cc.2592000.1542533645.282335-11688876",
+             data:{
+               "appid":"n69EmEIilvv4K9B0eDDMIEot",
+             },
+             success: function (json) {
+               _this.baidudumaHaoma = json.result.code;
+               _this.daojishi = 60;
+             },
+             complete: function (XMLHttpRequest, status) { //请求完成后最终执行参数
+               if (status == 'timeout') { //超时,status还有success,error等值的情况
+                 androidIos.second("当前状况下网络状态差，请检查网络！")
+               } else if (status == "error") {
+                 androidIos.errorwife();
+               }
+             }
+           });
+         },
+         baidudumaNumber:function () {
+           var _this = this;
+           _this.baidudumaBox  = true;
+           _this.setTime = setInterval(function () {
+             if(_this.daojishi == 0){
+               _this.ajaxBaidu();
+             }else{
+               _this.daojishi --;
+             }
+           },1000)
+
+         },
+         baidunumberClosed:function () {
+           var _this = this;
+           _this.baidudumaBox  = false;
+           clearInterval(_this.setTime);
+           _this.daojishi = 60;
+         },
          lic:function () {
             var _this = this;
            $.ajax({
@@ -815,7 +973,7 @@
     background-image: url("../../images/kefuicon.png");
     line-height: 0.5rem;
   }
-  button{
+  #gonext{
     width:9.1rem;
     display: block;
     color:white;
@@ -997,4 +1155,167 @@
   text-overflow:ellipsis;
   white-space: nowrap;
 }
+  #baiduhuotiBox{
+     position: fixed;
+    top:0;
+    bottom:0;
+    z-index: 122;
+    height: auto;
+    width:100%;
+    background: rgba(0,0,0,0.2);
+  }
+  #baiduhuoti{
+     width:90%;
+     margin: 1.3rem auto 0 auto;
+    background: #f6f6f6;
+    border-radius: 0.2rem;
+    box-shadow: 0 0 10px #d2d2d2;
+  }
+#baiduhuoti img{
+  width:50%;
+  margin:0 auto;
+}
+#baiduhuotiTop{
+  position: relative;
+}
+.closedBaidu{
+  position: absolute;
+  top:0;
+  right:0;
+  width:1rem!important;
+}
+#baiduhuotiTop h6{
+  font-size: 0.35rem;
+  color: #999;
+  letter-spacing: 0;
+  line-height: 0.6rem;
+  text-align: center;
+}
+  #baiduhuotiBottom{
+    width:100%;
+    background: white;
+  }
+.prompt-box {
+  padding: 1.33rem 0;
+}
+.prompt-box-text {
+  margin: 0 auto 0.85312rem;
+  height: 0.42688rem;
+  line-height:0.42688rem;
+  width: 7.52rem;
+}
+.prompt-box-text-number {
+  -webkit-border-radius: 0.3rem;
+  -moz-border-radius: 0.3rem;
+  border-radius:  0.3rem;
+  border: 1px solid #0073eb;
+  text-align: center;
+  color: #0073eb;
+  display: inline-block;
+  width: 0.42688rem;
+  height:0.42688rem;
+  line-height: 0.42688rem;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  font-size: 0.3125rem;
+  margin-right: .26656rem;
+  letter-spacing: 0;
+  vertical-align: top;
+}
+.prompt-box-text-content {
+  color: #333;
+  letter-spacing: 0;
+  white-space: nowrap;
+  display: inline-block;
+  font-size: 0.4rem;
+}
+.prompt-box-text-border {
+  height:0.608rem;
+  margin: .13344rem 0 .13344rem .1888rem;
+  width: 0;
+  border-left: 1px dotted #0073eb;
+  display: block;
+}
+  #baiduhuoti button{
+    width:90%;
+    display: block;
+    color:white;
+    border-radius: 0.2rem;
+    margin:0.4rem auto;
+    background: -webkit-linear-gradient(left, #00C4FF , #0074FF); /* Safari 5.1 - 6.0 */
+    background: -o-linear-gradient(right, #00C4FF, #0074FF); /* Opera 11.1 - 12.0 */
+    background: -moz-linear-gradient(right, #00C4FF, #0074FF); /* Firefox 3.6 - 15 */
+    background: linear-gradient(to right, #00C4FF , #0074FF); /* 标准的语法 */
+    font-size: 0.427rem;
+    line-height: 1.08rem;
+  }
+  #fileVideo{
+     width:90%;
+    margin:0.4rem auto;
+    position: relative;
+  }
+#baiduduma  input{
+  width:100%;
+  height:1.08rem;
+  position: absolute;
+  top:0;
+  left:0;
+  opacity: 0;
+}
+#baiduduma  button{
+  width:100%;
+  display: block;
+  color:white;
+  border-radius: 0.2rem;
+  background: -webkit-linear-gradient(left, #00C4FF , #0074FF); /* Safari 5.1 - 6.0 */
+  background: -o-linear-gradient(right, #00C4FF, #0074FF); /* Opera 11.1 - 12.0 */
+  background: -moz-linear-gradient(right, #00C4FF, #0074FF); /* Firefox 3.6 - 15 */
+  background: linear-gradient(to right, #00C4FF , #0074FF); /* 标准的语法 */
+  font-size: 0.427rem;
+  line-height: 1.08rem;
+}
+  #baidudumaBox{
+    position: fixed;
+    top:0;
+    bottom:0;
+    z-index: 133;
+    height: auto;
+    width:100%;
+    background: rgba(0,0,0,0.2);
+  }
+  #baiduduma{
+    width:80%;
+    margin: 1.3rem auto 0 auto;
+    background: white;
+    border-radius: 0.2rem;
+    box-shadow: 0 0 10px #d2d2d2;
+    border:1px solid white;
+  }
+  #baiduduma p{
+    font-size: 0.4rem;
+    color: #333;
+    height: 0.42656rem;
+    line-height: 0.42656rem;
+    text-align: center;
+    margin: 0.98656rem 0 0.4rem;
+  }
+#baiduduma h1{
+  font-size: 0.37312rem;
+  color: #666;
+  text-align: center;
+  margin-bottom: 0.5472rem;
+  letter-spacing: 0;
+}
+#baiduduma h2{
+  font-size: 0.45rem;
+  color: #333;
+  text-align: center;
+  margin-bottom: 0.5472rem;
+  letter-spacing: 0;
+}
+  #baidudumaBox img{
+    width:1rem;
+    margin:0.3rem auto 0 auto
+  }
 </style>
