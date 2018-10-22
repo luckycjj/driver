@@ -163,6 +163,7 @@
              tranTypeBox:false,
              baiduhuotiBox:false,
              baidudumaBox:false,
+            ajaxnumber:"",
              baidudumaHaoma:"",
              message:{
                 first:{
@@ -287,11 +288,12 @@
            reader.readAsDataURL(file);
            reader.onload = function(event) {
              androidIos.loading("正在上传");
+             _this.ajaxnumber = androidIos.getbaidunumber();
              $.ajax({
                type: "POST",
                url: "https://aip.baidubce.com/rest/2.0/face/v1/faceliveness/verify",
                data:{
-                 "access_token":"24.05638c6fcadcd3a62711c6f9ca49c3b1.2592000.1542524863.282335-11688876",
+                 "access_token":_this.ajaxnumber,
                  "video_base64":reader.result.split(",")[1],
                },
                contentType: "application/x-www-form-urlencoded",
@@ -359,9 +361,10 @@
          },
          ajaxBaidu:function () {
             var _this = this;
+           _this.ajaxnumber = androidIos.getbaidunumber();
            $.ajax({
              type: "POST",
-             url: "https://aip.baidubce.com/rest/2.0/face/v1/faceliveness/sessioncode?access_token=24.2337ae84cff9e9a6e1dbc5cea10eb5cc.2592000.1542533645.282335-11688876",
+             url: "https://aip.baidubce.com/rest/2.0/face/v1/faceliveness/sessioncode?access_token=" +  _this.ajaxnumber,
              data:{
                "appid":"n69EmEIilvv4K9B0eDDMIEot",
              },
@@ -719,9 +722,10 @@
                    }else if(type == 2){
                      _this.message.first.idCardZ.bendi = base64;
                      _this.message.first.idCardZ.http = json.path;
+                     _this.ajaxnumber = androidIos.getbaidunumber();
                      $.ajax({
                        type: "POST",
-                       url: "https://aip.baidubce.com/rest/2.0/ocr/v1/idcard?access_token=24.05638c6fcadcd3a62711c6f9ca49c3b1.2592000.1542524863.282335-11688876",
+                       url: "https://aip.baidubce.com/rest/2.0/ocr/v1/idcard?access_token=" + _this.ajaxnumber,
                        data:{
                          "detect_direction":"true",
                          "detect_risk":"true",

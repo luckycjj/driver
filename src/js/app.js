@@ -482,6 +482,37 @@ var androidIos = {
         document.cookie= name + "="+cval+";expires="+exp.toGMTString();
       }
     },
+  getbaidunumber:function () {
+    var baidunumber = "";
+    var cookie = androidIos.getcookie("BAIDUTOKEN");
+    if(cookie == ""){
+      $.ajax({
+        type: "POST",
+        url: androidIos.ajaxHttp()+"/settings/getBaiduToken",
+        dataType: "json",
+        timeout: 30000,
+        async:false,
+        success: function (getBaiduToken) {
+          if(getBaiduToken.success=="1"){
+            baidunumber = getBaiduToken.paramValue;
+            androidIos.setcookie("BAIDUTOKEN",baidunumber,29);
+          }else{
+            androidIos.second(getBaiduToken.message)
+          }
+        },
+        complete : function(XMLHttpRequest,status){ //请求完成后最终执行参数
+          if(status=='timeout'){//超时,status还有success,error等值的情况
+            androidIos.second("网络请求超时");
+          }else if(status=='error'){
+            androidIos.errorwife();
+          }
+        }
+      });
+    }else{
+      baidunumber = cookie;
+    }
+    return baidunumber;
+  },
   lineCanvas:function (obj) {
     this.linewidth = 1;
     this.color = "#000000";
