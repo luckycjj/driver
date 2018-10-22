@@ -8,12 +8,12 @@ var androidIos = {
       $(".tanBox-bigBox").remove();
       var http =  location.href;
       if(http.indexOf("/authenticationS") != -1){
-        var CARRIERSFETMESSAGE = localStorage.getItem("CARRIERSFETMESSAGE");
-        if(CARRIERSFETMESSAGE != undefined){
+        var DRIVERSFETMESSAGE = localStorage.getItem("DRIVERSFETMESSAGE");
+        if(DRIVERSFETMESSAGE != undefined){
           androidIos.first("信息尚未上传，需要保存吗？");
           $(".tanBox-close").unbind('click').click(function(){
             $(".tanBox-bigBox").remove();
-            localStorage.removeItem("CARRIERSFETMESSAGE")
+            localStorage.removeItem("DRIVERSFETMESSAGE")
             androidIos.gogogogo();
           });
           $(".tanBox-yes").unbind('click').click(function(){
