@@ -299,6 +299,9 @@
                timeout: 30000,
                success: function (json) {
                    if(json.result.score > 0.95){
+                     clearInterval(_this.setTime);
+                     _this.baidudumaHaoma = "";
+                     _this.daojishi = 0;
                      $.ajax({
                        type: "POST",
                        url: androidIos.ajaxHttp() + "/uploadFile",
@@ -390,7 +393,8 @@
            var _this = this;
            _this.baidudumaBox  = false;
            clearInterval(_this.setTime);
-           _this.daojishi = 60;
+           _this.baidudumaHaoma = "";
+           _this.daojishi = 0;
          },
          lic:function () {
             var _this = this;

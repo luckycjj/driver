@@ -3,6 +3,7 @@
     <ul>
       <li v-for='(item,index) of items' :class='[{on:index === idx} ]' @click="$router.push(item.push)">
         <div class="imgBox"  :class='[ item.cls , {imgSure:index === idx} ]'><div :style="{marginRight:item.marginRight}" class="corner" v-show="index == 0 && item.number > 0">{{item.number}}</div></div>
+        <div id="footerUserTX" v-if="index == 2" :style="{display: item.show ? 'block' : 'none'}"></div>
         {{item.name}}
       </li>
       <div class="clearBoth"></div>
@@ -55,9 +56,10 @@
       methods:{
           go:function () {
             var _this = this;
-            var cookie = androidIos.getcookie("MESSAGEDRIVER");
-            var status = JSON.parse(cookie).status;
+            var driverMessage = sessionStorage.getItem("driverMessage");
+            var status = JSON.parse(driverMessage).status;
             if(status != 0){
+              _this.items[2].show = false;
               $.ajax({
                 type: "POST",
                 url: androidIos.ajaxHttp() + "/driver/driverBottomIcon",
@@ -89,6 +91,7 @@
               });
             }else{
               _this.items[0].number = 0;
+              _this.items[2].show = true;
               _this.$nextTick(function () {
                 _this.marginWidth();
                 sessionStorage.setItem("driverBottomIcon",JSON.stringify(_this.items));
@@ -168,5 +171,15 @@
       color:#666;
       font-size: 0.3125rem;
       background: white;
+      position: relative;
     }
+     #footerUserTX{
+       position: absolute;
+       width:0.18rem;
+       height: 0.18rem;
+       border-radius: 50%;
+       background: #E1473C;
+       top:0.2rem;
+       right:40%;
+     }
 </style>
