@@ -161,9 +161,9 @@
              nowStep:1,
              tranTypeList:[],
              tranTypeBox:false,
-            baiduhuotiBox:false,
-            baidudumaBox:false,
-            baidudumaHaoma:"",
+             baiduhuotiBox:false,
+             baidudumaBox:false,
+             baidudumaHaoma:"",
              message:{
                 first:{
                   people:{

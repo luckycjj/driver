@@ -55,7 +55,8 @@
       methods:{
           go:function () {
             var _this = this;
-            var status = JSON.parse(androidIos.getcookie("MESSAGEDRIVER")).status;
+            var cookie = androidIos.getcookie("MESSAGEDRIVER");
+            var status = JSON.parse(cookie).status;
             if(status != 0){
               $.ajax({
                 type: "POST",

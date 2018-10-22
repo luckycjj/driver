@@ -4,7 +4,7 @@
     <div id="carTitleBox"   @click="event($event)">
       <div class="carTitleBox">
         <div class="carTitleback" @click="goback()"></div>
-        <input type="text" placeholder="请输入订单号"  id="carNumber" v-model="address"  @focus="aaa()">
+        <input @keyup="inputKeyup()" type="text" placeholder="请输入订单号"  id="carNumber" v-model="address"  @focus="aaa()">
         <p @click="sousuo()" id="sousuo">搜索</p>
       </div>
     </div>
@@ -65,7 +65,7 @@
             empty:{
               warpId:'mescroll',
               icon:require('../../images/nojilu.png'),
-              tip:"暂无此订单~"
+              tip:""
             },
             page: {
               num: 0, //当前页码,默认0,回调之前会加1,即callback(page)会从1开始
@@ -76,6 +76,10 @@
             offset: 2.1 * $("html").css("font-size").replace("px", ""),
           }
         });
+      },
+      inputKeyup:function () {
+        var _this = this;
+        _this.address = androidIos.checkText(_this.address);
       },
       aaa:function(){
         $("#orderScreen #carTitleBox").css("z-index","100");
