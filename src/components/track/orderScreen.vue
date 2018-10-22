@@ -79,7 +79,7 @@
       },
       inputKeyup:function () {
         var _this = this;
-        _this.address = androidIos.checkText(_this.address);
+        _this.address = _this.address.replace(/[^\a-\z\A-\Z0-9]/g,'');
       },
       aaa:function(){
         $("#orderScreen #carTitleBox").css("z-index","100");
