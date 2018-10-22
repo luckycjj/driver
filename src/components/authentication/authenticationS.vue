@@ -333,6 +333,7 @@
                        }
                      });
                    }else{
+                     $("#common-blackBox").remove();
                       androidIos.second("检测失败");
                    }
                   _this.baiduhuotiBox  = false;

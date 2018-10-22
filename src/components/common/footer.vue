@@ -58,7 +58,7 @@
             var _this = this;
             var driverMessage = sessionStorage.getItem("driverMessage");
             var status = JSON.parse(driverMessage).status;
-            if(status != 0){
+            if(status != 0 && sessionStorage.getItem("token") != undefined){
               _this.items[2].show = false;
               $.ajax({
                 type: "POST",
