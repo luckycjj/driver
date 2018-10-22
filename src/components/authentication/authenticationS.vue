@@ -1312,6 +1312,10 @@
   margin-bottom: 0.5472rem;
   letter-spacing: 0;
 }
+#baiduduma h1 span{
+  font-size: 0.37312rem;
+  color: #666;
+}
 #baiduduma h2{
   font-size: 0.45rem;
   color: #333;
