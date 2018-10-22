@@ -33,8 +33,10 @@
           var _this = this;
           sessionStorage.removeItem("token");
           androidIos.delCookie("MESSAGEDRIVER");
+          androidIos.delCookie("BAIDUTOKEN");
           sessionStorage.removeItem("driverMessage");
           localStorage.removeItem("DRIVERSFETMESSAGE");
+          sessionStorage.removeItem("trackTap");
           androidIos.bridge(_this);
       },
       methods:{
