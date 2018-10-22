@@ -403,7 +403,7 @@
   #errorwifeBox{
     position: fixed;
     z-index: 999;
-    top:1.3rem;
+    top:0rem;
     width:100%;
     bottom:0;
     height: auto;
