@@ -1,12 +1,20 @@
 <template>
-  <div id="track">
+  <div id="track" style="top:1.3rem">
     <router-view/>
   </div>
 </template>
 
 <script>
+  import {androidIos} from "../js/app";
   export default {
-    name: "track"
+    name: "track",
+    data() {
+      return {}
+    },
+    mounted: function () {
+      var _this = this;
+      androidIos.judgeIphoneX("track", 2);
+    }
   }
 </script>
 

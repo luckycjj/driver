@@ -39,6 +39,7 @@
     mounted:function () {
       var _this = this;
       _this.title = document.title;
+      androidIos.judgeIphoneX("carTitleBox",0);
       var cookie = androidIos.getcookie("MESSAGEDRIVER");
       sessionStorage.setItem("source",3);
       if(cookie != "" && sessionStorage.getItem("addPageList")*1 == 0){
@@ -312,6 +313,7 @@
 /*    position: absolute;*/
     z-index: 100;
     top:0;
+    background: white;
   }
   #appBox .carTitleBox{
     width: 100%;

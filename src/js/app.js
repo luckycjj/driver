@@ -557,6 +557,39 @@ var androidIos = {
   checkText:function (text) {
     return text.replace(/[^\a-\z\A-\Z0-9\u4E00-\u9FA5\,\，\.\。\;\!\[\]\【\】\-]/g,'')
   },
+  judgeIphoneX:function (id,type) {
+    var html = document.getElementsByTagName("html")[0].style.fontSize.replace("px","");
+    var paddingBottom = 0 + "px";
+    var paddingTop = 0 + "px";
+    try{
+      paddingBottom = api.safeArea.bottom + "px";
+      paddingTop = api.safeArea.top + "px";
+    }
+    catch (e){
+      paddingBottom = 0 + "px";
+      paddingTop = 0 + "px";
+    }
+    var docuId = document.getElementById(id);
+    if(docuId == null){
+      for(var i = 0 ; i < document.getElementsByClassName(id).length;i++){
+        if(type == 0){
+          document.getElementsByClassName(id)[i].style.paddingTop = paddingTop.replace("px","")/html + "rem";
+        }else if(type == 1){
+          document.getElementsByClassName(id)[i].style.paddingBottom = paddingBottom.replace("px","")/html + "rem";
+        }else if(type == 2){
+          document.getElementsByClassName(id)[i].style.top =  document.getElementsByClassName(id)[i].style.top.replace("rem","")*1 + paddingTop.replace("px","")/html + "rem";
+        }
+      }
+    }else{
+      if(type == 0){
+        document.getElementById(id).style.paddingTop = paddingTop.replace("px","")/html + "rem";
+      }else if(type == 1){
+        document.getElementById(id).style.paddingBottom = paddingBottom.replace("px","")/html + "rem";
+      }else if(type == 2){
+        document.getElementById(id).style.top =  document.getElementById(id).style.top.replace("rem","")*1 + paddingTop.replace("px","")/html + "rem";
+      }
+    }
+  },
 };
 export {
   androidIos

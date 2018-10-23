@@ -46,6 +46,7 @@
         props: ['idx'],
         mounted:function () {
           var _this = this;
+          androidIos.judgeIphoneX("footer",1);
           var driverBottomIcon = sessionStorage.getItem("driverBottomIcon");
           if(driverBottomIcon != undefined){
             _this.items = JSON.parse(driverBottomIcon);
@@ -122,6 +123,7 @@
        bottom: 0;
        left:0;
        width:100%;
+       background: white;
      }
      #footer ul{
        width:100%;

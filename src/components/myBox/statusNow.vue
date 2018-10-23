@@ -1,5 +1,5 @@
 <template>
-  <div id="statusnow">
+  <div id="statusnow" style="top:1.3rem;">
     <div id="title" v-title data-title="个人资料"></div>
     <div v-if="status == 0" class="statusF">
       <img src="../../images/noStatus.png">
@@ -61,6 +61,7 @@
       },
       mounted:function () {
         var _this = this;
+        androidIos.judgeIphoneX("statusnow",2);
         $.ajax({
           type: "POST",
           url: androidIos.ajaxHttp() + "/getUserInfo",

@@ -1,5 +1,5 @@
 <template>
-  <div id="aboutus">
+  <div id="aboutus" style="top:1.3rem;">
     <div id="title" v-title data-title="关于我们"></div>
     <img src="../../images/logo.png">
     <button @click="callT()">客服电话:021-50929122</button>
@@ -12,6 +12,9 @@
   import bridge from '../../js/bridge';
     export default {
         name: "about-us",
+      mounted:function () {
+        androidIos.judgeIphoneX("aboutus",2);
+      },
         methods:{
            callT:function () {
              androidIos.telCall('021-50929122')

@@ -1,5 +1,5 @@
 <template>
-  <div id="setup">
+  <div id="setup" style="top:1.3rem;">
     <div id="title" v-title data-title="设置"></div>
     <ul>
       <li @click="urlGo(item.url)" v-for="(item,index) in tabList" :class="index % 2 == 0 ? (tabList.length -1 == index ? 'marTop' : 'marTop borderShow') : ''">
@@ -34,6 +34,7 @@
         },
         mounted:function () {
           var _this = this;
+          androidIos.judgeIphoneX("setup",2);
           androidIos.bridge(_this);
         },
         methods:{

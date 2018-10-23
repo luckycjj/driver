@@ -1,5 +1,5 @@
 <template>
-    <div id="authentication">
+    <div id="authentication" style="top:1.3rem">
       <div id="title" v-title data-title="认证"></div>
       <ul id="step">
         <li v-for="(item,index) in step" :class="nowStep == ( index + 1) ? 'stepNowColor' : nowStep > (index + 1) ? 'stepBeforeColor' : nowStep < (index + 1) ? 'stepAfterColor' : '' ">
@@ -213,6 +213,7 @@
       },
       mounted:function () {
         var _this = this;
+        androidIos.judgeIphoneX("authentication",2);
         var type = _this.$route.query.type;
         if(type != undefined){
            var DRIVERSFETMESSAGE = localStorage.getItem("DRIVERSFETMESSAGE");

@@ -1,5 +1,5 @@
 <template>
-  <div id="trackList">
+  <div id="trackList" style="top:1.3rem">
     <div id="title" v-title data-title="订单"></div>
     <div id="showBox">
       <div class="wrapper" id="trackTab">
@@ -17,7 +17,7 @@
             <h6 class="arriDateTime">{{items.arriDate}}</h6>
             <div class="proBox">
               <p class="startEnd"><span class="startEndSpan">{{items.deliAddr}}<img src="../images/addressImg.png">{{items.arriAddr}}</span><div class="clearBoth"></div></p>
-              <div class="proBoxList" v-for="(pro,proIndex) in items.itemDaos">{{pro.goodsCode}}/{{pro.goodsName}}/{{pro.num}}件/{{pro.weight*1}}吨/{{pro.volume*1}}立方米</div>
+              <div class="proBoxList" v-for="(pro,proIndex) in items.itemDaos">{{pro.goodsCode}}/{{pro.goodsName}}/{{pro.num}}件<span v-if="pro.weight*1 > 0">/{{pro.weight*1}}吨</span><span v-if="pro.volume*1 > 0">/{{pro.volume*1}}立方米</span></div>
             </div>
             <h1>订单编号：{{items.vbillno}}</h1>
           </li>
@@ -74,6 +74,8 @@
          sessionStorage.removeItem("carPKlistGo");
          sessionStorage.removeItem("driverPk");
          sessionStorage.removeItem("ORDERSCREEN");
+         androidIos.judgeIphoneX("mescroll",1);
+         androidIos.judgeIphoneX("trackList",2);
          androidIos.bridge(_this);
        },
        methods:{
@@ -274,6 +276,10 @@
   }
 </style>
 <style scoped>
+  .proBoxList span{
+    color: #999;
+    font-size: 0.35rem;
+  }
   #trackList{
      position:absolute;
     top:1.3rem;

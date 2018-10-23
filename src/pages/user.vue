@@ -1,5 +1,5 @@
 <template>
-  <div id="user">
+  <div id="user" style="top:1.3rem;">
     <div id="title" v-title data-title="个人中心"></div>
     <div id="userBox">
        <div id="head">
@@ -92,6 +92,8 @@
       mounted:function () {
         var _this = this;
         var driverMessage = sessionStorage.getItem("driverMessage");
+        androidIos.judgeIphoneX("userBox",1);
+        androidIos.judgeIphoneX("user",2);
         if(driverMessage != null) {
           driverMessage = JSON.parse(driverMessage);
           _this.message.photo = driverMessage.photo;

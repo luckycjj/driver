@@ -5,7 +5,6 @@ import message from '../pages/message'
 import authenticationS from '@/components/authentication/authenticationS'
 import user from '../pages/user'
 import track from '../pages/track'
-import uploadData from '../pages/uploadData'
 import Vue from 'vue'
 import Router from 'vue-router'
 import  trackF from '@/components/track/trackMore'
@@ -13,7 +12,6 @@ import  trackS from '@/components/track/map'
 import  trackT from '@/components/track/qrcode'
 import  trackFo from  '@/components/track/uploadBill'
 import  trackSi from '@/components/track/uploadImg'
-import uploadDataT from '@/components/uploadData/uploadDataT'
 import forgetPassword from '@/components/loginBox/forgetPassword'
 import  orderScreen from '@/components/track/orderScreen'
 import register from '@/components/loginBox/register'
@@ -164,14 +162,6 @@ export default new Router(
       path:'/user',
       name:'user',
       component:user,
-    },
-    {
-      path: '/uploadData',
-      name: 'uploadData',
-      component: uploadData,
-      children: [
-        {path: 'uploadDataT', component: uploadDataT}
-      ]
     },
     {
       path:'/listMessage',

@@ -1,5 +1,5 @@
 <template>
-  <div id="orderScreen">
+  <div id="orderScreen" style="top:0rem;">
     <div id="title" v-title data-title="发货地址"></div>
     <div id="carTitleBox"   @click="event($event)">
       <div class="carTitleBox">
@@ -8,7 +8,7 @@
         <p @click="sousuo()" id="sousuo">搜索</p>
       </div>
     </div>
-    <div id="mescroll" class="mescroll">
+    <div id="mescroll" class="mescroll" style="top:1.3rem;">
       <ul id="dataList" class="data-list">
         <li v-for="(items,indexs) in pdlist" @click="lookTrackMore(items.pkInvoice)">
           <h3 v-html="items.status == 10 ? '已确认': items.status == 20 ? '司机出发': items.status == 31 ? '提货到达': items.status == 32 ? '开始装货': items.status == 33 ? '装货完毕': items.status == 41 ? '运输到达': items.status == 42 ? '开始卸货': items.status == 43 ? '卸货完毕': items.status == 50 ? '已签收': ''"></h3>
@@ -47,6 +47,8 @@
     },
     mounted:function () {
       var _this = this;
+      androidIos.judgeIphoneX("orderScreen",2);
+      androidIos.judgeIphoneX("mescroll",2);
       _this.addressType = _this.$route.query.type;
       androidIos.bridge(_this);
     },

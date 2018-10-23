@@ -1,5 +1,5 @@
 <template>
-  <div id="message">
+  <div id="message" style="top:1.3rem;">
     <div id="title" v-title data-title="消息"></div>
     <div id="messageBox">
       <ul>
@@ -34,6 +34,7 @@
       },
       mounted:function () {
         var _this = this;
+        androidIos.judgeIphoneX("message",2);
         androidIos.bridge(_this);
       },
       methods:{

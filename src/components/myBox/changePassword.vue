@@ -1,5 +1,5 @@
 <template>
-  <div id="changePassword">
+  <div id="changePassword" style="top:1.3rem;">
     <div id="title" v-title data-title="修改密码"></div>
     <ul>
       <li class="border">
@@ -32,6 +32,7 @@
       },
       mounted:function () {
         var _this = this;
+        androidIos.judgeIphoneX("changePassword",2);
         androidIos.bridge(_this);
       },
       methods:{
