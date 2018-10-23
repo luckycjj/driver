@@ -44,6 +44,7 @@
       if(cookie != "" && sessionStorage.getItem("addPageList")*1 == 0){
         cookie = JSON.parse(cookie);
         sessionStorage.setItem("token",cookie.token);
+        sessionStorage.setItem("tokenBefore",cookie.token);
         $.ajax({
           type: "POST",
           url: androidIos.ajaxHttp() + "/getUserInfo",

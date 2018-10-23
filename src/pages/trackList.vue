@@ -168,8 +168,8 @@
                  if(pageNum == 1){
                    _this.$refs.footcomponent.go();
                  }
-                 var status = JSON.parse(androidIos.getcookie("MESSAGEDRIVER")).status;
-                 if(status != 0){
+                 var status = JSON.parse(sessionStorage.getItem("driverMessage")).status;
+                 if(status == 2){
                    $.ajax({
                      type: "POST",
                      url: androidIos.ajaxHttp() + "/order/loadEntrust",
