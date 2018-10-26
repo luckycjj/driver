@@ -37,6 +37,7 @@
           sessionStorage.removeItem("driverMessage");
           localStorage.removeItem("DRIVERSFETMESSAGE");
           sessionStorage.removeItem("trackTap");
+          localStorage.removeItem("PEOPLEPHOTO");
           androidIos.bridge(_this);
       },
       methods:{

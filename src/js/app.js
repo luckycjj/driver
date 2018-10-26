@@ -592,6 +592,36 @@ var androidIos = {
       }
     }
   },
+  imgLoad:function (img,that) {
+    try{
+      api.download({
+        url: img,
+        report: true,
+        cache: true,
+        allowResume: true
+      }, function(ret, err) {
+        if(ret.state == 1){
+          var realPath = ret.savePath;
+          if( localStorage.getItem("PEOPLEPHOTO") == null){
+             localStorage.setItem("PEOPLEPHOTO",realPath);
+          }else{
+            localStorage.setItem("PEOPLEPHOTOS",realPath);
+            var imgname = localStorage.getItem("PEOPLEPHOTO");
+            if(imgname != realPath){
+              that.message.photo =  img;
+              localStorage.removeItem("PEOPLEPHOTO");
+              if(img != ""){
+                androidIos.imgLoad(img);
+              }
+            }
+          }
+        }
+      })
+    }
+    catch(e){
+      localStorage.setItem("PEOPLEPHOTO",img);
+    }
+  }
 };
 export {
   androidIos

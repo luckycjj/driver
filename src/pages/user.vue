@@ -91,6 +91,10 @@
         },
       mounted:function () {
         var _this = this;
+        var PEOPLEPHOTO = localStorage.getItem("PEOPLEPHOTO");
+        if(PEOPLEPHOTO != undefined){
+          _this.message.photo =  PEOPLEPHOTO;
+        }
         var driverMessage = sessionStorage.getItem("driverMessage");
         androidIos.judgeIphoneX("userBox",1);
         androidIos.judgeIphoneX("user",2);
@@ -112,7 +116,15 @@
             timeout: 30000,
             success: function (getUserInfo) {
               if (getUserInfo.success == "1") {
-                _this.message.photo =  getUserInfo.photo;
+                var PEOPLEPHOTO = localStorage.getItem("PEOPLEPHOTO");
+                if(PEOPLEPHOTO != undefined){
+                    androidIos.imgLoad(getUserInfo.photo,_this);
+                }else{
+                  _this.message.photo =  getUserInfo.photo;
+                  if(getUserInfo.photo != ""){
+                    androidIos.imgLoad(getUserInfo.photo,_this);
+                  }
+                }
                 _this.message.name =   getUserInfo.name;
                 _this.message.status =   getUserInfo.status;
                 sessionStorage.setItem("driverMessage",JSON.stringify({
