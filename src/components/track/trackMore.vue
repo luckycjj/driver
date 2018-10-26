@@ -612,7 +612,7 @@
           var json = {
             userCode : sessionStorage.getItem("token"),
             source : sessionStorage.getItem("source"),
-            expType : list[0] == undefined || (list[0] != undefined && list[0].displayName == "其他") ? "" : androidIos.checkText(list[0].displayName),
+            expType : list[0] == undefined || (list[0] != undefined && list[0].displayName == "其他") ? "" : androidIos.checkText(list[0].value),
             trackingMemo : androidIos.checkText(_this.errorabnormal),
             entrustVbillno : _this.pdlist[0].number == undefined ? "" : androidIos.checkText(_this.pdlist[0].number)
           }
