@@ -5,7 +5,7 @@
       <div class="wrapper" id="trackTab">
         <div class="scroller">
           <ul class="clearfix">
-            <li v-for="(item,index) in list" :i="index"><a href="javascript:void(0)">{{item.name}}<span v-if="item.number*1 > 0">{{item.number}}</span></a></li>
+            <li tapmode=""  v-for="(item,index) in list" :i="index"><a tapmode="">{{item.name}}<span v-if="item.number*1 > 0">{{item.number}}</span></a></li>
           </ul>
         </div>
       </div>
