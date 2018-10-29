@@ -564,12 +564,14 @@ var androidIos = {
     var html = document.getElementsByTagName("html")[0].style.fontSize.replace("px","");
     var paddingBottom = 0 + "px";
     var paddingTop = 0 + "px";
-   /* if(androidIos.isIphoneX()){
-      paddingBottom = 20+ "px";
-      paddingTop = 64 + "px";
-    }*/
-      paddingBottom = sessionStorage.getItem("marginBottom")+ "px";
-      paddingTop =sessionStorage.getItem("marginTop")+  "px";
+      try{
+        paddingBottom = api.safeArea.bottom + "px";
+        paddingTop = api.safeArea.top + "px";
+      }
+      catch (e){
+        paddingBottom = 0 + "px";
+        paddingTop = 0 + "px";
+      }
       var docuId = document.getElementById(id);
       if(docuId == null){
         for(var i = 0 ; i < document.getElementsByClassName(id).length;i++){

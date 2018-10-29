@@ -39,11 +39,6 @@
         doNow:"",
       }
     },
-    created:function () {
-      var _this = this;
-      sessionStorage.setItem("marginTop",androidIos.GetQueryString("marginTop"));
-      sessionStorage.setItem("marginBottom",androidIos.GetQueryString("marginBottom"));
-    },
     mounted:function () {
       var _this = this;
       _this.title = document.title;
