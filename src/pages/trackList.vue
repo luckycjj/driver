@@ -78,6 +78,7 @@
          androidIos.judgeIphoneX("trackList",2);
          androidIos.bridge(_this);
        },
+
        methods:{
          go:function () {
              var _this = this;

@@ -30,11 +30,19 @@
   import  {androidIos} from './js/app.js'
   export default {
     name: 'app',
+    ready:function () {
+      androidIos.judgeIphoneX("carTitleBox",0);
+    },
     data () {
       return {
         title:"",
         doNow:"",
       }
+    },
+    created:function () {
+      var _this = this;
+      sessionStorage.setItem("marginTop",androidIos.GetQueryString("marginTop"));
+      sessionStorage.setItem("marginBottom",androidIos.GetQueryString("marginBottom"));
     },
     mounted:function () {
       var _this = this;
@@ -88,6 +96,7 @@
       var _this = this;
       _this.title = document.title;
       _this.html = location.href;
+      androidIos.judgeIphoneX("carTitleBox",0);
       if(_this.html.indexOf("/login") != -1){
         $("#appBox").hide();
       }else{
@@ -121,6 +130,7 @@
       _this.$nextTick(function () {
         _this.title = document.title;
         _this.html = location.href;
+        androidIos.judgeIphoneX("carTitleBox",0);
         if(_this.html.indexOf("/login") != -1){
           $("#appBox").hide();
         }else{
