@@ -1098,7 +1098,7 @@
                   pkCar: loadSegmentDetail.pkCar,
                   pkCarHang:loadSegmentDetail.pkCarHang,
                   pkTransType:loadSegmentDetail.pkTransType,
-                  exp_sign:loadSegmentDetail.expSign == undefined || loadSegmentDetail.expSign == "N" ? "0" : "1",
+                  exp_sign:loadSegmentDetail.expSign == "Y" ? "1" : "0",
                 }]
                 thisThat.carList = [];
                 thisThat.actFlag = loadSegmentDetail.actFlag;
