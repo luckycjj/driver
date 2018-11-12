@@ -3,6 +3,7 @@ import robbingList from '../pages/robbingList'
 import trackList from '../pages/trackList'
 import login from '../pages/login'
 import message from '../pages/message'
+import Secondmessage from '../pages/Secondmessage'
 import authenticationS from '@/components/authentication/authenticationS'
 import user from '../pages/user'
 import track from '../pages/track'
@@ -22,6 +23,7 @@ import setup from '@/components/myBox/setup'
 import suggestion from '@/components/myBox/suggestion'
 import changePassword from '@/components/myBox/changePassword'
 import statusNow from '@/components/myBox/statusNow'
+import robbingMore from '@/components/robbing/robbingMore'
 Vue.use(Router);
 
 Vue.directive('title', {
@@ -30,6 +32,30 @@ Vue.directive('title', {
     document.getElementById('title').innerText = document.title
   }
 });
+Vue.filter('carrierTime',function (value) {
+   var valTime = value.split(" ")[0];
+   var newDate = new Date();
+   if(new Date(valTime.replace(/-/g,'/')).getTime() == new Date(newDate.getFullYear() + '/' + (newDate.getMonth() + 1 ) + '/' + newDate.getDate()).getTime()){
+     return "今天装货";
+   }else{
+      return value;
+   }
+
+})
+Vue.filter('nameCheck',function (value) {
+  var list = value.split("");
+  var name = "";
+  for(var i = 0 ; i < list.length;i++){
+    if(list[i] != ""){
+      if(i == 0){
+        name += list[i];
+      }else{
+        name += "*";
+      }
+    }
+  }
+  return name;
+})
 Vue.filter('companyTypeName', function(value) {
   value = value*1;
   var valueTypeName  ="";
@@ -160,9 +186,19 @@ export default new Router(
       component:robbingList,
     },
     {
+      path:'/robbingMore',
+      name:'robbingMore',
+      component:robbingMore,
+    },
+    {
       path:'/message',
       name:'message',
       component:message,
+    },
+    {
+      path:'/Secondmessage',
+      name:'Secondmessage',
+      component:Secondmessage,
     },
     {
       path:'/user',

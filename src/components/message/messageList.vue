@@ -106,7 +106,10 @@
     },500)
   }
 </script>
-
+<style>
+  @import "../../css/mescroll.css";
+  @import "../../css/scroll.css";
+</style>
 <style scoped>
   #messageList{
     background: #f6f6f6;
