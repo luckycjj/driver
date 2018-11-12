@@ -24,6 +24,7 @@ import suggestion from '@/components/myBox/suggestion'
 import changePassword from '@/components/myBox/changePassword'
 import statusNow from '@/components/myBox/statusNow'
 import robbingMore from '@/components/robbing/robbingMore'
+import findProHis from '@/components/robbing/findProHis'
 Vue.use(Router);
 
 Vue.directive('title', {
@@ -125,6 +126,11 @@ Vue.filter('orderTypeName', function(value) {
 export default new Router(
   {
   routes: [
+    {
+      path:'/findProHis',
+      name:'findProHis',
+      component:findProHis,
+    },
     {
       path:'/authenticationS',
       name:'authenticationS',

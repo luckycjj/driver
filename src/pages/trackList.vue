@@ -180,7 +180,7 @@
                        page:pageNum,
                        size:pageSize,
                        type:1,
-                       state:curNavIndex,
+                       state:curNavIndex == 0 ? '' : curNavIndex == 1 ? '5' :curNavIndex == 2 ? '6' :curNavIndex == 3 ? '7' :'',
                        userCode:sessionStorage.getItem("token"),
                        source:sessionStorage.getItem("source")
                      }),

@@ -9,7 +9,7 @@
       </div>
       <div id="setHis">
         <ul>
-          <li :style="{backgroundImage:'url('+item.icon+')'}" v-for="(item,index) in setHis">{{item.name}}</li>
+          <li :style="{backgroundImage:'url('+item.icon+')'}" v-for="(item,index) in setHis" @click="findProHis(item)">{{item.name}}</li>
           <div clas="clearBoth"></div>
         </ul>
       </div>
@@ -52,9 +52,11 @@
             setHis:[{
                name:"接单设置",
                icon:require("../images/robbingSet.png"),
+              http:"/findProHis"
             },{
               name:"找货记录",
               icon:require("../images/robbingHis.png"),
+              http:"/findProHis"
             }],
             mescrollArrList:null,
             tabShow:0,
@@ -201,6 +203,11 @@
           var _this = this;
           androidIos.addPageList();
           _this.$router.push({path:'/Secondmessage'});
+        },
+        findProHis:function (item) {
+          var _this = this;
+          androidIos.addPageList();
+          _this.$router.push({path:item.http});
         },
         lookTrackMore:function (item) {
           var _this = this;
