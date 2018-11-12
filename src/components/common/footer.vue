@@ -1,9 +1,9 @@
 <template>
   <div id="footer">
     <ul>
-      <li v-for='(item,index) of items' :class='[{on:index === idx} ]' @click="$router.push(item.push)">
-        <div class="imgBox"  :class='[ item.cls , {imgSure:index === idx} ]'><div :style="{marginRight:item.marginRight}" class="corner" v-show="index == 0 && item.number > 0">{{item.number}}</div></div>
-        <div id="footerUserTX" v-if="index == 2" :style="{display: item.show ? 'block' : 'none'}"></div>
+      <li :style="{width:100 /  (items.length) + '%'}" v-for='(item,index) of items' :class='[{on:index === idx} ]' @click="$router.push(item.push)">
+        <div class="imgBox"  :class='[ item.cls , {imgSure:index === idx} ]'><div :style="{marginRight:item.marginRight}" class="corner" v-show="index == 1 && item.number > 0">{{item.number}}</div></div>
+        <div id="footerUserTX" v-if="index == items.length - 1" :style="{display: item.show ? 'block' : 'none'}"></div>
         {{item.name}}
       </li>
       <div class="clearBoth"></div>
@@ -18,12 +18,18 @@
         name: "footer",
         data() {
           return {
-            items: [
+            items: [{
+              number:0,
+              marginRight:0,
+              cls: "robbing",
+              name: "找货",
+              push: "/robbingList"
+            },
               {
                 number:0,
                 marginRight:0,
                 cls: "track",
-                name: "订单",
+                name: "任务",
                 push: "/trackList"
               },
               {
@@ -32,6 +38,13 @@
                 cls: "message",
                 name: "消息",
                 push: "/message"
+              },
+              {
+                number:0,
+                marginRight:0,
+                cls: "price",
+                name: "结算中心",
+                push: "/price"
               },
               {
                 number:0,
@@ -60,7 +73,7 @@
             var driverMessage = sessionStorage.getItem("driverMessage");
             var status = JSON.parse(driverMessage).status;
             if(status != 0 && sessionStorage.getItem("token") != undefined){
-              _this.items[2].show = false;
+              _this.items[4].show = false;
               $.ajax({
                 type: "POST",
                 url: androidIos.ajaxHttp() + "/driver/driverBottomIcon",
@@ -73,7 +86,7 @@
                 timeout: 30000,
                 success: function (driverBottomIcon) {
                   if (driverBottomIcon.success == "1") {
-                    _this.items[0].number = driverBottomIcon.orderCount*1;
+                    _this.items[1].number = driverBottomIcon.orderCount*1;
                     _this.$nextTick(function () {
                       _this.marginWidth();
                       sessionStorage.setItem("driverBottomIcon",JSON.stringify(_this.items));
@@ -91,8 +104,8 @@
                 }
               });
             }else{
-              _this.items[0].number = 0;
-              _this.items[2].show = true;
+              _this.items[1].number = 0;
+              _this.items[4].show = true;
               _this.$nextTick(function () {
                 _this.marginWidth();
                 sessionStorage.setItem("driverBottomIcon",JSON.stringify(_this.items));
@@ -153,6 +166,9 @@
      .track{
        background-image: url("../../images/track.png");
      }
+     .price{
+       background-image: url("../../images/priceJie.png");
+     }
      .message{
        background-image: url("../../images/message.png");
      }
@@ -163,11 +179,10 @@
        background-position: 0 100%!important;
      }
      .on{
-       color:#2c9cff!important;
+       color:#1D68A8!important;
      }
     #footer ul li {
       float: left;
-      width:33.3333333%;
       text-align: center;
       height: 1.3rem;
       color:#666;

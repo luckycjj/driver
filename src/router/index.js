@@ -1,4 +1,5 @@
 // 引入子路由
+import robbingList from '../pages/robbingList'
 import trackList from '../pages/trackList'
 import login from '../pages/login'
 import message from '../pages/message'
@@ -152,6 +153,11 @@ export default new Router(
       path:'/trackList',
       name:'trackList',
       component:trackList,
+    },
+    {
+      path:'/robbingList',
+      name:'robbingList',
+      component:robbingList,
     },
     {
       path:'/message',

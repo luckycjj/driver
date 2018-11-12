@@ -1,20 +1,30 @@
 <template>
-  <div id="user" style="top:1.3rem;">
+  <div id="user" style="top:0rem;">
     <div id="title" v-title data-title="个人中心"></div>
     <div id="userBox">
-       <div id="head">
-         <div id="photo" class="imgBox">
-           <img :src="message.photo"   :onerror="errorlogo">
-           <input type="file" @change="imgChange($event)">
-         </div>
-         <div style="float: left;width:50%;">
-           <p>{{message.name}}</p>
-           <h1 v-html="message.status == '0' ? '未认证' :message.status == '1' ? '待审核' : message.status == '2' ? '已审核' : message.status == '3' ? '已驳回' : message.status == '4' ? '已禁用' : ''"></h1>
-         </div>
-        <div class="lookMore"  @click="renzhen()"><span v-if="message.status == 0">去认证</span></div>
-         <div class="clearBoth"></div>
-       </div>
-       <ul>
+      <div id="headBox">
+        <img src="../images/setUp.png" id="setUpGo" @click="setUpgo()">
+        <div class="clearBoth"></div>
+        <div id="head">
+          <div id="photo" class="imgBox">
+            <img :src="message.photo"   :onerror="errorlogo">
+            <input type="file" @change="imgChange($event)">
+          </div>
+          <div style="float: left;width:50%;">
+            <p>{{message.name}} <span v-html="message.status == '0' ? '未认证' :message.status == '1' ? '待审核' : message.status == '2' ? '已审核' : message.status == '3' ? '已驳回' : message.status == '4' ? '已禁用' : ''"></span></p>
+          </div>
+          <div class="lookMore"  style="height: 2.16rem" @click="renzhen()"><span v-if="message.status == 0">去认证</span></div>
+          <div class="clearBoth"></div>
+          <ul id="fuwuList">
+            <li v-for="(item,index) in fuwuList" :style="{width:100/fuwuList.length + '%'}">
+              <img :src="item.icon">
+              {{item.name}}
+            </li>
+            <div class="clearBoth"></div>
+          </ul>
+        </div>
+      </div>
+       <ul id="labelBox">
          <li @click="lookMore(item)" v-for="(item,index) in tabList" :class="index % 2 == 0 ? (tabList.length -1 == index ? 'marTop' : 'marTop borderShow') : ''">
            <div class="tableIcon" :style="{backgroundImage:'url(' + item.icon + ')'}"></div>
            <p>{{item.name}}</p>
@@ -24,7 +34,7 @@
          </li>
        </ul>
     </div>
-    <footComponent :idx='2'></footComponent>
+    <footComponent :idx='4'></footComponent>
     <transition name="slide-fade">
         <div id="shareBox" v-if="shareListTrue">
           <div id="shareBody">
@@ -57,6 +67,16 @@
                  name : "",
                  status : "",
               },
+             fuwuList:[{
+               name:"违章查询",
+               icon:require("../images/fuwu1.png"),
+             },{
+               name:"运费计算",
+               icon:require("../images/fuwu2.png"),
+             },{
+               name:"优惠加油",
+               icon:require("../images/fuwu3.png"),
+             }],
              shareList:[{
                  name:"微信",
                  icon:require("../images/weChat.png"),
@@ -75,6 +95,10 @@
                name:"分享",
                icon:require("../images/share.png"),
                url:""
+             },{
+               name:"我的上传",
+               icon:require("../images/myfileup.png"),
+               url:"/myfileup"
              },{
                name:"建议反馈",
                icon:require("../images/feedback.png"),
@@ -97,7 +121,7 @@
         }
         var driverMessage = sessionStorage.getItem("driverMessage");
         androidIos.judgeIphoneX("userBox",1);
-        androidIos.judgeIphoneX("user",2);
+        androidIos.judgeIphoneX("headBox",0);
         if(driverMessage != null) {
           driverMessage = JSON.parse(driverMessage);
           _this.message.photo = driverMessage.photo;
@@ -155,6 +179,11 @@
             androidIos.addPageList();
             _this.$router.push({path:'/statusNow'});
           },
+        setUpgo:function () {
+          var _this = this;
+          androidIos.addPageList();
+          _this.$router.push({ path: "/setUp"});
+        },
         go:function () {
           var _this = this;
           $.ajax({
@@ -400,7 +429,7 @@
   }
 #user{
   position:absolute;
-  top:1.3rem;
+  top:0rem;
   bottom:0;
   height: auto;
   width:100%;
@@ -419,21 +448,26 @@
   width:1.6rem;
   height: 1.6rem;
 }
+#headBox{
+  width:100%;
+  background: #46B2E7;
+  height: 2.7rem;
+}
   #head{
-     width:100%;
+     width:96.4%;
     background: white;
-    height: 2.3rem;
-    border-top: 2px solid #E5E5E5;
     position: relative;
+    margin:0.32rem auto 0 auto;
+    border-radius: 0.2rem;
   }
   .imgBox{
-    width:1.6rem;
-    height: 1.6rem;
+    width:1.4rem;
+    height: 1.4rem;
     position: relative;
     overflow: hidden;
     border-radius: 50%;
     float: left;
-    margin: 0.35rem 0.5rem 0.35rem 0.44rem;
+    margin: 0.41rem 0.5rem 0.35rem 0.44rem;
   }
   .imgBox img{
     width:100%;
@@ -448,8 +482,12 @@
   }
   #head p{
     color:#373737;
-    font-size: 0.4rem;
-    margin-top: 0.5rem;
+    font-size: 0.42rem;
+    margin-top: 0.8rem;
+  }
+  #head p span{
+    color:#999;
+    font-size: 0.3125rem;
   }
 #head h1{
   color:#999999;
@@ -458,7 +496,7 @@
   .lookMore{
     width:50%;
     height: 100%;
-    line-height: 2.3rem;
+    line-height: 2.16rem;
     color:#999;
     position: absolute;
     font-size: 0.3125rem;
@@ -474,10 +512,11 @@
     margin-right: 0.5rem;
     font-size: 0.3125rem;
   }
-  ul{
+  #labelBox{
     width:100%;
+    margin-top: 2.8rem;
   }
-  li{
+  #labelBox li{
    background: white;
     position: relative;
   }
@@ -564,4 +603,25 @@
   transform: translateY(0.13rem);
   opacity: 0;
 }
+  #fuwuList{
+    width:100%;
+    padding-bottom: 0.375rem;
+  }
+  #fuwuList li{
+    float: left;
+    text-align: center;
+    font-size: 0.34rem;
+    color:#373737;
+  }
+  #fuwuList li img{
+    width:0.8rem;
+    display: block;
+    margin:0.18rem auto 0.1rem auto ;
+  }
+  #setUpGo{
+    float: right;
+    margin-top: 0.44rem;
+    margin-right: 0.65rem;
+    width:0.453rem
+  }
 </style>

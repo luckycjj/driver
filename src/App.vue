@@ -81,7 +81,7 @@
             }
           }
         });
-        _this.$router.push({ path: '/trackList'});
+        _this.$router.push({ path: '/robbingList'});
       }else if(cookie == ""){
         _this.$router.push({ path: '/login'});
       }
@@ -92,7 +92,7 @@
       _this.title = document.title;
       _this.html = location.href;
       androidIos.judgeIphoneX("carTitleBox",0);
-      if(_this.html.indexOf("/login") != -1){
+      if(_this.html.indexOf("/login") != -1 || _this.html.indexOf("/robbingList") != -1|| _this.html.indexOf("/user") != -1){
         $("#appBox").hide();
       }else{
         $("#appBox").show();
@@ -126,7 +126,7 @@
         _this.title = document.title;
         _this.html = location.href;
         androidIos.judgeIphoneX("carTitleBox",0);
-        if(_this.html.indexOf("/login") != -1){
+        if(_this.html.indexOf("/login") != -1 || _this.html.indexOf("/robbingList") != -1|| _this.html.indexOf("/user") != -1){
           $("#appBox").hide();
         }else{
           $("#appBox").show();
@@ -221,7 +221,7 @@
     margin:0;
   }
   html,body{
-    background-color: white;
+    background-color: white!important;
     touch-action: none;
   }
   body ::-webkit-scrollbar{
@@ -342,7 +342,7 @@
   }
   #appBox p{
     text-align: center;
-    font-size: 0.426667rem;
+    font-size: 0.48rem;
     line-height: 1.3rem;
     color:#333;
     letter-spacing: 0.0133rem;
