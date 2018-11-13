@@ -27,7 +27,7 @@
               <p class="startEnd"><span class="startEndSpan">{{items.deliAddr}}<img src="../images/addressImg.png">{{items.arriAddr}}</span><div class="clearBoth"></div></p>
               <div class="proBoxList" v-for="(pro,proIndex) in items.itemDaos">{{items.transType}}/{{pro.goodsCode}}/{{pro.num}}件<span v-if="pro.weight*1 > 0">/{{pro.weight*1}}吨</span><span v-if="pro.volume*1 > 0">/{{pro.volume*1}}立方米</span></div>
             </div>
-            <h6 class="meno" style="width:8rem;max-width:8rem;">{{items.memo}}</h6>
+            <h6 class="meno" style="width:8rem;max-width:8rem;"  v-html="items.memo == '' || items.memo == null ? '暂无备注' : items.memo "></h6>
             <h6 class="deliDateTime">{{items.deliDate | carrierTime}}</h6>
             <h6 class="callTel" @click.stop="tel(items.arriMobile)">{{items.arriMobile}}</h6>
             <div class="clearBoth"></div>

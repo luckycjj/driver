@@ -4,21 +4,25 @@
     <div id="carTitleBox"   @click="event($event)">
       <div class="carTitleBox">
         <div class="carTitleback" @click="goback()"></div>
-        <input @keyup="inputKeyup()" type="text" placeholder="请输入订单号"  id="carNumber" v-model="address"  @focus="aaa()">
+        <input type="text" placeholder="请输入订单号/货物名称"  id="carNumber" v-model="address"  @focus="aaa()">
         <p @click="sousuo()" id="sousuo">搜索</p>
       </div>
     </div>
     <div id="mescroll" class="mescroll" style="top:1.3rem;">
       <ul id="dataList" class="data-list">
         <li v-for="(items,indexs) in pdlist" @click="lookTrackMore(items.pkInvoice)">
-          <h3 v-html="items.status == 10 ? '已确认': items.status == 20 ? '司机出发': items.status == 31 ? '提货到达': items.status == 32 ? '开始装货': items.status == 33 ? '装货完毕': items.status == 41 ? '运输到达': items.status == 42 ? '开始卸货': items.status == 43 ? '卸货完毕': items.status == 50 ? '已签收': ''"></h3>
-          <h6 class="deliDateTime">{{items.deliDate}}</h6>
-          <h6 class="arriDateTime">{{items.arriDate}}</h6>
-          <div class="proBox">
-            <p class="startEnd"><span class="startEndSpan">{{items.deliAddr}}<img src="../../images/addressImg.png">{{items.arriAddr}}</span><div class="clearBoth"></div></p>
-            <div class="proBoxList" v-for="(pro,proIndex) in items.itemDaos">{{pro.goodsCode}}/{{pro.goodsName}}/{{pro.num}}件/{{pro.weight*1}}吨/{{pro.volume*1}}立方米</div>
-          </div>
+          <h3 :class="'trackList' + items.status" v-html="items.status == 0 ? '待确认' : items.status == 10 ? '已确认': items.status == 20 ? '司机出发': items.status == 31 ? '提货到达': items.status == 32 ? '开始装货': items.status == 33 ? '开始运输': items.status == 41 ? '运输到达': items.status == 42 ? '开始卸货': items.status == 43 ? '卸货完毕': items.status == 50 ? '已签收': ''"></h3>
           <h1>订单编号：{{items.vbillno}}</h1>
+          <div class="proBox">
+            <img v-if="items.ifUrgent == 'Y'" class="jinjiOrder" src="../../images/jiaji.png">
+            <img v-if="items.expFlag == 'Y'" class="yichangOrder" src="../../images/yichang.png">
+            <p class="startEnd"><span class="startEndSpan">{{items.deliAddr}}<img src="../../images/addressImg.png">{{items.arriAddr}}</span><div class="clearBoth"></div></p>
+            <div class="proBoxList" v-for="(pro,proIndex) in items.itemDaos">{{items.transType}}/{{pro.goodsCode}}/{{pro.num}}件<span v-if="pro.weight*1 > 0">/{{pro.weight*1}}吨</span><span v-if="pro.volume*1 > 0">/{{pro.volume*1}}立方米</span></div>
+          </div>
+          <h6 class="meno" style="width:8rem;max-width:8rem;" v-html="items.memo == '' || items.memo == null ? '暂无备注' : items.memo "></h6>
+          <h6 class="deliDateTime">{{items.deliDate | carrierTime}}</h6>
+          <h6 class="callTel" @click.stop="tel(items.arriMobile)">{{items.arriMobile}}</h6>
+          <div class="clearBoth"></div>
         </li>
       </ul>
     </div>
@@ -79,10 +83,6 @@
           }
         });
       },
-      inputKeyup:function () {
-        var _this = this;
-        _this.address = _this.address.replace(/[^\a-\z\A-\Z0-9\-]/g,'');
-      },
       aaa:function(){
         $("#orderScreen #carTitleBox").css("z-index","100");
         document.getElementById("sousuo").innerText = "搜索";
@@ -132,7 +132,7 @@
         var _this = this;
         sessionStorage.setItem("ORDERSCREEN",_this.address);
         androidIos.addPageList();
-        _this.$router.push({ path: '/track/trackMore',query:{pk:pk,pt:2}});
+        _this.$router.push({ path: '/track/trackMore',query:{pk:pk,pt:1}});
       },
     }
   }
@@ -146,7 +146,7 @@
           page:pageNum,
           size:pageSize,
           type:0,
-          state:0,
+          state:8,
           userCode:sessionStorage.getItem("token"),
           source:sessionStorage.getItem("source"),
           keyword:thisthatsecond.address == "" ? "HDSDDD" : androidIos.checkText(thisthatsecond.address),
@@ -312,41 +312,95 @@
     position: relative;
   }
   .data-list li h6{
-    font-size:0.32rem ;
-    color:#999;
+    font-size:0.346rem ;
+    color:#666;
     margin-left: 0.4rem;
     margin-bottom: 0.01rem;
     padding-left: 0.5rem;
     background-repeat: no-repeat;
-    background-size:0.213rem 0.213rem ;
+    background-size:0.4rem ;
     background-position: 0 50%;
+    float: left;
+    max-width:3.6rem;
+    min-width: 1rem;
+    line-height: 0.5rem;
   }
   .data-list li h1{
     font-size:0.34rem ;
-    color:#999;
-    padding-top: 0.2rem;
+    color:#666;
     margin-left: 0.5rem;
   }
   .data-list li h3{
     position: absolute;
-    width:2rem;
     font-size: 0.375rem;
-    right:0;
-    top:0.6rem;
+    right:3%;
+    top:0.28rem;
+    padding-left: 0.72rem;
+    background-repeat: no-repeat;
+    background-position: 0 50%;
+    background-size: 0.48rem;
+  }
+  .trackList0{
+    background-image: url("../../images/trackList1.png");
+    color:#F48D20;
+  }
+  .trackList10{
+    background-image: url("../../images/trackList2.png");
+    color:#1AB7FA;
+  }
+  .trackList20{
+    background-image: url("../../images/trackList3.png");
+    color:#46B2E7;
+  }
+  .trackList31{
+    background-image: url("../../images/trackList4.png");
+    color:#4681B4;
+  }
+  .trackList32{
+    background-image: url("../../images/trackList5.png");
+    color:#3094E3;
+  }
+  .trackList33{
+    background-image: url("../../images/trackList6.png");
+    color:#49C661;
+  }
+  .trackList41{
+    background-image: url("../../images/trackList7.png");
+    color:#38A2FF;
+  }
+  .trackList42{
+    background-image: url("../../images/trackList8.png");
+    color:#719CED;
+  }
+  .trackList43{
+    background-image: url("../../images/trackList9.png");
+    color:#557DE0;
+  }
+  .trackList50{
+    background-image: url("../../images/trackList10.png");
+    color:#C3D94D;
   }
   .deliDateTime{
-    background-image: url("../../images/pickmessage.png");
+    background-image: url("../../images/trackListshijian.png");
   }
-  .arriDateTime{
-    background-image: url("../../images/arrmessage.png");
+  .callTel{
+    background-image: url("../../images/trackListdianhua.png");
+  }
+  .meno{
+    background-image: url("../../images/trackListbeizhu.png");
+    overflow: hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    height: 0.5rem;
   }
   .proBox{
     width:85%;
     padding: 0.5rem 0.45rem;
-    margin: 0.2rem auto;
+    margin: 0.333rem auto;
     border-radius: 0.1rem;
     box-shadow: 0 0 0.13rem #e2e2e2;
     border: 1px solid white;
+    position: relative;
   }
   .startEndSpan{
     float: left;
@@ -366,5 +420,20 @@
     color:#999;
     font-size:0.35rem ;
     margin-top: 0.1rem;
+  }
+  .jinjiOrder{
+    position: absolute;
+    font-size: 0.3125rem;
+    right:0rem;
+    top:0rem;
+    width:0.64rem;
+  }
+  .yichangOrder{
+    position: absolute;
+    font-size: 0.3125rem;
+    right:0.44rem;
+    top:50%;
+    margin-top:-0.30683rem ;
+    width:0.667rem;
   }
 </style>

@@ -250,7 +250,6 @@
           self.pick = true;
           self.logisticsOk = false;
           self.type = curPageData[0].orderType == '0'? 0 :curPageData[0].orderType == '10'?1:curPageData[0].orderType == '20'?2:curPageData[0].orderType == '31'?3:curPageData[0].orderType == '32'?4:curPageData[0].orderType == '33'?5:curPageData[0].orderType == '41'?6:curPageData[0].orderType == '42'?7:curPageData[0].orderType == '43'?8:curPageData[0].orderType == '50'?9:10;
-          self.type = 4;
           self.mescroll.endSuccess(curPageData.length);
           sessionStorage.setItem("orderPk",self.$route.query.pk);
           sessionStorage.setItem("dispatchPK",self.$route.query.pk);
