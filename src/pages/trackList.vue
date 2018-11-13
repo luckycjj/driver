@@ -6,7 +6,7 @@
       <div class="messageLDbox" @click="orderScreen()">
         <img src="../images/orderScreen.png">
       </div>
-      <h3  id="manage" @click="histroy()" class="asd"><span>历史订单</span></h3>
+      <h3  id="manage" @click="histroy()" class="asd"><span style="color:#999">历史订单</span></h3>
     </div>
     <div id="showBox">
       <div class="wrapper" id="trackTab">
