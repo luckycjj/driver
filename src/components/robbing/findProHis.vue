@@ -19,7 +19,8 @@
               <p class="startEnd"><span class="startEndSpan">{{items.deliAddr}}<img src="../../images/addressImg.png">{{items.arriAddr}}</span><div class="clearBoth"></div></p>
               <div class="proBoxList transType">{{items.transType}}/{{items.goodCode}}</div>
               <div class="proBoxList wvolume"><span>{{items.num}}件</span><span  v-if="items.weight*1 > 0">/{{items.weight*1}}吨</span><span v-if="items.volume*1 > 0">/{{items.volume*1}}立方米</span></div>
-              <div class="proBoxList menu">{{items.memo}}</div>
+              <div class="proBoxList menu"  v-html="items.memo == '' || items.memo == null ? '暂无备注' : items.memo "></div>
+              <div class="proBoxList deliDateTime">{{items.deliAddr.time}}&nbsp;装货</div>
               <div class="proBoxList callTel" @click.stop="tel(items.phone)">{{items.phone}}</div>
               <div class="clearBoth"></div>
             </div>
@@ -174,6 +175,9 @@
                   timeout: 30000,
                   success: function (loadEntrust) {
                     if (loadEntrust.success == "1") {
+                      for(var i = 0; i < loadEntrust.list.length;i++){
+                        loadEntrust.list[i].billMemo = loadEntrust.list[i].billMemo == "" ? "暂无原因" : loadEntrust.list[i].billMemo;
+                      }
                       successCallback(loadEntrust.list);
                     }else{
                       androidIos.second(loadEntrust.message);
@@ -351,7 +355,6 @@
       background-repeat: no-repeat;
       background-position :0 0.02rem;
       padding-left: 0.65rem;
-      float: left;
     }
     .callTel{
       background-image: url("../../images/trackListdianhua.png");
@@ -359,7 +362,6 @@
       background-repeat: no-repeat;
       background-position :0 0.02rem;
       padding-left: 0.65rem;
-      float: left;
       overflow: hidden;
       text-overflow:ellipsis;
       white-space:nowrap;

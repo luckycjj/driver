@@ -1,182 +1,97 @@
 <template>
   <div id="trackMore">
-    <div id="title" v-title data-title="订单详情"></div>
+    <div id="title" v-title data-title="任务详情"></div>
     <div v-if="carloading" style="position: fixed;top:1.3rem;bottom:0;height:auto;width:100%;">
       <img src="../../images/carloading.gif" style="width:4rem;position: absolute;top:50%;left:50%;margin-left: -2rem;margin-top: -4rem">
       <p style="font-size: 0.4rem;top:50%;text-align: center;line-height: 1rem;color:#3399FF;width:100%;position: absolute">正在加载中...</p>
     </div>
-    <div id="mescroll" class="mescroll" :class="type==0 || (peopleType == 2 && type !=1 ) || (type==8 && endtype == '0' && actFlag != 'Y')?'meBottom':''">
+    <div id="mescroll" class="mescroll">
       <ul id="dataList" class="data-list">
         <li v-for="item in pdlist">
           <div class="top">
-            <div style="width:100%;position: relative;top:0;left:0;">
-              <span v-html="item.orderValue"></span>
-              <img src="../../images/order2.png" style="height: 1.64rem;">
+            <p>查看规划路线<img src="../../images/lookMore2.png"></p>
+            <div class="carNumber" v-for="car in carList" @click="mapGo(car)">
+              <h1 class="carFloatLeft">{{car.carno}}<br>{{car.carHangNo}}</h1>
+              <div class="carFloatRight">
+                <h3 v-html="type == 1 || type == 2 ? '距离提货点' : '距离目的地'"></h3> <h2 v-html="car.length < 1 ? car.length * 1000 + '米' : car.length + '公里'"></h2>
+                <div class="clearBoth"></div>
+                <h3 v-html="type == 1 || type == 2 ? '预计提货时间' : '预计到货时间'"></h3> <h2>明日到达</h2>
+                <div class="clearBoth"></div>
+              </div>
+              <div class="clearBoth"></div>
             </div>
-            <div class="clearBoth"></div>
-            <ul id="errorBiglist" class="logisticsBox" :class="errorBiglistOk ? 'logisticsBoxDown' : '' "  v-if="item.errorBiglist.length > 0">
-              <li v-for="(cjj,index) in item.errorBiglist">
-                <div class="logisticsL">
-                  <div class="logisticsCircle" :class="index==0?'logisticsCircleFull':''"></div>
-                  <div class="logisticsShuxian"></div>
-                </div>
-                <div class="logisticsR">
-                  {{cjj.memo}}&nbsp;&nbsp;{{cjj.createTime}}
-                </div>
-                <img src="../../images/downJian.png"  :class="errorBiglistOk?'logisticsImg':''" v-if="index == 0 && item.errorBiglist.length > 1" @click="errorBiglistBoxDown()">
-                <div class="clearBoth"></div>
-              </li>
-            </ul>
-            <ul id="logisticsBox" class="logisticsBox" :class="logisticsOk?'logisticsBoxDown':''"  v-if="item.logistics.length > 0">
-              <li v-for="(cjj,index) in item.logistics">
-                <div class="logisticsL">
-                  <div class="logisticsCircle" :class="index==0?'logisticsCircleFull':''"></div>
-                  <div class="logisticsShuxian"></div>
-                </div>
-                <div class="logisticsR">
-                  {{cjj.type}}&nbsp;&nbsp;{{cjj.time}}
-                </div>
-                <img src="../../images/downJian.png"  :class="logisticsOk?'logisticsImg':''" v-if="index==0 && item.logistics.length > 1" @click="logisticsBoxDown()">
-                <div class="clearBoth"></div>
-              </li>
-            </ul>
           </div>
           <div class="waitForTime" v-if="(type == 3 || type == 6)&& timeShowF != ''">
             {{timeShowF}}
           </div>
-          <div id="full_feature" class="swipslider" v-if="type >0 && type < 8 && carList.length > 0" :style="{minHeight:type ==1?'2.5rem':'6rem'}">
-            <ul class="sw-slides">
-              <li class="sw-slide" v-for="(car,index) in carList">
-                <div style="width:100%;background: white;height:3rem;box-shadow: 0 0.1rem 10px #d8d8d8;overflow:hidden;position: relative;margin:0.4rem auto 0 auto;border-top-left-radius: 0.2rem;border-top-right-radius: 0.2rem;" v-if="type > 1">
-                  <div   v-if="(car.ordertype == '20' || car.ordertype == '31' || car.ordertype == '32' || car.ordertype == '33' || car.ordertype == '41' || car.ordertype == '42' ) && car.peopleJ != '' && car.peopleW != ''" @click="mapGo(car)">
-                    <div :id="'container'+index" class="containerImport"></div>
-                    <div :id="'panel'+index" class="panelImport"></div>
-                    <div style="width:100%;height:3rem;position: absolute;top:0;left:0;background: transparent;z-index:180;border-top-left-radius: 0.2rem;border-top-right-radius: 0.2rem;"></div>
-                  </div>
-                  <img style="width:50%;margin: 0 auto;" src="../../images/notransport.png" v-else>
-                </div>
-                <div id="carPeopleMessage">
-                  <div class="imgBoxOverFllow">
-                    <img :src="car.logo" :onerror="errorlogo" class="peopleImg">
-                  </div>
-                  <div class="carPeopleMessage">
-                    <p >{{car.name}}</p> <h2  v-if="car.ordertype == '20' || car.ordertype == '31' || car.ordertype == '32' || car.ordertype == '33' || car.ordertype == '41'">距离目的地<span v-html="car.length-1>0 ? car.length+'千米':car.length*1000+'米'"></span></h2>
-                    <div :id="'star_grade'+index"  class="star_grade"></div>
-                    <h1>驾龄：{{car.year}}年</h1>
-                  </div>
-                  <div class="tel" @click="telphone(car.tel)">
-                    <img src="../../images/tel.png">
-                  </div>
-                  <div class="clearBoth"></div>
-                </div>
-              </li>
-            </ul>
-          </div>
           <div class="message">
-            <div class="goodsmessage">
-              <p :data-start="item.pickMessage.address" :data-end="item.endMessage.address" class="startEnd"><span style="float: left;font-size: 0.4rem;color:#333;font-weight: bold;">{{item.goodsmessage.startAddress}}<img style="display: inline-block;margin:0rem 0.3rem 0.13rem 0.3rem;width:0.41rem;" src="../../images/addressImg.png">{{item.goodsmessage.endAddress}}</span><span  v-if="type == '20' || type == '40' || type == '60' " class="distance">{{item.goodsmessage.distance}}km</span><div class="clearBoth"></div></p>
-              <h1>{{item.goodsmessage.tranType}}</h1>
-              <h4>{{item.goodsmessage.money}}元</h4>
-              <div class="clearBoth"></div>
-              <div v-for="itemS in item.goodsmessage.productList ">
-                <h2>{{itemS.goods}}</h2>
-                <h3>{{itemS.number}}件<span v-if="itemS.weight.replace(/[^0-9]/g,'')*1 > 0">/{{itemS.weight}}</span><span v-if="itemS.volume.replace(/[^0-9]/g,'')*1 > 0">/{{itemS.volume}}</span></h3>
-                <div class="clearBoth"></div>
-              </div>
-              <div class="clearBoth"></div>
-              <h5>{{item.goodsmessage.startTime}} - {{item.goodsmessage.endTime}}</h5>
-            </div>
-            <div class="peoplemessage">
-              <p><span>发货方</span></p>
-              <div style="background: white;box-shadow: 0 0.1rem 10px #d8d8d8;position: relative;margin:0.1rem auto 0 auto;border-radius: 0.2rem;">
-                <div class="messageBox">
-                  <h1 style="font-size: 0.38rem; color:#333;font-weight: bold;float: left;margin-left: 4%;margin-top: 0.52rem;">{{item.pickMessage.name}}</h1>
-                  <h1 style="font-size: 0.35rem; color:#999;float: left;margin-left: 0.3rem;margin-top: 0.52rem;">{{item.pickMessage.tel}}</h1>
+            <div class="proStatus">
+              <p :style="{backgroundImage: 'url(' + require('../../images/trackMoreIcon'+ type +'.png') + ')' }">{{item.orderValue}}</p>
+              <div class="startEnd"><span class="startEndSpan">{{item.goodsmessage.startAddress}}<img src="../../images/addressImg.png">{{item.goodsmessage.endAddress}}</span><div class="clearBoth"></div></div>
+              <ul>
+                <li v-for="pro in item.goodsmessage.productList">{{item.goodsmessage.tranType}}/{{pro.goods}}&nbsp;&nbsp;&nbsp;{{pro.number}}件<span v-if="pro.weight.replace(/[^0-9]/g,'')*1 > 0 ">/{{pro.weight}}</span><span  v-if="pro.volume.replace(/[^0-9]/g,'')*1 > 0">/{{pro.volume}}</span></li>
+                <li :style="{backgroundImage:'url('+require('../../images/trackListbeizhu.png')+')'}">{{item.pickPay.remark}}</li>
+                <div class="price">
+                  <h1>提货时间: {{item.goodsmessage.startTime}}</h1>
+                  <h1 style="margin-right: auto">到货时间: {{item.goodsmessage.endTime}}</h1>
                   <div class="clearBoth"></div>
-                  <h1 style="font-size: 0.35rem; color:#666;margin-left: 4%;margin-top: 0.4rem;">{{item.pickMessage.company}}</h1>
-                  <h1 style="font-size: 0.35rem; color:#999;margin-left: 4%;margin-top: 0.2rem;">{{item.pickMessage.address}}</h1>
                 </div>
-                <div class="thirdBox" @click="telphone(item.pickMessage.tel)">
-                  <h6></h6>
-                </div>
+              </ul>
+            </div>
+            <div class="topStatus">
+              <p>联系人信息</p>
+              <ul>
+                <li @click="telphone(item.pickMessage.tel)">
+                  <img src="../../images/robbingTel2.png">
+                  发货人{{item.pickMessage.name | nameCheck}}
+                </li>
+                <li @click="telphone(item.endMessage.tel)">
+                  <img src="../../images/robbingTel1.png">
+                  发货人{{item.endMessage.name | nameCheck}}
+                </li>
                 <div class="clearBoth"></div>
+              </ul>
+              <div class="address" style="border:none;">
+                <h1>提货地址：{{item.pickMessage.address}}</h1>
+                <h1>发货地址：{{item.endMessage.address}}</h1>
               </div>
             </div>
-            <div class="peoplemessage">
-              <p><span>收货方</span></p>
-              <div style="background: white;box-shadow: 0 0.1rem 10px #d8d8d8;position: relative;margin:0.1rem auto 0 auto;border-radius: 0.2rem;">
-                <div class="messageBox">
-                  <h1 style="font-size: 0.38rem; color:#333;font-weight: bold;float: left;margin-left: 4%;margin-top: 0.52rem;">{{item.endMessage.name}}</h1>
-                  <h1 style="font-size: 0.35rem; color:#999;float: left;margin-left: 0.3rem;margin-top: 0.52rem;">{{item.endMessage.tel}}</h1>
-                  <div class="clearBoth"></div>
-                  <h1 style="font-size: 0.35rem; color:#666;margin-left: 4%;margin-top: 0.4rem;">{{item.endMessage.company}}</h1>
-                  <h1 style="font-size: 0.35rem; color:#999;margin-left: 4%;margin-top: 0.2rem;">{{item.endMessage.address}}</h1>
-                </div>
-                <div class="thirdBox" @click="telphone(item.endMessage.tel)">
-                  <h6></h6>
-                </div>
-                <div class="clearBoth"></div>
-              </div>
-            </div>
-          </div>
-          <div class="insurance">
-            <!--<p>保险</p>
-            <h1>{{item.insurance.name}}<span>¥ {{item.insurance.price}}/次</span></h1>
-            <div class="clearBoth"></div>-->
-            <p>付款方</p>
-            <h1>{{item.pickPay.people}}</h1>
-            <div class="clearBoth"></div>
-            <p>备注</p>
-            <h1 style="text-indent:0.7rem;">{{item.pickPay.remark}}</h1>
-            <div class="clearBoth"></div>
           </div>
           <div class="error" v-if="type > 1 && type < 8 && peopleType == 1">
             <div class="errorFirst" @click="errorFirst()">
                异常反馈
             </div>
-            <div class="errorLine"><div></div></div>
             <div class="errorSecond" @click="errorSecond()">
                费用反馈
             </div>
             <div class="clearBoth"></div>
           </div>
-          <div class="company">
-            <div class="firstBox">
-              <img :src="httpurl + item.owner.logo"  :onerror="errorlogo" class="companyImg">
-            </div>
-            <div class="secondBox">
-              <p><span>{{item.owner.company}}</span></p>
-              <h2>入驻<span>{{item.owner.year}}</span></h2>
-            </div>
-            <div class="thirdBox"  @click="telphone(item.owner.phone)">
-              <h6></h6>
-            </div>
-            <div class="clearBoth"></div>
-          </div>
           <div class="number">
-            订单编号：{{item.number}}<br>
+            运单编号：{{item.number}}<br>
             下单时间：{{item.time}}
+          </div>
+          <div id="sure">
+            <div class="go gogogo" id="gogogo" v-if="peopleType==1">
+              <button v-if="type==1" @click="chufa()">出发</button>
+              <button v-if="type==2" @click="daoda(31)">提货到达</button>
+              <button v-if="type==3" @click="daoda(32)">开始装货</button>
+              <button v-if="type==4"  class="upImg">&nbsp;&nbsp;&nbsp;&nbsp;上传货品</button>
+              <button v-if="type==4" style="width:3.4rem;float: right;margin-right: 0.5rem;" @click="daoda(33)">装货完毕</button>
+              <button v-if="type==5" @click="daoda(41)">运输到达</button>
+              <button v-if="type==6" @click="daoda(42)">开始卸货</button>
+              <button v-if="type==7" @click="daoda(43)">卸货完毕</button>
+              <button v-if="type==8 && endtype == '0' && actFlag == 'Y'" @click="qianshou(endtype)">交接</button>
+              <button v-if="type==8 && endtype == '1'" @click="qianshou(endtype)">签收</button>
+              <button v-if="type==9 && pdlist[0].exp_sign == 1" @click="uploadbill(1)">确认异常签收</button>
+              <button v-if="type==9 && pdlist[0].exp_sign == 0" @click="uploadbill(0)">上传单据</button>
+              <div class="clearBoth"></div>
+            </div>
+            <div class="go"  v-else>
+              <button v-if="type==1" @click="genghuan()">更换车辆</button>
+            </div>
           </div>
         </li>
       </ul>
-    </div>
-    <div id="sure">
-      <div class="go gogogo" id="gogogo" v-if="peopleType==1">
-        <button v-if="type==1" @click="chufa()">出发</button>
-        <button v-else-if="type==2" @click="daoda(31)">提货到达</button>
-        <button v-else-if="type==3" @click="daoda(32)">开始装货</button>
-        <button v-else-if="type==4" @click="daoda(33)">装货完毕</button>
-        <button v-else-if="type==5" @click="daoda(41)">运输到达</button>
-        <button v-else-if="type==6" @click="daoda(42)">开始卸货</button>
-        <button v-else-if="type==7" @click="daoda(43)">卸货完毕</button>
-        <button v-else-if="type==8 && endtype == '0' && actFlag == 'Y'" @click="qianshou(endtype)">交接</button>
-        <button v-else-if="type==8 && endtype == '1'" @click="qianshou(endtype)">签收</button>
-        <button v-else-if="type==9 && pdlist[0].exp_sign == 1" @click="uploadbill(1)">确认异常签收</button>
-        <button v-else-if="type==9 && pdlist[0].exp_sign == 0" @click="uploadbill(0)">上传单据</button>
-      </div>
-      <div class="go"  v-else>
-        <button v-if="type==1" @click="genghuan()">更换车辆</button>
-      </div>
     </div>
     <div id="errorAbnormalBox" v-if="errorAbnormalBox">
          <div id="errorAbnormal">
@@ -334,7 +249,8 @@
           self.pdlist = self.pdlist.concat(curPageData);
           self.pick = true;
           self.logisticsOk = false;
-          self.type = curPageData[0].orderType == '10'?1:curPageData[0].orderType == '20'?2:curPageData[0].orderType == '31'?3:curPageData[0].orderType == '32'?4:curPageData[0].orderType == '33'?5:curPageData[0].orderType == '41'?6:curPageData[0].orderType == '42'?7:curPageData[0].orderType == '43'?8:curPageData[0].orderType == '50'?9:0;
+          self.type = curPageData[0].orderType == '0'? 0 :curPageData[0].orderType == '10'?1:curPageData[0].orderType == '20'?2:curPageData[0].orderType == '31'?3:curPageData[0].orderType == '32'?4:curPageData[0].orderType == '33'?5:curPageData[0].orderType == '41'?6:curPageData[0].orderType == '42'?7:curPageData[0].orderType == '43'?8:curPageData[0].orderType == '50'?9:10;
+          self.type = 4;
           self.mescroll.endSuccess(curPageData.length);
           sessionStorage.setItem("orderPk",self.$route.query.pk);
           sessionStorage.setItem("dispatchPK",self.$route.query.pk);
@@ -346,41 +262,6 @@
                 clearInterval(self.setTimeGoF);
               }
             }
-            if(self.pdlist[0].errorBiglist.length > 0){
-              var htmlFont = document.getElementsByTagName("html");
-              var errorBiglist = document.getElementById("errorBiglist");
-              var errorBiglistFont = errorBiglist.firstChild.offsetHeight / htmlFont[0].style.fontSize.replace("px","");
-              errorBiglist.style.height = errorBiglistFont + "rem";
-            }
-            if(self.type < 8 ){
-              var sss = setInterval(function () {
-                if((_this.carList.length == 1 && $(".amap-lib-marker-to").length == _this.carList.length) || (_this.carList.length>1&&$(".amap-lib-marker-to").length - 2  == _this.carList.length) ){
-                  clearInterval(sss);
-                  for(var i = 0 ;i < $(".amap-lib-marker-to").length ;i++){
-                    var dd = 0;
-                    if( _this.carList.length > 1 ){
-                      if(i == 0){
-                        dd = _this.carList.length - 1;
-                      }else if(i == ($(".sw-slides li").length -1)){
-                        dd = 0 ;
-                      }else{
-                        dd = i -1;
-                      }
-                    }else{
-                      dd = i ;
-                    }
-                    var ordertype = _this.carList[dd].ordertype;
-                    if(ordertype == '20' || ordertype == '31' || ordertype == '32'){
-                      $(".amap-lib-marker-to").eq(i).addClass("amaplibmarkertos");
-                      $(".amap-lib-marker-from").eq(i).addClass("amaplibmarkerfroms");
-                    }else{
-                      $(".amap-lib-marker-to").eq(i).addClass("amaplibmarkerto");
-                      $(".amap-lib-marker-from").eq(i).addClass("amaplibmarkerfrom");
-                    }
-                  }
-                }
-              },100);
-            }
             if ((self.type == 1) && self.peopleType == 2) {
               $("#erweimaLook").hide();
             } else if (self.peopleType == 1) {
@@ -391,123 +272,6 @@
               }
             } else {
               $("#erweimaLook").hide();
-            }
-            if(self.type >0 && self.type < 8 ){
-              if($(".sw-bullet").length == 0 && self.carList.length > 1){
-                $('#full_feature').swipeslider();
-              }
-            }
-            if(self.type >0 && self.type <8){
-              for(var i = 0; i<$(".sw-slides li").length;i++){
-                var price = self.carList.length > 1 ?(i == 0 ? self.carList[self.carList.length-1].price:i ==$(".sw-slides li").length - 1?self.carList[0].price:self.carList[i-1].price):self.carList[i].price;
-                var id =  self.carList.length > 1 ? ( i == 0?self.carList.length - 1+'000':i ==$(".sw-slides li").length - 1?'0111' :i-1):i;
-                $("#star_grade"+id).html("");
-                $("#star_grade"+id).markingSystem({
-                  num: 5,
-                  havePoint: true,
-                  haveGrade: true,
-                  backgroundImageInitial:require('../../images/star_hollow.png'),
-                  backgroundImageOver:require('../../images/star_solid.png'),
-                  unit: '星',
-                  grade:price,
-                  height: 0.4* $("html").css("font-size").replace("px", ""),
-                  width: 0.4* $("html").css("font-size").replace("px", ""),
-                });
-                var _this = self;
-                var cc = 0;
-                var dd = 0;
-                if( self.carList.length > 1 ){
-                  if(i == 0){
-                    cc = (self.carList.length-1)+"000";
-                    dd = self.carList.length - 1;
-                  }else if(i == ($(".sw-slides li").length -1)){
-                    cc = "0111"
-                    dd = 0 ;
-                  }else{
-                    cc = i - 1 ;
-                    dd = i -1;
-                  }
-                }else{
-                  cc = i ;
-                  dd = i ;
-                }
-                var ee = i;
-                var ordertype = _this.carList[dd].ordertype;
-                if(ordertype == '20' || ordertype == '31' || ordertype == '32' || ordertype == '33' || ordertype == '41'|| ordertype == '42' ){
-                  var map = new AMap.Map("container"+cc, {
-                    resizeEnable: true,
-                    center: [_this.carList[dd].startJ, _this.carList[dd].startW],//地图中心点
-                    zoom: 13 //地图显示的缩放级别
-                  });
-                  AMap.plugin(['AMap.Scale'],
-                    function(){
-                      map.addControl(new AMap.Scale());
-                    });
-                  //构造路线导航类
-                  var driving = new AMap.Driving({
-                    map: map,
-                    panel: "panel"+cc
-                  });
-                  var marker;
-                  var ordertyper = _this.carList[dd].ordertype;
-                  if(ordertyper ==  "33"  || ordertyper == '41'|| ordertype == '42' ){
-                    var lnglat = new AMap.LngLat(_this.carList[dd].endJ, _this.carList[dd].endW);
-                    _this.compareDistanc(lnglat,dd);
-                    driving.search([_this.carList[dd].startJ, _this.carList[dd].startW], [_this.carList[dd].endJ, _this.carList[dd].endW], function(status, result) {});
-                      /*if (marker) {
-                        marker.setMap(null);
-                        marker = null;
-                      }*/
-                      marker = new AMap.Marker({
-                        icon:require('../../images/start1.png'),
-                        position: [_this.carList[dd].peopleJ, _this.carList[dd].peopleW]
-                      });
-                      marker.setMap(map);
-                  }else{
-                    var lnglat = new AMap.LngLat(_this.carList[dd].startJ, _this.carList[dd].startW);
-                    _this.compareDistanc(lnglat,dd);
-                    driving.search([_this.carList[dd].peopleJ, _this.carList[dd].peopleW],[_this.carList[dd].startJ, _this.carList[dd].startW], function(status, result) {});
-                  }
-                }
-              }
-            }
-            for(var x = 0 ; x < $(".imgBoxOverFllow").length;x++){
-              var className = document.getElementsByClassName("peopleImg")[x];
-              className.onload = function () {
-                for (var i = 0; i < $(".imgBoxOverFllow").length; i++) {
-                  var heightImg = $(".peopleImg").eq(i).height();
-                  var heightBox = $(".imgBoxOverFllow").eq(i).height();
-                  var widthBox = $(".imgBoxOverFllow").eq(i).width();
-                  var htmlSize = $("html").css("fontSize").replace("px", "");
-                  if (heightImg > heightBox) {
-                    $(".peopleImg").eq(i).css("marginTop", (heightBox - heightImg) / 2 / htmlSize + "rem");
-                  } else {
-                    $(".peopleImg").eq(i).height(heightBox / htmlSize + "rem");
-                    $(".peopleImg").eq(i).width("auto");
-                    var widthImg = $(".peopleImg").eq(i).width();
-                    $(".peopleImg").eq(i).css("marginLeft", (widthBox - widthImg) / 2 / htmlSize + "rem");
-                  }
-                }
-              }
-            }
-            for(var x = 0 ; x < $(".firstBox").length;x++){
-              var className = document.getElementsByClassName("companyImg")[x];
-              className.onload = function () {
-                for (var i = 0; i < $(".firstBox").length; i++) {
-                  var heightImg = $(".companyImg").eq(i).height();
-                  var heightBox = $(".firstBox").eq(i).height();
-                  var widthBox = $(".firstBox").eq(i).width();
-                  var htmlSize = $("html").css("fontSize").replace("px", "");
-                  if (heightImg > heightBox) {
-                    $(".companyImg").eq(i).css("marginTop", (heightBox - heightImg) / 2 / htmlSize + "rem");
-                  } else {
-                    $(".companyImg").eq(i).height(heightBox / htmlSize + "rem");
-                    $(".companyImg").eq(i).width("auto");
-                    var widthImg = $(".companyImg").eq(i).width();
-                    $(".companyImg").eq(i).css("marginLeft", (widthBox - widthImg) / 2 / htmlSize + "rem");
-                  }
-                }
-              }
             }
           });
         }, function() {
@@ -759,50 +523,6 @@
           _this.$router.push({ path: '/track/uploadBill',query:{pk:_this.$route.query.pk,expSign:_this.pdlist[0].exp_sign}});
         }
       },
-      genghuan:function () {
-        var _this = this;
-        if(_this.pdlist[0].pkCarHang == ""){
-          sessionStorage.setItem("LABELTOP",JSON.stringify({
-             number:_this.pdlist[0].pkTransType,
-             type:0,
-             serach:""
-          }))
-          sessionStorage.setItem("carsure",JSON.stringify([{
-            pkcar:_this.pdlist[0].pkCar,
-            carModel:"整车",
-            cartype:0
-          }]))
-        }else{
-          sessionStorage.setItem("LABELTOP",JSON.stringify({
-            number:0,
-            type:1,
-            serach:"",
-            top:0,
-          }))
-          sessionStorage.setItem("carsureListS",JSON.stringify({
-            pkcar:_this.pdlist[0].pkCar,
-            carModel:"车头",
-            cartype:1
-          }))
-          sessionStorage.setItem("GUALABELTOP",JSON.stringify({
-            number:_this.pdlist[0].pkTransType,
-            type:0,
-            serach:"",
-          }))
-          sessionStorage.setItem("carsure",JSON.stringify([{
-            pkcar:_this.pdlist[0].pkCar,
-            carModel:"车头",
-            cartype:0
-          },{
-            pkcar:_this.pdlist[0].pkCarHang,
-            carModel:"车挂",
-            cartype:0
-          }]))
-        }
-        sessionStorage.setItem("carPKlistGo",_this.pdlist[0].pkCar + "," + _this.pdlist[0].pkCarHang);
-        androidIos.addPageList();
-        _this.$router.push({ path: '/site/car'});
-      },
       dayVsDay:function () {
         var _this = this;
         var nowTime = (new Date()).getTime();
@@ -1002,9 +722,8 @@
     //延时一秒,模拟联网
     setTimeout(function () {
       if(thisThat.setTimeGoF){
-        clearInterval(thisThat.setTimeGoF);
+         clearInterval(thisThat.setTimeGoF);
       }
-      thisThat.carList = [];
       thisThat.$nextTick(function () {
         if(thisThat.$route.query.pk != undefined){
           $.ajax({
@@ -1047,6 +766,12 @@
                 thisThat.endtype = loadSegmentDetail.type;
                 sessionStorage.setItem("dataStart",loadSegmentDetail.delivery.addressLatAndLon);
                 sessionStorage.setItem("dataEnd",loadSegmentDetail.arrival.addressLatAndLon);
+                var list1 = loadSegmentDetail.deliDate.split(":");
+                list1.splice(2,1);
+                loadSegmentDetail.deliDate = list1.join(":");
+                var list2 = loadSegmentDetail.arriDate.split(":");
+                list2.splice(2,1);
+                loadSegmentDetail.arriDate = list2.join(":");
                 var pdlist = [{
                   orderType:loadSegmentDetail.trackingStatusValue,
                   orderValue:loadSegmentDetail.trackingStatus == null ? "已确认" : loadSegmentDetail.trackingStatus,
@@ -1082,7 +807,7 @@
                   },
                   pickPay:{
                     people:"发货方",
-                    remark:loadSegmentDetail.remark
+                    remark:loadSegmentDetail.remark == "" || loadSegmentDetail.remark == null ? "暂无备注" : loadSegmentDetail.remark
                   },
                   owner:{
                     logo:loadSegmentDetail.customerDto!=null?loadSegmentDetail.customerDto.customerImg:"",
@@ -1095,12 +820,11 @@
                   time:loadSegmentDetail.createTime,
                   pkCar:loadSegmentDetail.pkCar,
                   trackingTime:loadSegmentDetail.trackingTime,
-                  pkCar: loadSegmentDetail.pkCar,
                   pkCarHang:loadSegmentDetail.pkCarHang,
                   pkTransType:loadSegmentDetail.pkTransType,
                   exp_sign:loadSegmentDetail.expSign == "Y" ? "1" : "0",
                 }]
-                thisThat.carList = [];
+                thisThat.carList= [];
                 thisThat.actFlag = loadSegmentDetail.actFlag;
                 for(var i = 0; i < loadSegmentDetail.driverDto.length ; i++ ){
                   var json = {
@@ -1117,7 +841,9 @@
                     peopleW:loadSegmentDetail.driverDto[i].driverPosition.split(",")[1],
                     ordertype:loadSegmentDetail.trackingStatusValue*1,
                     price:loadSegmentDetail.driverDto[i].score*1,
-                    length:"",
+                    length:loadSegmentDetail.distance/1000,
+                    carno:loadSegmentDetail.carNo,
+                    carHangNo:loadSegmentDetail.carHangNo
                   }
                   thisThat.carList.push(json);
                 }
@@ -1166,18 +892,8 @@
     width:100%;
     min-height:1.8rem;
   }
-  .top span{
-    font-size: 0.45rem;
-    color: white;
-    position: absolute;
-    top: 0.5rem;
-    left: 1rem;
-  }
-  .top img{
-    width:100%;
-  }
   .message{
-    width:94%;
+    width:100%;
     margin: 0.2rem auto 0 auto;
   }
   .goodsmessage{
@@ -1191,7 +907,7 @@
   #trackMore .mescroll{
     position: absolute;
     top:0rem;
-    bottom: 1.2rem;
+    bottom: 0rem;
     height: auto;
   }
   .goodsmessage p{
@@ -1244,70 +960,9 @@
     background-size: 0.5rem 0.5rem;
     background-position: 0 50%;
   }
-  .peoplemessage{
-    width:100%;
-    margin-top: 0.25rem;
-    position: relative;
-  }
-  .peoplemessage p{
-    width:100%;
-    line-height: 0.8rem;
-  }
-  .peoplemessage h1{
-    color:#333;
-    font-size: 0.3125rem;
-    line-height: 0.5rem;
-  }
-  .messageBox{
-    float: left;
-    width:80%;
-    margin-bottom: 0.2rem;
-  }
-  .peoplemessage p span{
-    color:#999;
-    font-size: 0.35rem;
-    margin-right: 0.5rem;
-    font-weight: bold;
-    /*padding: 0 0.2rem 0.1rem 0.2rem;
-    margin-left: 0.2rem;*/
-  }
   .colorFull{
     color:#2c9cff!important;
     border-bottom: 2px solid #2c9cff;
-  }
-  .insurance{
-    width:90%;
-    margin:0.4rem auto 0 auto;
-    padding: 0.2rem 2%;
-    box-shadow: 0 0.1rem 10px #d8d8d8;
-    border-radius: 0.2rem;
-    background: white;
-  }
-  .insurance p{
-    font-size: 0.35rem;
-    color:#999;
-    line-height: 0.8rem;
-    float: left;
-  }
-  .insurance h1{
-    font-size: 0.35rem;
-    line-height: 0.8rem;
-    color:#666;
-    float: right;
-  }
-  .insurance h1 span{
-    font-size: 0.35rem;
-    color:#ff4e18;
-    margin-left: 0.2rem;
-  }
-  .company,.carrier{
-    width: 90%;
-    padding: 0.2rem 2%;
-    margin: 0.4rem auto 0 auto;
-    box-shadow: 0 0.1rem 10px #d8d8d8;
-    border-radius: 0.2rem;
-    background: white;
-    position: relative;
   }
   .firstBox{
     float: left;
@@ -1370,29 +1025,25 @@
     margin-left: 0.2rem;
   }
   .number{
-    width:94%;
-    margin: 0.6rem auto 0.4rem auto;
+    width:90%;
+    margin: 0.3rem auto 0.7rem auto;
     font-size: 0.34rem;
-    color:#999;
+    color:#666;
     line-height: 0.71rem;
   }
   #sure .go{
-    position: fixed;
-    bottom:0;
-    height:1.2rem;
-    width:100%;
+    margin:0.7rem  auto 0.4rem auto;
+    width:9rem;
   }
   #sure button{
     width:100%;
-    background: -webkit-linear-gradient(left, #00C4FF , #0074FF); /* Safari 5.1 - 6.0 */
-    background: -o-linear-gradient(right, #00C4FF, #0074FF); /* Opera 11.1 - 12.0 */
-    background: -moz-linear-gradient(right, #00C4FF, #0074FF); /* Firefox 3.6 - 15 */
-    background: linear-gradient(to right, #00C4FF , #0074FF); /* 标准的语法 */
+    background-color: #1869A9;
     color:white;
     font-size: 0.4rem;
-    letter-spacing: 0.0625rem;
     line-height: 1.21rem;
     float: left;
+    border-radius: 0.1rem;
+    border: 1px solid #1869A9;
   }
   #sure button span{
     color:white;
@@ -1405,124 +1056,37 @@
   .colorBottom{
     background: #88c4ff!important;
   }
-  .waitForTime{
-    width:90%;
-    margin:0.2rem auto 0 auto;
-    background: white;
-    border-radius: 0.2rem;
-    box-shadow: 0 0.1rem 10px #d8d8d8;
-    padding: 0rem 2%;
-    line-height: 1rem;
-    font-size: 0.4rem;
-  }
-  .logisticsBox{
-    min-height:0.7rem;
-    overflow: hidden;
-    background: white;
-    margin: 0.3rem auto 0 auto;
-    padding-top: 0.3rem;
-    width: 94%;
-    border-radius: 0.12rem;
-    box-shadow: 0 0.1rem 10px #d8d8d8;
-  }
-  .logisticsBoxDown{
-    height: auto!important;
-    max-height: none!important;
-  }
-  .logisticsBox li{
-    width: 97%;
-    margin-left: 3%;
-    position: relative;
-    min-height: 0.7rem;
-  }
-  .logisticsBox li .logisticsL{
-    float: left;
-    width:10%;
-    position: absolute;
-    height: 100%;
-  }
-  .logisticsR{
-    float: left;
-    min-width:44%;
-    max-width: 80%;
-    margin-left: 10%;
-    font-size: 0.3125rem;
-    color:#666;
-    line-height: 0.35rem;
-  }
-  .logisticsBox li img{
-    width:0.35rem;
-    float: left;
-    margin:0.1rem 0 0 0.1rem!important;
-  }
-  .logisticsCircle{
-    width:0.3rem;
-    height: 0.3rem;
-    border-radius: 50%;
-    margin:0 auto;
-    background: rgba(228, 228, 228, 1);
-  }
-  .logisticsShuxian{
-    width:1px;
-    min-height:0.4rem;
-    margin:0 auto;
-    position: absolute;
-    top:0.3rem;
-    bottom: 0;
-    height: auto;
-    left: 50%;
-    margin-left: -0.5px;
-    background: rgba(228, 228, 228, 1);
-  }
-  .logisticsCircleFull{
-    background: #3399FF!important;
-  }
-  .logisticsImg{
-    -webkit-transform:scaleY(-1);
-    transform:scaleY(-1);
-  }
   .error{
-    width: 90%;
-    padding: 0.2rem 2%;
-    margin: 0.4rem auto;
+    width: 100%;
+    padding: 0.2rem 0%;
+    margin: 0.27rem auto;
     background: white;
-    box-shadow: 0 0.1rem 10px #d8d8d8;
-    border-radius: 0.2rem;
   }
   .errorFirst{
-    width:48%;
+    width:2rem;
     float: left;
-    line-height: 1.5rem;
-    font-size: 0.375rem;
-    color:#333;
-    text-align: center;
+    line-height: 1.1rem;
+    font-size: 0.32rem;
+    color:#666;
+    text-align: right;
     background-image: url("../../images/error.png");
     background-repeat: no-repeat;
-    background-size: 0.5rem 0.5rem;
-    background-position: 22% 50%;
+    background-size: 0.45rem;
+    background-position: 0 50%;
+    margin-left: 2.25rem;
   }
   .errorSecond{
-    width:48%;
+    width:2rem;
     float: right;
-    line-height: 1.5rem;
-    font-size: 0.375rem;
-    color:#333;
-    text-align: center;
-    background-image: url("../../images/error.png");
+    text-align: right;
+    line-height: 1.1rem;
+    font-size: 0.32rem;
+    color:#666;
+    background-image: url("../../images/error2.png");
     background-repeat: no-repeat;
-    background-size: 0.5rem 0.5rem;
-    background-position: 22% 50%;
-  }
-  .errorLine{
-    width:4%;
-    height:1.5rem;
-    float: left;
-  }
-  .errorLine div{
-    width:1px;
-    height:0.75rem;
-    background: #dbdbdb;
-    margin: 0.375rem auto;
+    background-size: 0.53rem;
+    background-position: 0% 50%;
+    margin-right: 2.25rem;
   }
   #errorAbnormalBox,#errorPriceBox,#cancelReasonBox{
      width:100%;
@@ -1624,72 +1188,6 @@
     border-color:#3399FF!important;
     color:#3399FF!important;
   }
-  #carPeopleMessage{
-    padding:0.2rem 3%;
-    background: white;
-    width: 94%;
-    margin: 0 auto;
-    box-shadow: 0 0.1rem 10px #d8d8d8;
-    position: relative;
-    border-bottom-left-radius: 0.2rem;
-    border-bottom-right-radius: 0.2rem;
-  }
-  #carPeopleMessage .imgBoxOverFllow{
-    width:1.2rem;
-    height:1.2rem;
-    overflow: hidden;
-    float: left;
-    border-radius: 50%;
-    line-height: 1.2rem;
-    margin-top: 0.2rem;
-  }
-  #carPeopleMessage .imgBoxOverFllow img{
-    display: inline-block;
-    vertical-align: middle;
-  }
-  #carPeopleMessage .carPeopleMessage{
-    float: left;
-    margin-left: 0.3rem;
-    margin-top: 0.1rem;
-    position: relative;
-    width:70%;
-  }
-  #carPeopleMessage .carPeopleMessage h2{
-    font-size: 0.3125rem;
-    color:#999;
-    position: absolute;
-    right:0;
-    top:0;
-  }
-  #carPeopleMessage .carPeopleMessage h2 span{
-    font-size: 0.3125rem;
-    color:#999;
-  }
-  #carPeopleMessage .carPeopleMessage p{
-    font-size: 0.3125rem;
-    color:#333;
-  }
-  #carPeopleMessage .carPeopleMessage h1{
-    font-size: 0.3125rem;
-    color:#999;
-  }
-  #carPeopleMessage .tel{
-    width:1.5rem;
-    position: absolute;
-    right:0;
-    top:50%;
-    margin-top: -0.56rem;
-  }
-  #carPeopleMessage .tel p{
-    font-size: 0.3125rem;
-    color:#333;
-    text-align: center;
-  }
-  #carPeopleMessage .tel img{
-    display: block;
-    margin: 0 auto;
-    width:1.12rem;
-  }
   #full_feature {
     padding-top: 0!important;
     width: 94%;
@@ -1713,5 +1211,198 @@
     right: 10px;
     width: 280px;
     display: none!important;
+  }
+  .topStatus,.proStatus,.top{
+    width:100%;
+    background: white;
+    margin-top: 0.27rem;
+  }
+  .top p{
+    width:8.4rem;
+    margin-left:0.44rem ;
+    padding-left: 1.16rem;
+    background-image: url("../../images/trackMoreAddress.png");
+    background-repeat: no-repeat;
+    background-position: 0 50%;
+    background-size: 0.85rem;
+    line-height: 1.17rem;
+    color:#373737;
+    font-size:0.427rem ;
+    border-bottom: 1px solid #F5F5F5;
+    position: relative;
+  }
+  .top p img{
+     position: absolute;
+    right:0.413rem;
+    top:50%;
+    width:0.253rem;
+    margin-top: -0.213rem;
+  }
+  .topStatus p{
+    width:8.4rem;
+    margin-left:0.44rem ;
+    padding-left: 1.16rem;
+    background-image: url("../../images/trackMorePeopel.png");
+    background-repeat: no-repeat;
+    background-position: 0 50%;
+    background-size: 0.85rem;
+    line-height: 1.17rem;
+    color:#373737;
+    font-size:0.427rem ;
+    border-bottom: 1px solid #F5F5F5;
+  }
+  .proStatus p{
+    width:8.4rem;
+    margin-left:0.44rem ;
+    padding-left: 1.16rem;
+    background-image: url("../../images/robbingPro.png");
+    background-repeat: no-repeat;
+    background-position: 0 50%;
+    background-size: 0.85rem;
+    line-height: 1.17rem;
+    color:#373737;
+    font-size:0.427rem ;
+    border-bottom: 1px solid #F5F5F5;
+  }
+  .topStatus ul{
+    width:9.56rem;
+    margin-left:0.44rem ;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid #F5F5F5;
+  }
+  .topStatus ul li{
+    width:50%;
+    float: left;
+    border-top: 1px solid white;
+    color:#373737;
+    font-size:0.32rem ;
+    text-align: center;
+  }
+  .topStatus ul li img{
+    display: block;
+    width:0.827rem;
+    margin:0.267rem auto ;
+  }
+  .topStatus  .address{
+    width:9.56rem;
+    margin-left:0.44rem ;
+    border-bottom: 1px solid #F5F5F5;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
+  .topStatus  .address h1{
+    color:#666;
+    font-size: 0.33rem;
+  }
+  .topStatus  .time{
+    width:9.56rem;
+    margin-left:0.44rem ;
+    border-bottom: 1px solid #F5F5F5;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
+  .topStatus  .time h1{
+    color:#666;
+    float: left;
+    font-size: 0.33rem;
+    width:50%;
+  }
+  .proStatus ul{
+    width:9.56rem;
+    margin-left:0.44rem ;
+    padding-bottom: 0.3rem;
+    padding-top: 0.375rem;
+    border-bottom: 1px solid #F5F5F5;
+  }
+  .proStatus ul li{
+    color:#666;
+    font-size:0.32rem ;
+    background-image: url("../../images/robbingiocn1.png");
+    background-repeat: no-repeat;
+    padding-left: 0.6rem;
+    background-position: 0 0.03rem;
+    background-size: 0.375rem;
+    margin-bottom: 0.3rem;
+    line-height: 0.4rem;
+  }
+  .proStatus ul li span{
+    color:#666;
+    font-size:0.32rem ;
+  }
+  .proStatus  .price{
+    padding-bottom: 0.2rem;
+  }
+  .proStatus  .price h1{
+    color:#666;
+    float: left;
+    font-size: 0.33rem;
+    margin-right:0.6rem ;
+  }
+  .startEnd{
+    width:9.26rem;
+    margin-left:0.44rem ;
+    border-bottom: 1px solid #F5F5F5;
+    padding: 0.3rem 0.3rem 0.3rem 0;
+  }
+  .startEnd img{
+    display: inline-block;
+    margin:0rem 0.3rem 0.13rem 0.3rem;
+    width:0.45rem;
+  }
+  .startEndSpan{
+    float: left;
+    font-size: 0.42rem;
+    line-height: 0.56rem;
+    color:#333;
+  }
+  .waitForTime{
+     width:90%;
+    padding: 0.3rem 5%;
+    background: white;
+    font-size: 0.4rem;
+    color:#373737;
+    margin-top: 0.27rem;
+  }
+  .carNumber{
+    position: relative;
+    width:100%;
+  }
+  .carFloatLeft{
+    float: left;
+    font-size: 0.427rem;
+    color:#373737;
+    margin-left: 1.26rem;
+    padding: 0.74rem 0;
+  }
+  .carFloatRight{
+    position: absolute;
+    min-width: 4rem;
+    right:0.82rem;
+    top:50%;
+    margin-top:-0.56rem ;
+  }
+  .carFloatRight h3{
+    float: left;
+    margin-right:0.3rem ;
+    font-size: 0.32rem;
+    color:#666;
+    line-height: 0.56rem;
+  }
+  .carFloatRight h2{
+    float: right;
+    font-size: 0.32rem;
+    color:#666;
+    line-height: 0.56rem;
+  }
+  .upImg{
+    width:3.4rem!important;
+    margin-left: 0.5rem;
+    border-color:#666666!important;
+    color:#666666!important;
+    background-color: transparent!important;
+    background-image: url("../../images/icon-canmore.png");
+    background-size:0.48rem;
+    background-repeat: no-repeat;
+    background-position:0.42rem 50% ;
   }
 </style>

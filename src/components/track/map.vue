@@ -69,7 +69,7 @@
             }
           }
         });
-        if(ordertype ==  "20" || ordertype == "31" || ordertype =="32" || ordertype=="33" || ordertype == '41'|| ordertype == '42'){
+        if(ordertype ==  "10"  || ordertype ==  "20" || ordertype == "31" || ordertype =="32" || ordertype=="33" || ordertype == '41'|| ordertype == '42'){
           var map = new AMap.Map("container", {
             resizeEnable: true,
             center: [_this.carList.startJ, _this.carList.startW],//地图中心点
@@ -86,25 +86,16 @@
           });
           var marker;
           var ordertyper = _this.carList.ordertype;
-          if(ordertyper ==  "33"   || ordertype == '41'  || ordertype == '42'){
-            driving.search([_this.carList.startJ, _this.carList.startW], [_this.carList.endJ, _this.carList.endW], function(status, result) {
+          if(ordertyper ==  "31"   ||ordertyper ==  "32"   || ordertyper ==  "33"   || ordertype == '41'  || ordertype == '42'){
+            driving.search([_this.carList.peopleJ, _this.carList.peopleW], [_this.carList.endJ, _this.carList.endW], function(status, result) {
               var sss = setInterval(function () {
                 if($(".amap-lib-marker-to").length>0){
                   clearInterval(sss);
                   $("#container").find(".amap-lib-marker-to").addClass("amaplibmarkerto");
-                  $("#container").find(".amap-lib-marker-from").addClass("amaplibmarkerfrom");
+                  $("#container").find(".amap-lib-marker-from").addClass("amaplibmarkerfroms");
                 }
               },100)
             });
-            if (marker) {
-              marker.setMap(null);
-              marker = null;
-            }
-            marker = new AMap.Marker({
-              icon: require('../../images/start1.png'),
-              position: [_this.carList.peopleJ, _this.carList.peopleW]
-            });
-            marker.setMap(map);
           }else{
             driving.search([_this.carList.peopleJ, _this.carList.peopleW],[_this.carList.startJ, _this.carList.startW], function(status, result) {
               var sss = setInterval(function () {
@@ -143,16 +134,16 @@
                 }
               }
             });
-            if(ordertyper ==  "33"){
-              if (marker) {
-                marker.setMap(null);
-                marker = null;
-              }
-              marker = new AMap.Marker({
-                icon: require('../../images/start1.png'),
-                position: [_this.carList.peopleJ, _this.carList.peopleW]
+            if(ordertyper ==  "31"   ||ordertyper ==  "32"   || ordertyper ==  "33"   || ordertype == '41'  || ordertype == '42'){
+              driving.search([_this.carList.peopleJ, _this.carList.peopleW], [_this.carList.endJ, _this.carList.endW], function(status, result) {
+                var sss = setInterval(function () {
+                  if($(".amap-lib-marker-to").length>0){
+                    clearInterval(sss);
+                    $("#container").find(".amap-lib-marker-to").addClass("amaplibmarkerto");
+                    $("#container").find(".amap-lib-marker-from").addClass("amaplibmarkerfroms");
+                  }
+                },100)
               });
-              marker.setMap(map);
             }else{
               driving.search([_this.carList.peopleJ,_this.carList.peopleW],[_this.carList.startJ, _this.carList.startW], function(status, result) {
                 var sss = setInterval(function () {

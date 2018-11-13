@@ -19,10 +19,10 @@
             <img v-if="items.ifUrgent == 'Y'" class="jinjiOrder" src="../images/jiaji.png">
             <div class="proBox">
               <div class="qiangRobbing">抢单</div>
-              <p class="startEnd"><span class="startEndSpan">{{items.deliAddr}}<img src="../images/addressImg.png">{{items.arriAddr}}</span><div class="clearBoth"></div></p>
+              <div class="startEnd"><span class="startEndSpan">{{items.deliAddr}}<img src="../images/addressImg.png">{{items.arriAddr}}</span><div class="clearBoth"></div></div>
               <div class="proBoxList transType">{{items.transType}}/{{items.goodCode}}</div>
               <div class="proBoxList wvolume"><span>{{items.num}}件</span><span  v-if="items.weight*1 > 0">/{{items.weight*1}}吨</span><span v-if="items.volume*1 > 0">/{{items.volume*1}}立方米</span></div>
-              <div class="proBoxList menu">{{items.memo}}</div>
+              <div class="proBoxList menu" v-html="items.memo == '' || items.memo == null ? '暂无备注' : items.memo "></div>
               <div class="proBoxList deliDateTime">{{items.deliDate | carrierTime}}</div>
               <div class="proBoxList callTel" @click.stop="tel(items.arriMobile)">{{items.arriMobile}}</div>
               <div class="clearBoth"></div>

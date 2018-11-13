@@ -37,6 +37,7 @@
           sessionStorage.removeItem("driverMessage");
           localStorage.removeItem("DRIVERSFETMESSAGE");
           sessionStorage.removeItem("trackTap");
+         sessionStorage.removeItem("histroyTrackTap");
           localStorage.removeItem("PEOPLEPHOTO");
           androidIos.bridge(_this);
       },
@@ -127,6 +128,7 @@
                   photo:  getUserInfo.photo,
                   status:  getUserInfo.status,
                   corpName:  getUserInfo.corpName,
+                  driverType:1,
                 }));
                 status =   getUserInfo.status;
               }else{

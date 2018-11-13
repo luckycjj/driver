@@ -82,6 +82,7 @@
                 photo:  getUserInfo.photo,
                 status:  getUserInfo.status,
                 corpName:  getUserInfo.corpName,
+                driverType:1,
               }));
             }else{
               androidIos.second(getUserInfo.message);

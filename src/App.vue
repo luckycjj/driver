@@ -68,6 +68,7 @@
                 photo:  getUserInfo.photo,
                 status:  getUserInfo.status,
                 corpName:  getUserInfo.corpName,
+                driverType:1,
               }));
             }else{
               androidIos.second(getUserInfo.message);
@@ -126,7 +127,7 @@
         _this.title = document.title;
         _this.html = location.href;
         androidIos.judgeIphoneX("carTitleBox",0);
-        if(_this.html.indexOf("/login") != -1 || _this.html.indexOf("/robbingList") != -1|| _this.html.indexOf("/user") != -1){
+        if(_this.html.indexOf("/login") != -1 || _this.html.indexOf("/robbingList") != -1  || _this.html.indexOf("/trackList") != -1|| _this.html.indexOf("/user") != -1){
           $("#appBox").hide();
         }else{
           $("#appBox").show();

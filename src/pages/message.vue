@@ -12,7 +12,7 @@
         </li>
       </ul>
     </div>
-    <footComponent :idx='2'></footComponent>
+    <footComponent :idx='1'></footComponent>
   </div>
 </template>
 

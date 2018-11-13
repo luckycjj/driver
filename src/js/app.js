@@ -65,8 +65,8 @@ var androidIos = {
   },
   ajaxHttp: function () {
    //var http = 'http://10.10.10.156:8085';
-    var http = 'http://10.10.10.215:8085';
-   // var http = 'http://222.73.159.76:8085';
+   // var http = 'http://10.10.10.219:8085';
+   var http = 'http://222.73.159.76:8085';
     return http;
   },
   addPageList: function () {
@@ -569,7 +569,7 @@ var androidIos = {
         paddingTop = api.safeArea.top + "px";
       }
       catch (e){
-        paddingBottom = 10 + "px";
+        paddingBottom = 0 + "px";
         paddingTop = 10 + "px";
       }
       var docuId = document.getElementById(id);

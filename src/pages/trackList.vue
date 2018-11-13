@@ -1,6 +1,13 @@
 <template>
-  <div id="trackList" style="top:1.3rem">
-    <div id="title" v-title data-title="订单"></div>
+  <div id="trackList" style="top:0rem">
+    <div id="title" v-title data-title="任务"></div>
+    <div id="top">
+      任务
+      <div class="messageLDbox" @click="orderScreen()">
+        <img src="../images/orderScreen.png">
+      </div>
+      <h3  id="manage" @click="histroy()" class="asd"><span>历史订单</span></h3>
+    </div>
     <div id="showBox">
       <div class="wrapper" id="trackTab">
         <div class="scroller">
@@ -28,7 +35,7 @@
         </ul>
       </div>
     </div>
-    <footComponent ref="footcomponent" :idx='1'></footComponent>
+    <footComponent ref="footcomponent" :idx='driverType'></footComponent>
   </div>
 </template>
 
@@ -61,10 +68,12 @@
                prolist:[]
              }],
             tabShow:0,
+            driverType:0,
           }
        },
        mounted:function () {
          var _this = this;
+         _this.driverType = JSON.parse(sessionStorage.getItem("driverMessage")).driverType == 1 ? 1 : 0;
          sessionStorage.removeItem("weh");
          sessionStorage.removeItem("nowOrderCartype");
          sessionStorage.removeItem("dataStart");
@@ -74,6 +83,7 @@
          sessionStorage.removeItem("carPKlistGo");
          sessionStorage.removeItem("driverPk");
          sessionStorage.removeItem("ORDERSCREEN");
+         sessionStorage.removeItem("histroyTrackTap");
          androidIos.judgeIphoneX("mescroll",1);
          androidIos.judgeIphoneX("trackList",2);
          androidIos.bridge(_this);
@@ -221,22 +231,20 @@
            var _this = this;
            $.ajax({
              type: "POST",
-             url: androidIos.ajaxHttp() + "/carrier/carrOrderListHeaderIcon",
+             url: androidIos.ajaxHttp() + "/order/orderCount",
              data:JSON.stringify({
                userCode:sessionStorage.getItem("token"),
                source:sessionStorage.getItem("source"),
-               type:1,
              }),
              contentType: "application/json;charset=utf-8",
              dataType: "json",
              timeout: 30000,
              success: function (carrOrderListHeaderIcon) {
                if (carrOrderListHeaderIcon.success == "1") {
-                 _this.list[0].number = carrOrderListHeaderIcon.notTransportedCount*1 + carrOrderListHeaderIcon.onTheWayCount*1 + carrOrderListHeaderIcon.arrivedCount*1 + carrOrderListHeaderIcon.completedCount*1;
-                 _this.list[1].number = carrOrderListHeaderIcon.notTransportedCount*1;
-                 _this.list[2].number = carrOrderListHeaderIcon.onTheWayCount*1;
-                 _this.list[3].number = carrOrderListHeaderIcon.arrivedCount*1;
-               /*  _this.list[4].number = carrOrderListHeaderIcon.completedCount*1;*/
+                 _this.list[0].number = carrOrderListHeaderIcon.waitTransport*1 + carrOrderListHeaderIcon.transporting*1 + carrOrderListHeaderIcon.alreadySign*1;
+                 _this.list[1].number = carrOrderListHeaderIcon.waitTransport*1;
+                 _this.list[2].number = carrOrderListHeaderIcon.transporting*1;
+                 _this.list[3].number = carrOrderListHeaderIcon.alreadySign*1;
                }else{
                  androidIos.second(carrOrderListHeaderIcon.message);
                }
@@ -253,6 +261,16 @@
          tel:function (tel) {
            androidIos.telCall(tel);
          },
+         orderScreen:function () {
+           var _this = this;
+           androidIos.addPageList();
+           _this.$router.push({ path: "/orderScreen"});
+         },
+         histroy:function () {
+           var _this = this;
+           androidIos.addPageList();
+           _this.$router.push({ path: "/histroyTrack"});
+         }
        },
       beforeDestroy:function () {
         var _this = this;
@@ -280,6 +298,26 @@
   }
 </style>
 <style scoped>
+  #top{
+    position: relative;
+    width:100%;
+    background: white;
+    text-align: center;
+    font-size: 0.48rem;
+    line-height: 1.3rem;
+    color: #333;
+    letter-spacing: 0.0133rem;
+  }
+  #top .messageLDbox{
+    position: absolute;
+    width:0.427rem;
+    left:0.72rem;
+    top:50%;
+    margin-top: -0.22rem;
+  }
+  .messageLDbox img{
+    width:100%;
+  }
   .proBoxList span{
     color: #999;
     font-size: 0.35rem;
@@ -300,7 +338,7 @@
   }
   #showBox{
     position: absolute;
-    top:0;
+    top:1.3rem;
     bottom: 1.3rem;
     height: auto;
     width:100%;
