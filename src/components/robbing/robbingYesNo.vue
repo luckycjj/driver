@@ -1,49 +1,36 @@
 <template>
-  <div id="robbingMore" style="top:1.3rem;">
+  <div id="robbingYesNo" style="top:1.3rem;">
     <div id="title" v-title data-title="订单详情"></div>
     <div id="mescroll" class="mescroll" :style="{bottom:type == 1 || type ==2 || type==3 ?'1.2rem':'0'} ">
       <ul id="dataList" class="data-list">
         <li v-for="item in pdlist">
-          <div class="topStatus">
-            <p>待抢单</p>
+          <div class="proStatus">
+            <p :style="{backgroundImage:type == 1 ? 'url(' + require('../../images/icon-qdyes.png') + ')' : 'url(' + require('../../images/icon-qdno.png') + ')'}" v-html="type == 1 ? '抢单成功' : '抢单失败'"></p>
+            <div class="startEnd"><span class="startEndSpan">{{item.goodsmessage.startAddress}}<img src="../../images/addressImg.png">{{item.goodsmessage.endAddress}}</span><div class="clearBoth"></div></div>
             <ul>
-               <li>
-                 <img src="../../images/robbingTel2.png">
-                 发货人{{item.pickMessage.name | nameCheck}}
-               </li>
-              <li>
-                <img src="../../images/robbingTel1.png">
-                发货人{{item.endMessage.name | nameCheck}}
-              </li>
-              <div class="clearBoth"></div>
+              <li v-for="pro in item.goodsmessage.productList">{{item.goodsmessage.tranType}}/{{pro.goods}}&nbsp;&nbsp;&nbsp;{{pro.number}}件<span v-if="pro.weight.replace(/[^0-9]/g,'')*1 > 0 ">/{{pro.weight}}</span><span  v-if="pro.volume.replace(/[^0-9]/g,'')*1 > 0">/{{pro.volume}}</span></li>
+              <li :style="{backgroundImage:'url('+require('../../images/trackListbeizhu.png')+')'}">{{item.pickPay.remark}}</li>
+              <li :style="{backgroundImage:'url('+require('../../images/trackListdianhua.png')+')'}" class="proBoxList callTel" @click.stop="telphone(item.pickMessage.tel)" style="margin-bottom: 0;">发货人{{item.pickMessage.name  | nameCheck}}</li>
             </ul>
-            <div class="address">
-              <h1>提货地址：{{item.pickMessage.address}}</h1>
-              <h1>发货地址：{{item.endMessage.address}}</h1>
-            </div>
-            <div class="time">
-              <h1>提货地址：{{item.goodsmessage.startTime}}</h1>
-              <h1>发货地址：{{item.goodsmessage.endTime}}</h1>
+            <div class="price">
+              <h1>提货时间: {{item.goodsmessage.startTime}}</h1>
+              <h1 style="margin-right: auto">到货时间: {{item.goodsmessage.endTime}}</h1>
               <div class="clearBoth"></div>
             </div>
           </div>
-          <div class="proStatus">
-            <p>货品信息</p>
-            <ul>
-              <li v-for="pro in item.goodsmessage.productList">{{item.goodsmessage.tranType}}/{{pro.goods}}&nbsp;&nbsp;&nbsp;{{pro.number}}件<span v-if="pro.weight.replace(/[^0-9]/g,'')*1 > 0 ">/{{pro.weight}}</span><span  v-if="pro.volume.replace(/[^0-9]/g,'')*1 > 0">/{{pro.volume}}</span></li>
-              <li :style="{backgroundImage:'url('+require('../../images/trackListbeizhu.png')+')'}" style="margin-bottom: 0;">{{item.pickPay.remark}}</li>
-            </ul>
-            <div class="price">
-              <h1>运输费用：￥{{item.goodsmessage.money}}</h1>
-              <h1 style="margin-right: auto">付款方式：现结</h1>
-              <div class="clearBoth"></div>
+          <div class="topStatus">
+            <p>运输费用</p>
+            <div class="address">
+              <h1><span>￥{{item.goodsmessage.money}}</span><br>运输费用</h1>
+            </div>
+            <div class="address" style="border: none;">
+              <h2>其他费用说明</h2>
             </div>
           </div>
           <div class="number">
             订单编号：{{item.number}}<br>
             下单时间：{{item.time}}
           </div>
-          <button @click="qD()">抢单</button>
         </li>
       </ul>
     </div>
@@ -61,7 +48,7 @@
   import "../../js/swipeslider"
   var thisThat;
   export default {
-    name: "robbingMore",
+    name: "robbingYesNo",
     data(){
       return{
         type:"",
@@ -75,7 +62,7 @@
     mounted:function () {
       var _this = this;
       androidIos.bridge(_this);
-      androidIos.judgeIphoneX("robbingMore",2);
+      androidIos.judgeIphoneX("robbingYesNo",2);
     },
     methods:{
       go:function () {
@@ -172,44 +159,6 @@
       },
       telphone:function(tel){
         androidIos.telCall(tel);
-      },
-      qD:function(){
-        var _this = this;
-          androidIos.first("确认抢此单么？");
-          $(".tanBox-yes").unbind('click').click(function(){
-            $(".tanBox-bigBox").remove();
-            androidIos.loading("正在抢单");
-            $.ajax({
-              type: "POST",
-              url: androidIos.ajaxHttp() + "/order/grabSingle",
-              data: JSON.stringify({pk: _this.$route.query.pk, userCode: sessionStorage.getItem("token"), source:sessionStorage.getItem("source")}),
-              contentType: "application/json;charset=utf-8",
-              dataType: "json",
-              timeout: 30000,
-              success: function (grabSingle) {
-                $("#common-blackBox").remove();
-                if(grabSingle.success =="" || grabSingle.success == "1"){
-                  _this.$cjj("抢单成功");
-                  setTimeout(function () {
-                    sessionStorage.removeItem("addPageList");
-                    sessionStorage.setItem("trackTap",1);
-                    _this.$router.push({path:'/trackList'});
-                  },1000)
-                }else{
-                  androidIos.second(grabSingle.message);
-                }
-              },
-              complete : function(XMLHttpRequest,status){ //请求完成后最终执行参数
-                $("#common-blackBox").remove();
-                if(status=='timeout'){//超时,status还有success,error等值的情况
-                  androidIos.second("网络请求超时");
-                }else if(status=='error'){
-                  androidIos.errorwife();
-                }
-              }
-            })
-          });
-
       },
       addClass:function(obj,cls){//增加class
         var idJson = obj.className.split(" ");
@@ -350,12 +299,12 @@
 <style>
   @import "../../css/mescroll.css";
   @import "../../css/scroll.css";
-  #robbingMore .hide, .mescroll-totop{
+  #robbingYesNo .hide, .mescroll-totop{
     display: none!important;
   }
 </style>
 <style scoped>
-  #robbingMore{
+  #robbingYesNo{
     position: absolute;
     top:1.3rem;
     bottom:0;
@@ -364,7 +313,7 @@
     width:100%;
   }
 
-  #robbingMore .mescroll{
+  #robbingYesNo .mescroll{
     position: absolute;
     top:0rem;
     bottom: 1.2rem;
@@ -372,16 +321,16 @@
   }
 
 
-   button{
+  button{
     width:9rem;
     background: #1869A9; /* Safari 5.1 - 6.0 */
     color:white;
     font-size: 0.42rem;
     letter-spacing: 0.0625rem;
     line-height: 1.21rem;
-     margin:0.7rem auto 0.2rem auto;
-     display: block;
-     border-radius: 0.2rem;
+    margin:0.7rem auto 0.2rem auto;
+    display: block;
+    border-radius: 0.2rem;
   }
   .topStatus,.proStatus{
     width:100%;
@@ -392,7 +341,7 @@
     width:8.4rem;
     margin-left:0.44rem ;
     padding-left: 1.16rem;
-    background-image: url("../../images/robbingSta.png");
+    background-image: url("../../images/icon-qdmoney.png");
     background-repeat: no-repeat;
     background-position: 0 50%;
     background-size: 0.85rem;
@@ -459,20 +408,25 @@
     width:9.56rem;
     margin-left:0.44rem ;
     border-bottom: 1px solid #F5F5F5;
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
+    padding-top: 0.23rem;
+    padding-bottom: 0.23rem;
   }
   .topStatus  .address h1{
     color:#666;
     font-size: 0.33rem;
+    text-align: center;
+  }
+  .topStatus  .address h1 span{
+    color:#FA6B18;
+    font-size: 0.67rem;
   }
   .topStatus  .time{
-       width:9.56rem;
-       margin-left:0.44rem ;
-     border-bottom: 1px solid #F5F5F5;
-     padding-top: 0.5rem;
-     padding-bottom: 0.5rem;
-   }
+    width:9.56rem;
+    margin-left:0.44rem ;
+    border-bottom: 1px solid #F5F5F5;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
   .topStatus  .time h1{
     color:#666;
     float: left;
@@ -490,7 +444,11 @@
     color:#666;
     float: left;
     font-size: 0.33rem;
-    margin-right:0.9rem ;
+    margin-right:0.6rem ;
+  }
+  .topStatus  .address h2{
+    color:#999;
+    font-size: 0.33rem;
   }
   .number{
     width:9.56rem;
@@ -500,5 +458,22 @@
     font-size: 0.33rem;
     color:#666;
     line-height: 0.6rem;
+  }
+  .startEnd{
+    width:9.26rem;
+    margin-left:0.44rem ;
+    border-bottom: 1px solid #F5F5F5;
+    padding: 0.3rem 0.3rem 0.3rem 0;
+  }
+  .startEnd img{
+    display: inline-block;
+    margin:0rem 0.3rem 0.13rem 0.3rem;
+    width:0.45rem;
+  }
+  .startEndSpan{
+    float: left;
+    font-size: 0.42rem;
+    line-height: 0.56rem;
+    color:#333;
   }
 </style>

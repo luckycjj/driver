@@ -66,6 +66,7 @@
         var _this = this;
         androidIos.judgeIphoneX("robbingList",2);
         androidIos.judgeIphoneX("mescroll",1);
+        sessionStorage.removeItem("findProHisTab");
         androidIos.bridge(_this);
       },
       methods:{

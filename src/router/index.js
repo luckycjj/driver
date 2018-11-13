@@ -25,6 +25,7 @@ import changePassword from '@/components/myBox/changePassword'
 import statusNow from '@/components/myBox/statusNow'
 import robbingMore from '@/components/robbing/robbingMore'
 import findProHis from '@/components/robbing/findProHis'
+import robbingYesNo from '@/components/robbing/robbingYesNo'
 Vue.use(Router);
 
 Vue.directive('title', {
@@ -34,6 +35,7 @@ Vue.directive('title', {
   }
 });
 Vue.filter('carrierTime',function (value) {
+   value = value.split(".")[0];
    var valTime = value.split(" ")[0];
    var newDate = new Date();
    if(new Date(valTime.replace(/-/g,'/')).getTime() == new Date(newDate.getFullYear() + '/' + (newDate.getMonth() + 1 ) + '/' + newDate.getDate()).getTime()){
@@ -126,6 +128,11 @@ Vue.filter('orderTypeName', function(value) {
 export default new Router(
   {
   routes: [
+    {
+      path:'/robbingYesNo',
+      name:'robbingYesNo',
+      component:robbingYesNo,
+    },
     {
       path:'/findProHis',
       name:'findProHis',
