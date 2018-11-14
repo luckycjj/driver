@@ -8,7 +8,7 @@
         </div>
         <div class="price">
           <p>账户余额（元）</p>
-          <h1>{{price}}</h1>
+          <h1>{{price | toThousands}}</h1>
         </div>
       </div>
       <ul id="tabList">
