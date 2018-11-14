@@ -8,10 +8,10 @@
         <h3  id="manage" class="asd"  v-if="doNow==1"><span>管理</span></h3>
         <h3 id="siteCar"  style="display: none" class="asd"  v-if="doNow==2"></h3>
         <h3  id="search" class="asd"  v-if="doNow==3" ><h5 id="searchSpan"></h5></h3>
-        <img id="erweimaLook"  src="./images/erweima.png" v-if="doNow==4" style="display: none">
         <div id="setUp"  v-if="doNow == 5" @click="setUpgo()"></div>
         <div id="orderScreenTitle"  v-if="doNow == 6" @click="orderScreen()"></div>
         <h3  id="authenticationTab" style="display: none;" class="asd"  v-if="doNow==7"><span>上一步</span></h3>
+        <h3  id="upProductImgEnter" style="" class="asd"  v-if="doNow==8"><span style="color:#1869A9">上传</span></h3>
       </div>
       <div id="table"></div>
     </div>
@@ -109,14 +109,14 @@
         _this.doNow = 2;
       }else if(_this.html.indexOf("/site/car") != -1){
         _this.doNow = 3;
-      }else if( _this.html.indexOf("/track/trackMore") != -1){
-        _this.doNow = 4;
       }else if( _this.html.indexOf("/user") != -1){
         _this.doNow = 5;
       }else if( _this.html.indexOf("/trackList") != -1){
         _this.doNow = 6;
       }else if( _this.html.indexOf("/authentication") != -1){
         _this.doNow = 7;
+      }else if( _this.html.indexOf("/upProductImg") != -1){
+        _this.doNow = 8;
       }else{
         _this.doNow = "";
       }
@@ -143,14 +143,14 @@
           _this.doNow = 2;
         }else if(_this.html.indexOf("/site/car") != -1){
           _this.doNow = 3;
-        }else if( _this.html.indexOf("/track/trackMore") != -1){
-          _this.doNow = 4;
         }else if( _this.html.indexOf("/user") != -1){
           _this.doNow = 5;
         }else if( _this.html.indexOf("/trackList") != -1){
           _this.doNow = 6;
         }else if( _this.html.indexOf("/authentication") != -1){
           _this.doNow = 7;
+        }else if( _this.html.indexOf("/upProductImg") != -1){
+          _this.doNow = 8;
         }else{
           _this.doNow = "";
         }

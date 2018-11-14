@@ -15,6 +15,7 @@ import  trackS from '@/components/track/map'
 import  trackT from '@/components/track/qrcode'
 import  trackFo from  '@/components/track/uploadBill'
 import  trackSi from '@/components/track/uploadImg'
+import  upProductImg from '@/components/track/upProductImg'
 import  histroyTrack from '@/components/track/histroyTrack'
 import forgetPassword from '@/components/loginBox/forgetPassword'
 import  orderScreen from '@/components/track/orderScreen'
@@ -136,6 +137,11 @@ Vue.filter('orderTypeName', function(value) {
 export default new Router(
   {
   routes: [
+    {
+      path:'/upProductImg',
+      name:'upProductImg',
+      component:upProductImg,
+    },
     {
       path:'/settlementYes',
       name:'settlementYes',

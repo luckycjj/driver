@@ -75,11 +75,12 @@
               <button v-if="type==1" @click="chufa()">出发</button>
               <button v-if="type==2" @click="daoda(31)">提货到达</button>
               <button v-if="type==3" @click="daoda(32)">开始装货</button>
-              <button v-if="type==4"  class="upImg">&nbsp;&nbsp;&nbsp;&nbsp;上传货品</button>
+              <button v-if="type==4"  class="upImg" @click="upImg(0)">&nbsp;&nbsp;&nbsp;&nbsp;上传货品</button>
               <button v-if="type==4" style="width:3.4rem;float: right;margin-right: 0.5rem;" @click="daoda(33)">装货完毕</button>
               <button v-if="type==5" @click="daoda(41)">运输到达</button>
               <button v-if="type==6" @click="daoda(42)">开始卸货</button>
-              <button v-if="type==7" @click="daoda(43)">卸货完毕</button>
+              <button v-if="type==7"  class="upImg" @click="upImg(1)">&nbsp;&nbsp;&nbsp;&nbsp;上传货品</button>
+              <button v-if="type==7" style="width:3.4rem;float: right;margin-right: 0.5rem;"  @click="daoda(43)">卸货完毕</button>
               <button v-if="type==8 && endtype == '0' && actFlag == 'Y'" @click="qianshou(endtype)">交接</button>
               <button v-if="type==8 && endtype == '1'" @click="qianshou(endtype)">签收</button>
               <button v-if="type==9 && pdlist[0].exp_sign == 1" @click="uploadbill(1)">确认异常签收</button>
@@ -260,17 +261,6 @@
               if(self.setTimeGoF){
                 clearInterval(self.setTimeGoF);
               }
-            }
-            if ((self.type == 1) && self.peopleType == 2) {
-              $("#erweimaLook").hide();
-            } else if (self.peopleType == 1) {
-              $("#erweimaLook").show();
-              document.getElementById("erweimaLook").onclick = function () {
-                androidIos.addPageList();
-                self.$router.push({path: '/track/qrcode', query: {ty: 2}});
-              }
-            } else {
-              $("#erweimaLook").hide();
             }
           });
         }, function() {
@@ -694,6 +684,11 @@
           bomb.first("请不要频繁点击");
         }
 
+      },
+      upImg:function (type) {
+        var _this = this;
+        androidIos.addPageList();
+        _this.$router.push({path:'/upProductImg',query:{pk:_this.$route.query.pk,type:type}});
       },
       addClass:function(obj,cls){//增加class
         var idJson = obj.className.split(" ");
