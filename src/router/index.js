@@ -3,6 +3,7 @@ import robbingList from '../pages/robbingList'
 import trackList from '../pages/trackList'
 import login from '../pages/login'
 import message from '../pages/message'
+import settlementCenter from '../pages/settlementCenter'
 import Secondmessage from '../pages/Secondmessage'
 import authenticationS from '@/components/authentication/authenticationS'
 import user from '../pages/user'
@@ -27,6 +28,7 @@ import statusNow from '@/components/myBox/statusNow'
 import robbingMore from '@/components/robbing/robbingMore'
 import findProHis from '@/components/robbing/findProHis'
 import robbingYesNo from '@/components/robbing/robbingYesNo'
+import settlementYes from '@/components/settlementBox/settlementYes'
 Vue.use(Router);
 
 Vue.directive('title', {
@@ -35,6 +37,11 @@ Vue.directive('title', {
     document.getElementById('title').innerText = document.title
   }
 });
+Vue.filter('toThousands',function (num) {
+  var number = num.toString().split(".");
+  number[0] =  (number[0] || 0).replace(/(\d)(?=(?:\d{3})+$)/g, '$1,');
+  return number.join(".");
+})
 Vue.filter('carrierTime',function (value) {
    value = value.split(".")[0];
    var valTime = value.split(" ")[0];
@@ -129,6 +136,16 @@ Vue.filter('orderTypeName', function(value) {
 export default new Router(
   {
   routes: [
+    {
+      path:'/settlementYes',
+      name:'settlementYes',
+      component:settlementYes,
+    },
+    {
+      path:'/settlementCenter',
+      name:'settlementCenter',
+      component:settlementCenter,
+    },
     {
       path:'/histroyTrack',
       name:'histroyTrack',

@@ -47,7 +47,7 @@
                  marginRight:0,
                  cls: "price",
                  name: "结算中心",
-                 push: "/price"
+                 push: "/settlementCenter"
                },
                {
                  number:0,
