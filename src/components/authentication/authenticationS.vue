@@ -920,12 +920,14 @@
                source :sessionStorage.getItem("source"),
                userCode:sessionStorage.getItem("token"),
                photo:_this.message.first.people.http,
-               transport:_this.message.third.transportCode,
-               carModel:_this.message.third.carModelCode,
-               carLength:_this.message.third.carLengthCode,
-               carNumber:_this.message.third.carNumberFirst + _this.message.third.carNumberSecond,
-               carWeight:_this.message.third.carWeight,
-               meno:_this.message.third.meno,
+               driverCarInfoDto:{
+                 transType:_this.message.third.transportCode,
+                 carType:_this.message.third.carModelCode,
+                 length:_this.message.third.carLengthCode,
+                 carNo:_this.message.third.carNumberFirst + _this.message.third.carNumberSecond,
+                 loadWeight:_this.message.third.carWeight,
+                 memo:_this.message.third.meno,
+               }
              }
              $.ajax({
                type: "POST",
