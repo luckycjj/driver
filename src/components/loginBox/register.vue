@@ -161,6 +161,7 @@
               userPhone : _this.mobile,
               password : _this.password,
               checkCode : _this.verification,
+              repassword:_this.passwordSure,
               inviteCode : _this.invitation,
               source:sessionStorage.getItem("source")
             }),

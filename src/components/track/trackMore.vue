@@ -623,7 +623,7 @@
       daoda:function(type){
         var _this = this;
         if(bomb.hasClass("gogogo","gogogo")){
-          if(type == 31 || type == 32 || type == 42 || type == 41){
+          /*if(type == 31 || type == 32 || type == 42 || type == 41){
             for(var i = 0 ; i < _this.carList.length; i++){
               if(_this.carList[i].length == ""){
                 androidIos.first("请提醒" + _this.carList[i].name +"("+_this.carList[i].tel+")打开定位系统");
@@ -643,7 +643,7 @@
                 return false;
               }
             }
-          }
+          }*/
           var message = type == '31'?'提货达到':type == '32'?'开始装货':type == '33'?'装货完毕':type == '41'?'运输到达':type == '42'?'开始卸货':'卸货完毕';
           var http = type == '33' || type == '41' ? '/order/arriveOrDelivery':'/order/updateStatus';
           type = type == '33'?'1': type == '41' ?'2':type;

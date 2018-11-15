@@ -4,6 +4,7 @@
       <div id="top">
         找货
         <div class="messageLDbox" @click="lookMessage()">
+          <div class="messageCorner" v-if="Messageshow"></div>
           <img src="../images/messageLD.png">
         </div>
       </div>
@@ -60,6 +61,7 @@
             }],
             mescrollArrList:null,
             tabShow:0,
+            Messageshow:false,
           }
       },
       mounted:function () {
@@ -67,6 +69,37 @@
         androidIos.judgeIphoneX("robbingList",2);
         androidIos.judgeIphoneX("mescroll",1);
         sessionStorage.removeItem("findProHisTab");
+        $.ajax({
+          type: "POST",
+          url: androidIos.ajaxHttp()+"/settings/getBulletin",
+          data:JSON.stringify({userCode:sessionStorage.getItem("token"),source:sessionStorage.getItem("source")}),
+          contentType: "application/json;charset=utf-8",
+          dataType: "json",
+          timeout: 30000,
+          success: function (getBulletin) {
+            if (getBulletin.success == "1") {
+              var newMessage = localStorage.getItem("newMessage");
+              if(newMessage != undefined){
+                if(JSON.parse(newMessage).length < getBulletin.list.length){
+                  _this.Messageshow = true;
+                }
+              }else{
+                if(getBulletin.list.length > 0){
+                  _this.Messageshow = true;
+                }
+              }
+            }else{
+              androidIos.second(getBulletin.message);
+            }
+          },
+          complete : function(XMLHttpRequest,status){ //请求完成后最终执行参数
+            if(status=='timeout'){//超时,status还有success,error等值的情况
+              androidIos.second("网络请求超时");
+            }else if(status=='error'){
+              androidIos.errorwife();
+            }
+          }
+        })
         androidIos.bridge(_this);
       },
       methods:{
@@ -438,5 +471,16 @@
  .proBoxList span{
    color:#666;
    font-size:0.35rem ;
+ }
+ .messageCorner{
+   background: #fc4243;
+   font-size: 0.3125rem;
+   color:white;
+   position: absolute;
+   top:0;
+   right:0rem;
+   width:0.2rem;
+   height:0.21rem;
+   border-radius: 50%;
  }
 </style>

@@ -112,6 +112,7 @@
                    }
                  },
                  complete : function(XMLHttpRequest,status){ //请求完成后最终执行参数
+                   $("#common-blackBox").remove();
                    if(status=='timeout'){//超时,status还有success,error等值的情况
                      androidIos.second("当前状况下网络状态差，请检查网络！")
                    }else if(status=="error"){
@@ -179,10 +180,6 @@
             con.drawImage(image, 0, 0, imageWidth, imageHeight);
             var base64 = canvas.toDataURL('image/jpeg', 0.5).substr(0);
             androidIos.loading("正在上传");
-            _this.imgList.push({
-              file:base64,
-              httpfile:base64,
-            });
             $.ajax({
               type: "POST",
               url: androidIos.ajaxHttp() + "/uploadFile",

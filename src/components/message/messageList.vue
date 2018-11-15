@@ -3,8 +3,8 @@
     <div id="title" v-title data-title="消息列表"></div>
      <div id="mescroll" class="mescroll">
        <ul id="dataList" class="data-list">
-         <li v-for="item in messageList">
-           <p>{{item.title}}</p>
+         <li v-for="item in messageList" @click="look(item)">
+           <div class="p"><h1 v-if="!item.look"></h1>{{item.title}}</div>
            <h1 v-html="item.time"></h1>
            <div class="clearBoth"></div>
            <div class="body">
@@ -38,6 +38,18 @@
         androidIos.bridge(_this);
        },
       methods:{
+        look:function (item) {
+          if(!item.look){
+            var newMessage = localStorage.getItem("newMessage");
+            if(newMessage != undefined){
+               var json = item.title;
+              localStorage.setItem("newMessage",JSON.stringify(JSON.parse(newMessage).push(json)));
+            }else{
+              localStorage.setItem("newMessage",JSON.stringify([item.title]));
+            }
+            item.look = true;
+          }
+        },
           go:function () {
              var _this = this;
             thisThat = _this;
@@ -87,8 +99,18 @@
           timeout: 30000,
           success: function (getBulletin) {
             if (getBulletin.success == "1") {
+              var newMessage = localStorage.getItem("newMessage");
               for(var i = 0;i < getBulletin.list.length;i++){
                 getBulletin.list[i].time = getBulletin.list[i].time.split(".")[0];
+                getBulletin.list[i].look = false;
+                if(newMessage != undefined){
+                   newMessage = JSON.parse(newMessage);
+                   for(var x = 0 ; x < newMessage.length;x++){
+                      if( getBulletin.list[i].title == newMessage[x]){
+                        getBulletin.list[i].look = true;
+                      }
+                   }
+                }
                }
               successCallback&&successCallback(getBulletin.list);//成功回调
             }else{
@@ -134,12 +156,20 @@
   border-radius: 0.3rem;
   box-shadow:0px 5px 5px 0px rgba(0,0,0,0.1);
 }
-#mescroll li p{
+#mescroll li .p{
    font-size:0.37rem ;
    color:#606060;
    line-height:0.4rem ;
   float: left;
 }
+  #mescroll li .p h1{
+     padding: 0.1rem;
+    border-radius: 50%;
+    background: red;
+    float: left;
+    margin-right: 0.1rem;
+    margin-top: 0.1rem;
+  }
 #mescroll li h1{
   font-size:0.3125rem ;
   color:#606060;
