@@ -1,5 +1,5 @@
 <template>
-  <div id="forgetPassword">
+  <div id="forgetPassword" style="top:1.3rem;">
     <div id="title" v-title data-title="忘记密码"></div>
     <div id="registerBody">
       <div class="modelView">
@@ -41,6 +41,7 @@
     },
     mounted:function () {
       var _this = this;
+      androidIos.judgeIphoneX("forgetPassword",2);
       androidIos.bridge(_this);
     },
     methods:{
@@ -155,6 +156,14 @@
 </script>
 
 <style scoped>
+  #forgetPassword{
+    position: absolute;
+    top:1.3rem;
+    bottom:0;
+    background: #f6f6f6;
+    height: auto;
+    width:100%;
+  }
   #registerBody{
     width:100%;
     background: white;
@@ -205,10 +214,7 @@
     width:9.2rem;
     margin:0.74rem auto 0 auto ;
     display: block;
-    background: -webkit-linear-gradient(left, #00C4FF , #0074FF); /* Safari 5.1 - 6.0 */
-    background: -o-linear-gradient(right, #00C4FF, #0074FF); /* Opera 11.1 - 12.0 */
-    background: -moz-linear-gradient(right, #00C4FF, #0074FF); /* Firefox 3.6 - 15 */
-    background: linear-gradient(to right, #00C4FF , #0074FF); /* 标准的语法 */
+    background:#1D69A8;
     color:white;
     font-size: 0.42rem;
     letter-spacing: 2px;

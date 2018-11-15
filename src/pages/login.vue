@@ -220,10 +220,7 @@
      width:8.5rem;
     margin:1.04rem auto 0 auto ;
     display: block;
-    background: -webkit-linear-gradient(left, #00C4FF , #0074FF); /* Safari 5.1 - 6.0 */
-    background: -o-linear-gradient(right, #00C4FF, #0074FF); /* Opera 11.1 - 12.0 */
-    background: -moz-linear-gradient(right, #00C4FF, #0074FF); /* Firefox 3.6 - 15 */
-    background: linear-gradient(to right, #00C4FF , #0074FF); /* 标准的语法 */
+    background:#1D69A8;
     color:white;
     font-size: 0.48rem;
     letter-spacing: 2px;

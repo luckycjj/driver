@@ -1,5 +1,5 @@
 <template>
-  <div id="register">
+  <div id="register" style="top:1.3rem;">
     <div id="title" v-title data-title="注册"></div>
     <div id="registerBody">
       <div class="modelView">
@@ -9,7 +9,13 @@
       <div class="modelView">
         <span class="w2">密码</span>
         <input @keyup="filterInput()"  :type="lookPassWord ? 'text' : 'password' "  maxlength="25"  v-model="password" placeholder="请输入密码"/>
-        <div id="lookPassWord" :class="lookPassWord ? 'lookPassWord' : '' " @click="lookpass()"></div>
+        <div id="lookPassWord" :class="lookPassWord ? 'lookPassWord' : '' " @click="lookpass(1)"></div>
+        <div class="clearBoth"></div>
+      </div>
+      <div class="modelView">
+        <span> 确认密码</span>
+        <input @keyup="filterInput()"  :type="lookPassWord1 ? 'text' : 'password' "  maxlength="25"  v-model="passwordSure" placeholder="请输入密码"/>
+        <div id="lookPassWord1" :class="lookPassWord1 ? 'lookPassWord' : '' " @click="lookpass(2)"></div>
         <div class="clearBoth"></div>
       </div>
       <div class="modelView">
@@ -42,16 +48,19 @@
           return{
              mobile:"",
              password:"",
+             passwordSure:"",
              invitation :"",
              verification:"",
              checked:false,
              lookPassWord:false,
+             lookPassWord1:false,
              name:"获取验证码",
              nameSet:null,
           }
       },
       mounted:function () {
         var _this = this;
+        androidIos.judgeIphoneX("register",2);
         androidIos.bridge(_this);
       },
       methods:{
@@ -66,9 +75,13 @@
           _this.password =  _this.password.replace(/[\u4E00-\u9FA5]/g,'');
           _this.password =  _this.password.replace(/<script>/g,'');
         },
-          lookpass:function () {
+          lookpass:function (type) {
             var _this = this;
-            _this.lookPassWord = !_this.lookPassWord;
+            if(type == 1){
+              _this.lookPassWord = !_this.lookPassWord;
+            }else{
+              _this.lookPassWord1 = !_this.lookPassWord1;
+            }
           },
           verificationCome:function () {
             var _this = this;
@@ -124,6 +137,10 @@
             bomb.first("密码不得小于6位");
             return false;
           }
+          if(_this.password != _this.passwordSure){
+            bomb.first("两次密码输入不相同");
+            return false;
+          }
           if(_this.invitation.length <4){
             bomb.first("请输入正确的邀请码");
             return false;
@@ -176,6 +193,14 @@
 </script>
 
 <style scoped>
+  #register{
+    position: absolute;
+    top:1.3rem;
+    bottom:0;
+    background: #f6f6f6;
+    height: auto;
+    width:100%;
+  }
  #registerBody{
    width:100%;
    background: white;
@@ -208,7 +233,7 @@
    letter-spacing:0.5em; /*如果需要y个字两端对齐，则为(x-y)/(y-1),这里是（4-3）/(3-1)=2em */
    margin-right:-0.5em;
  }
- #lookPassWord{
+ #lookPassWord,#lookPassWord1{
    width: 10%;
    position: absolute;
    right: 0.4rem;
@@ -226,10 +251,7 @@
    width:9.2rem;
    margin:0.74rem auto 0 auto ;
    display: block;
-   background: -webkit-linear-gradient(left, #00C4FF , #0074FF); /* Safari 5.1 - 6.0 */
-   background: -o-linear-gradient(right, #00C4FF, #0074FF); /* Opera 11.1 - 12.0 */
-   background: -moz-linear-gradient(right, #00C4FF, #0074FF); /* Firefox 3.6 - 15 */
-   background: linear-gradient(to right, #00C4FF , #0074FF); /* 标准的语法 */
+   background:#1D69A8;
    color:white;
    font-size: 0.42rem;
    letter-spacing: 2px;

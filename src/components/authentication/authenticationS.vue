@@ -1,19 +1,19 @@
 <template>
     <div id="authentication" style="top:1.3rem">
       <div id="title" v-title data-title="认证"></div>
-      <ul id="step">
-        <li v-for="(item,index) in step" :class="nowStep == ( index + 1) ? 'stepNowColor' : nowStep > (index + 1) ? 'stepBeforeColor' : nowStep < (index + 1) ? 'stepAfterColor' : '' ">
+      <ul id="step" v-if="driverType == 1">
+        <li :style="{width:9.12 / step.length + 'rem'}" v-for="(item,index) in step" :class="nowStep == ( index + 1) ? 'stepNowColor' : nowStep > (index + 1) ? 'stepBeforeColor' : nowStep < (index + 1) ? 'stepAfterColor' : '' ">
           <div class="stepNumber">
-            <div :class="nowStep == ( index + 1) ? 'stepNow' : nowStep > (index + 1) ? 'stepBefore' : nowStep < (index + 1) ? 'stepAfter' : '' " class="line" style="margin-left: 0.05rem;" :style="{opacity: index == 0 ? '0' : '1'}"></div>
+            <div :class="nowStep == ( index + 1) ? 'stepNow' : nowStep > (index + 1) ? 'stepBefore' : nowStep < (index + 1) ? 'stepAfter' : '' " class="line" style="margin-left: 0.05rem;" :style="{opacity: index == 0 ? '0' : '1', width:(9.12 / step.length - 0.7 - 0.14) / 2 + 'rem' }"></div>
             <div :class="nowStep == ( index + 1) ? 'stepNow' : nowStep > (index + 1) ? 'stepBefore' : nowStep < (index + 1) ? 'stepAfter' : '' " class="circle">{{ index + 1}}</div>
-            <div :class="nowStep == ( index + 1) ? 'stepNow' : nowStep > (index + 1) ? 'stepBefore' : nowStep < (index + 1) ? 'stepAfter' : '' " class="line" :style="{opacity: index == step.length - 1 ? '0' : '1'}"></div>
+            <div :class="nowStep == ( index + 1) ? 'stepNow' : nowStep > (index + 1) ? 'stepBefore' : nowStep < (index + 1) ? 'stepAfter' : '' " class="line" :style="{opacity: index == step.length - 1 ? '0' : '1', width:(9.12 / step.length - 0.7 - 0.14) / 2 + 'rem' }"></div>
             <div class="clearBoth"></div>
           </div>
             {{item}}
         </li>
         <div class="clearBoth"></div>
       </ul>
-        <div id="stepF" v-if="nowStep == 1">
+        <div :style="{marginTop: driverType == 1 ? '0rem':'0.27rem'}" id="stepF" v-if="nowStep == 1">
           <div class="stepTtop">
             <p>请拍摄五官清晰头像照</p>
             <div class="fileup3" @click="BAIDURENLIAN()">
@@ -59,21 +59,30 @@
           <div class="stepTbottom">
             <ul>
               <li>
-                <span>邀请码：</span>
-                <input type="text" placeholder="请输入邀请码" v-model="message.first.nvitationodeIC" maxlength="6"/>
-                <div class="clearBoth"></div>
-              </li>
-              <li>
-                <span>姓名：</span>
-                <input type="text" placeholder="请输入姓名" v-model="message.first.name" maxlength="50"/>
+                <span class="w2">姓名</span>
+                <input type="text" placeholder="姓名必须和身份证上姓名相同" v-model="message.first.name" maxlength="50"/>
                 <div class="clearBoth"></div>
               </li>
               <li class="borderno">
-                <span>身份证号：</span>
+                <span>身份证号</span>
                 <input type="text" placeholder="请真实填写" v-model="message.first.idCode" maxlength="18"/>
                 <div class="clearBoth"></div>
               </li>
             </ul>
+          </div>
+          <div style="margin-top: 0.24rem;" v-if="driverType != 1" class="stepStop">
+            <p>请上传驾驶证</p>
+            <div class="fileup2">
+              <img src="../../images/addImg.png" v-if="message.second.driverLicense.bendi == ''">
+              <input type="file" @change="fileImgUp($event,4)"  accept="image/*"  capture = "camera">
+              <img  :onerror="errorlogo" class="fileImg2" :src="message.second.driverLicense.bendi" v-if="message.second.driverLicense.bendi != ''">
+              <h6 v-if="message.second.driverLicense.bendi == ''">点击拍照</h6>
+            </div>
+            <div class="SFZFLook">
+              <img src="../../images/JSZ.png"    @click="lookImg($event,require('../../images/JSZ.png'))">
+              <span>样例</span>
+            </div>
+            <div class="clearBoth"></div>
           </div>
         </div>
         <div id="stepS" v-if="nowStep == 2">
@@ -91,59 +100,140 @@
             </div>
             <div class="clearBoth"></div>
           </div>
+          <div class="stepStop">
+            <p>请上传行驶证</p>
+            <div class="fileup2">
+              <img src="../../images/addImg.png" v-if="message.second.drivingLicence.bendi == ''">
+              <input type="file" @change="fileImgUp($event,5)"  accept="image/*"  capture = "camera">
+              <img :onerror="errorlogo" class="fileImg2" :src="message.second.drivingLicence.bendi" v-if="message.second.drivingLicence.bendi != ''">
+              <h6 v-if="message.second.drivingLicence.bendi == ''">点击拍照</h6>
+            </div>
+            <div class="SFZFLook">
+              <img src="../../images/XSZ.png"    @click="lookImg($event,require('../../images/XSZ.png'))">
+              <span>样例</span>
+            </div>
+            <div class="clearBoth"></div>
+          </div>
+          <div class="stepStop">
+            <p>请上传道路运输许可证</p>
+            <div class="fileup2">
+              <img src="../../images/addImg.png" v-if="message.second.roadtransport.bendi == ''">
+              <input type="file" @change="fileImgUp($event,6)"  accept="image/*"  capture = "camera">
+              <img :onerror="errorlogo" class="fileImg2" :src="message.second.roadtransport.bendi" v-if="message.second.roadtransport.bendi != ''">
+              <h6 v-if="message.second.roadtransport.bendi == ''">点击拍照</h6>
+            </div>
+            <div class="SFZFLook">
+              <img src="../../images/DLYS.png"    @click="lookImg($event,require('../../images/DLYS.png'))">
+              <span>样例</span>
+            </div>
+            <div class="clearBoth"></div>
+          </div>
+        </div>
+        <div id="stepT" v-if="nowStep == 3">
           <div class="stepSbottom">
             <ul>
               <li>
-                <span>驾驶证等级：</span>
-                <p id="Z00" :class="message.second.licType != '' ? 'blackColor' : '' " v-html="message.second.licType == '' ? '请选择驾驶证等级' : message.second.licType"></p>
+                <span>运输类型</span>
+                <p id="Z00" :class="message.third.transportValue != '' ? 'blackColor' : '' " v-html="message.third.transportValue == '' ? '请选择运输类型' : message.third.transportValue"></p>
+                <div class="clearBoth"></div>
+              </li>
+              <li>
+                <span class="w2">车型</span>
+                <p id="Z01" :class="message.third.carModelValue != '' ? 'blackColor' : '' " v-html="message.third.carModelValue == '' ? '请选择车型' : message.third.carModelValue"></p>
+                <div class="clearBoth"></div>
+              </li>
+              <li>
+                <span class="w2">车长</span>
+                <p id="Z02" :class="message.third.carLengthValue != '' ? 'blackColor' : '' " v-html="message.third.carLengthValue == '' ? '请选择车长' : message.third.carLengthValue"></p>
+                <div class="clearBoth"></div>
+              </li>
+              <li>
+                <span>车牌号码</span>
+                <div id="carNumberBox" @click="keyboardshow()" :class="message.third.carNumberSecond.length == 7 ? 'carGreen' : message.third.carNumberSecond.length == 6 ?'carBrown' : ''" :style="{color:message.third.carNumberSecond == '' ? '#BCBCBC' : '#373737'}" v-html="message.third.carNumberSecond== '' ? '司机车牌号' : message.third.carNumberSecond"></div>
+                <h6 @click="plateametrue()" class="carNumberFirst">{{message.third.carNumberFirst}}</h6>
+              </li>
+              <li class="borderno">
+                <span class="w2">载重</span>
+                 <h6 style="margin-right: 0.53rem;" class="carNumberFirst">吨</h6>
+                <input style="margin-right: 0.1rem;width:3rem" type="text" placeholder="请输入数量" v-model="message.third.carWeight" maxlength="6"/>
                 <div class="clearBoth"></div>
               </li>
             </ul>
           </div>
+           <div class="textarea">
+             <p>备注</p>
+             <textarea placeholder="请填写车辆高度，如若车辆有特殊型号请及时填写(最多40个字)" v-model="message.third.meno" maxlength="40"></textarea>
+           </div>
         </div>
         <h5 class="calltel">有问题请联系客服</h5>
-        <button id="gonext" @click="goNext()" v-html="nowStep == 1 ? '下一步': '提交'"></button>
-        <div v-if="baiduhuotiBox" id="baiduhuotiBox">
-            <div id="baiduhuoti">
-               <div id="baiduhuotiTop">
-                 <img src="../../images/baiduhuoti.png">
-                 <img src="../../images/closed.png" class="closedBaidu" @click="BAIDURENLIANLosed()">
-                 <h6>正面平视手机、保证光线充足<br>请勿遮挡面部</h6>
-               </div>
-               <div id="baiduhuotiBottom">
-                 <div class="prompt-box">
-                   <div class="prompt-box-text">
-                     <span class="prompt-box-text-number">1</span>
-                     <span class="prompt-box-text-content">牢记验证码，点击开始录制</span>
-                     <span class="prompt-box-text-border"></span>
-                   </div>
-                   <div class="prompt-box-text">
-                     <span class="prompt-box-text-number">2</span>
-                     <span class="prompt-box-text-content">开启前置摄像头，用普通话朗读数字</span>
-                     <span class="prompt-box-text-border"></span>
-                   </div>
-                   <div class="prompt-box-text">
-                     <span class="prompt-box-text-number">3</span>
-                     <span class="prompt-box-text-content">完成录制，等待验证结果</span>
-                     <!---->
-                   </div>
-                   <button @click="baidudumaNumber()">下一步</button>
-                 </div>
-               </div>
-            </div>
-        </div>
-        <div v-if="baidudumaBox" id="baidudumaBox">
-            <div id="baiduduma">
-              <p>请牢记以下验证码</p>
-              <h1>此验证码将于<span>{{daojishi}}</span>秒后过期<br>用普通话朗读数字，视频时长<span>3-8</span>秒最佳</h1>
-               <h2>{{baidudumaHaoma}}</h2>
-              <div id="fileVideo">
-                <button>记住了，开始录制</button>
-                <input type="file" accept="video/*"  capture = "camcorder" @change="video($event)">
+        <button id="gonext" @click="goNext()" v-html="(nowStep == 1 || nowStep == 2) && driverType == 1 ? '下一步': '提交'"></button>
+      <div v-if="baiduhuotiBox" id="baiduhuotiBox">
+        <div id="baiduhuoti">
+          <div id="baiduhuotiTop">
+            <img src="../../images/baiduhuoti.png">
+            <img src="../../images/closed.png" class="closedBaidu" @click="BAIDURENLIANLosed()">
+            <h6>正面平视手机、保证光线充足<br>请勿遮挡面部</h6>
+          </div>
+          <div id="baiduhuotiBottom">
+            <div class="prompt-box">
+              <div class="prompt-box-text">
+                <span class="prompt-box-text-number">1</span>
+                <span class="prompt-box-text-content">牢记验证码，点击开始录制</span>
+                <span class="prompt-box-text-border"></span>
               </div>
+              <div class="prompt-box-text">
+                <span class="prompt-box-text-number">2</span>
+                <span class="prompt-box-text-content">开启前置摄像头，用普通话朗读数字</span>
+                <span class="prompt-box-text-border"></span>
+              </div>
+              <div class="prompt-box-text">
+                <span class="prompt-box-text-number">3</span>
+                <span class="prompt-box-text-content">完成录制，等待验证结果</span>
+                <!---->
+              </div>
+              <button @click="baidudumaNumber()">下一步</button>
             </div>
-            <img @click="baidunumberClosed()" src="../../images/icon_close.png">
+          </div>
         </div>
+      </div>
+      <div v-if="baidudumaBox" id="baidudumaBox">
+        <div id="baiduduma">
+          <p>请牢记以下验证码</p>
+          <h1>此验证码将于<span>{{daojishi}}</span>秒后过期<br>用普通话朗读数字，视频时长<span>3-8</span>秒最佳</h1>
+          <h2>{{baidudumaHaoma}}</h2>
+          <div id="fileVideo">
+            <button>记住了，开始录制</button>
+            <input type="file" accept="video/*"  capture = "camcorder" @change="video($event)">
+          </div>
+        </div>
+        <img @click="baidunumberClosed()" src="../../images/icon_close.png">
+      </div>
+        <transition name="slide-fade">
+          <div v-if="carList" id="carListBox" @click="carListHideAgain($event)">
+            <div id="carList">
+              <p v-for="(item,index) in carTypeList" @click="carClick(index,item.region)" :class="item.code==2?'carCode':''">{{item.region}}</p>
+              <button @click="carList=false"> 完成</button>
+            </div>
+          </div>
+          <div v-if="keyboard" id="keyboardBox" @click="keyboardHideAgain($event)">
+            <div id="keyboard">
+              <p v-for="item in keyboardNumber" @click="carkeyboard(item.name)">{{item.name}}</p>
+              <div class="clearBoth"></div>
+              <p v-for="item in keyboardLetter.first" @click="carkeyboard(item.name)">{{item.name}}</p>
+              <div class="clearBoth"></div>
+              <div style="margin-left:0.500115rem" ><p v-for="item in keyboardLetter.second"   @click="carkeyboard(item.name)">{{item.name}}</p></div>
+              <div class="clearBoth"></div>
+              <div style="margin-left:1.500345rem" ><p v-for="item in keyboardLetter.third"   @click="carkeyboard(item.name)">{{item.name}}</p></div>
+              <p class="keyRemove" @click="keyremove()"></p>
+              <div class="clearBoth"></div>
+              <p class="keyBlack"></p>
+              <p class="keyBlack"></p>
+              <p class="keySpace">space</p>
+              <p class="keyOk" @click="keyboard=false">down</p>
+            </div>
+          </div>
+        </transition>
+
     </div>
 </template>
 
@@ -153,11 +243,14 @@
   import bridge from '../../js/bridge';
   import PinchZoom from "../../js/pinchzoom";
   import  {provinceCityArea} from "../../js/provinceCityArea"
+  import {shujvyuan} from '../../js/shujv'
+  import {myScroll} from "../../js/myScroll"
     export default {
         name: "authenticationS",
         data(){
           return{
-             step:["个人信息","个人资料"],
+             step:null,
+             driverType:1,
              nowStep:1,
              tranTypeList:[],
              tranTypeBox:false,
@@ -181,18 +274,48 @@
                  },
                  name:"",
                  idCode:"",
-                 nvitationodeIC:""
                },
                second:{
                  driverLicense:{
                    bendi:"",
                    http:"",
                  },
-                 licType:"",
+                 drivingLicence:{
+                   bendi:"",
+                   http:"",
+                 },
+                 roadtransport:{
+                   bendi:"",
+                   http:"",
+                 },
+               },
+               third:{
+                  transportValue:"",
+                  transportCode:"",
+                  transportList:[],
+                  carModelValue:"",
+                  carModelCode:"",
+                  carModelList:[],
+                  carLengthValue:"",
+                  carLengthCode:"",
+                  carLengthList:[],
+                  carNumberFirst:"沪",
+                  carNumberSecond:"",
+                  carWeight:"",
+                  meno:"",
                }
              },
             daojishi:0,
             setTime:null,
+            carTypeList:[],
+            keyboardNumber:[],
+            keyboardLetter:{
+              first:[],
+              second:[],
+              third:[]
+            },
+            carList:false,
+            keyboard:false,
             errorlogo: 'this.src="' + require('../../images/timg.jpg') + '"',
           }
         },
@@ -202,7 +325,8 @@
             var _this = this;
             _this.message.first.name = _this.message.first.name.replace(/[^\a-\z\A-\Z\u4E00-\u9FA5]/g,'');
             _this.message.first.idCode = _this.message.first.idCode.replace(/[^\X0-9\x]/g,'');
-            _this.message.first.nvitationodeIC =  _this.message.first.nvitationodeIC.replace(/[^\a-\z\A-\Z0-9]/g,'');
+            _this.message.third.carWeight = ( _this.message.third.carWeight.match(/\d+(\.\d{0,2})?/)||[''])[0];
+            _this.message.third.meno = _this.message.third.meno.replace(/[^\a-\z\A-\Z0-9\u4E00-\u9FA5\,\，\.\。\;\!\[\]\【\】\-]/g,'');
             var type = _this.$route.query.type;
             if(type != undefined){
               localStorage.setItem("DRIVERSFETMESSAGE",JSON.stringify(_this.message));
@@ -211,10 +335,27 @@
           deep:true
         }
       },
+      beforeMount:function () {
+        var _this = this;
+        var driverMessage = sessionStorage.getItem("driverMessage");
+        if(driverMessage != undefined){
+           _this.driverType = JSON.parse(driverMessage).driverType;
+           if(_this.driverType == 1){
+             _this.step = ["个人信息","个人资料","车辆信息"];
+           }else{
+             _this.step = ["个人信息"];
+           }
+        }
+      },
       mounted:function () {
         var _this = this;
         androidIos.judgeIphoneX("authentication",2);
         var type = _this.$route.query.type;
+        _this.carTypeList = shujvyuan.first();
+        _this.keyboardNumber = shujvyuan.forth();
+        _this.keyboardLetter.first = shujvyuan.fifth().first;
+        _this.keyboardLetter.second = shujvyuan.fifth().second;
+        _this.keyboardLetter.third = shujvyuan.fifth().third;
         if(type != undefined){
            var DRIVERSFETMESSAGE = localStorage.getItem("DRIVERSFETMESSAGE");
            if(DRIVERSFETMESSAGE != undefined){
@@ -248,16 +389,21 @@
                      http:getCarrAndCompanyInfo.idCardNeg,
                    },
                    name:getCarrAndCompanyInfo.driverName,
-                   idCode:getCarrAndCompanyInfo.idCardNum,
-                   nvitationodeIC:getCarrAndCompanyInfo.inviteCode
+                   idCode:getCarrAndCompanyInfo.idCardNum
                  },
                  second:{
                    driverLicense:{
                      bendi:getCarrAndCompanyInfo.ftpUrl + getCarrAndCompanyInfo.driverLic,
                      http:getCarrAndCompanyInfo.driverLic,
                    },
-                   licType:getCarrAndCompanyInfo.licType,
-                   licTypeCode:getCarrAndCompanyInfo.licType,
+                   drivingLicence:{
+                     bendi: getCarrAndCompanyInfo.ftpUrl + getCarrAndCompanyInfo.drivingLicence,
+                     http: getCarrAndCompanyInfo.drivingLicence,
+                   },
+                   roadtransport:{
+                     bendi: getCarrAndCompanyInfo.ftpUrl + getCarrAndCompanyInfo.roadTransLicense,
+                     http: getCarrAndCompanyInfo.roadTransLicense,
+                   }
                  }
                }
               }else{
@@ -279,7 +425,15 @@
           go:function(){
              var _this = this;
              _this.$nextTick(function () {
-                 _this.showBefore();
+               _this.showBefore();
+               $(document).unbind("touchstart").on("touchstart","#keyboardBox p",function () {
+                 $(this).css("background","#abb4bd");
+                 $(this).css("color","white");
+               })
+               $(document).unbind("touchend").on("touchend","#keyboardBox p",function () {
+                 $(this).css("background","white");
+                 $(this).css("color","#333");
+               })
              })
           },
          video:function (e) {
@@ -411,57 +565,6 @@
            _this.baidudumaHaoma = "";
            _this.daojishi = 0;
          },
-         lic:function () {
-            var _this = this;
-           $.ajax({
-             type: "GET",
-             url: androidIos.ajaxHttp()+"/settings/getSysConfigList",
-             data:{str:"lic_type",userCode:sessionStorage.getItem("token"),source:sessionStorage.getItem("source")},
-             dataType: "json",
-             timeout: 10000,
-             success: function (getCarType) {
-               var list = [];
-               for(var i = 0; i<getCarType.length;i++){
-                 var json = {
-                   "code":getCarType[i].displayName,
-                   "region":getCarType[i].value,
-                 }
-                 list.push(json)
-               }
-               var x = 0;
-               for(var i = 0;i<list.length;i++){
-                 if(list[i].region == _this.message.second.licType){
-                   _this.message.second.licTypeCode = list[i].code;
-                   x = i;
-                 }
-               }
-               var area = new LArea();
-               area.init({
-                 'trigger': '#Z00',
-                 'valueTo': '#Z00',
-                 'keys': {
-                   id: 'id',
-                   name: 'name'
-                 },
-                 'type': 1,
-                 'data': list
-               });
-               area.value = [x];
-               area.addPointer = function (name) {
-                 name = JSON.parse(name);
-                 _this.message.second.licType =  name.firstVal;
-                 _this.message.second.licTypeCode = name.firstCode;
-               }
-             },
-             complete : function(XMLHttpRequest,status){ //请求完成后最终执行参数
-               if(status=='timeout'){//超时,status还有success,error等值的情况
-                 androidIos.second("网络请求超时");
-               }else if(status=='error'){
-                 androidIos.errorwife();
-               }
-             }
-           });
-         },
          tranTypeLook:function () {
            var _this = this;
            _this.tranTypeBox = true;
@@ -567,6 +670,167 @@
          },
          showBefore:function () {
            var _this = this;
+           if(_this.nowStep == 3){
+             var ajax1,ajax2,ajax3;
+             if( _this.message.third.transportList.length == 0){
+              ajax1 = $.ajax({
+                 type: "GET",
+                 url: androidIos.ajaxHttp()+"/settings/getSysConfigList",
+                 data:{str:"trans_type",userCode:sessionStorage.getItem("token"),source:sessionStorage.getItem("source")},
+                 dataType: "json",
+                 timeout: 10000,
+                 success: function (getCarType) {
+                   var list = [];
+                   for(var i = 0; i<getCarType.length;i++){
+                     var json = {
+                       "code":getCarType[i].value,
+                       "region":getCarType[i].displayName,
+                     }
+                     list.push(json)
+                   }
+                   _this.message.third.transportList = list;
+                 },
+                 complete : function(XMLHttpRequest,status){ //请求完成后最终执行参数
+                   if(status=='timeout'){//超时,status还有success,error等值的情况
+                     androidIos.second("网络请求超时");
+                   }else if(status=='error'){
+                     androidIos.errorwife();
+                   }
+                 }
+               });
+             }
+             if( _this.message.third.carModelList.length == 0){
+               ajax2 = $.ajax({
+                 type: "GET",
+                 url: androidIos.ajaxHttp()+"/settings/getSysConfigList",
+                 data:{str:"car_type",userCode:sessionStorage.getItem("token"),source:sessionStorage.getItem("source")},
+                 dataType: "json",
+                 timeout: 10000,
+                 success: function (getCarType) {
+                   var list = [];
+                   for(var i = 0; i<getCarType.length;i++){
+                     var json = {
+                       "code":getCarType[i].value,
+                       "region":getCarType[i].displayName,
+                     }
+                     list.push(json)
+                   }
+                   _this.message.third.carModelList = list;
+                 },
+                 complete : function(XMLHttpRequest,status){ //请求完成后最终执行参数
+                   if(status=='timeout'){//超时,status还有success,error等值的情况
+                     androidIos.second("网络请求超时");
+                   }else if(status=='error'){
+                     androidIos.errorwife();
+                   }
+                 }
+               });
+             }
+             if( _this.message.third.carLengthList.length == 0){
+               ajax3 = $.ajax({
+                 type: "GET",
+                 url: androidIos.ajaxHttp()+"/settings/getSysConfigList",
+                 data:{str:"car_length",userCode:sessionStorage.getItem("token"),source:sessionStorage.getItem("source")},
+                 dataType: "json",
+                 timeout: 10000,
+                 success: function (getCarType) {
+                   var list = [];
+                   for(var i = 0; i<getCarType.length;i++){
+                     var json = {
+                       "code":getCarType[i].memo,
+                       "region":getCarType[i].displayName,
+                     }
+                     list.push(json)
+                   }
+                   _this.message.third.carLengthList = list;
+                 },
+                 complete : function(XMLHttpRequest,status){ //请求完成后最终执行参数
+                   if(status=='timeout'){//超时,status还有success,error等值的情况
+                     androidIos.second("网络请求超时");
+                   }else if(status=='error'){
+                     androidIos.errorwife();
+                   }
+                 }
+               });
+             }
+             Promise.all([ajax1,ajax2,ajax3]).then((result) => {
+               var x = 0;
+               for(var i = 0;i<_this.message.third.transportList.length;i++){
+                 if(_this.message.third.transportList[i].region == _this.message.third.transportValue){
+                   _this.message.third.transportCode = _this.message.third.transportList[i].code;
+                   x = i;
+                 }
+               }
+               var area = new LArea();
+               area.init({
+                 'trigger': '#Z00',
+                 'valueTo': '#Z00',
+                 'keys': {
+                   id: 'id',
+                   name: 'name'
+                 },
+                 'type': 1,
+                 'data': _this.message.third.transportList
+               });
+               area.value = [x];
+               area.addPointer = function (name) {
+                 name = JSON.parse(name);
+                 _this.message.third.transportValue =  name.firstVal;
+                 _this.message.third.transportCode = name.firstCode;
+               }
+               var y = 0;
+               for(var i = 0;i<_this.message.third.carModelList.length;i++){
+                 if(_this.message.third.carModelList[i].region == _this.message.third.carModelValue){
+                   _this.message.third.carModelCode = _this.message.third.carModelList[i].code;
+                   y = i;
+                 }
+               }
+               var area1 = new LArea();
+               area1.init({
+                 'trigger': '#Z01',
+                 'valueTo': '#Z001',
+                 'keys': {
+                   id: 'id',
+                   name: 'name'
+                 },
+                 'type': 1,
+                 'data': _this.message.third.carModelList
+               });
+               area1.value = [y];
+               area1.addPointer = function (name) {
+                 name = JSON.parse(name);
+                 _this.message.third.carModelValue =  name.firstVal;
+                 _this.message.third.carModelCode = name.firstCode;
+               }
+               var z = 0;
+               for(var i = 0;i<_this.message.third.carLengthList.length;i++){
+                 if(_this.message.third.carLengthList[i].region == _this.message.third.carLengthValue){
+                   _this.message.third.carLengthCode = _this.message.third.carLengthList[i].code;
+                   z = i;
+                 }
+               }
+               var area2 = new LArea();
+               area2.init({
+                 'trigger': '#Z02',
+                 'valueTo': '#Z02',
+                 'keys': {
+                   id: 'id',
+                   name: 'name'
+                 },
+                 'type': 1,
+                 'data': _this.message.third.carLengthList
+               });
+               area2.value = [z];
+               area2.addPointer = function (name) {
+                 name = JSON.parse(name);
+                 _this.message.third.carLengthValue =  name.firstVal;
+                 _this.message.third.carLengthCode = name.firstVal;
+                 _this.message.third.carWeight = name.firstCode.split("-")[0].replace("吨","");
+               }
+             }).catch((error) => {
+               console.log(error)
+             })
+           }
            if(_this.nowStep == 1){
              document.getElementById("authenticationTab").style.display = "none";
            }else{
@@ -596,12 +860,12 @@
                bomb.first("请填写姓名");
                return false;
              }
-             if(_this.message.first.nvitationodeIC == ""){
-               bomb.first("请填写邀请码");
-               return false;
-             }
              if(!androidIos.idCardCheck(_this.message.first.idCode)){
                bomb.first("请填写正确的身份证号");
+               return false;
+             }
+             if((_this.message.second.driverLicense.bendi == "" || _this.message.second.driverLicense.http == "") && _this.driverType != 1){
+               bomb.first("请拍摄驾驶证");
                return false;
              }
            }
@@ -610,30 +874,58 @@
                bomb.first("请拍摄驾驶证");
                return false;
              }
-             if(_this.message.second.licTypeCode == ""){
-               bomb.first("请选择驾驶证等级");
+             if(_this.message.second.drivingLicence.bendi == "" || _this.message.second.drivingLicence.http == ""){
+               bomb.first("请拍摄行驶证");
+               return false;
+             }
+             if(_this.message.second.roadtransport.bendi == "" || _this.message.second.roadtransport.http == ""){
+               bomb.first("请拍摄道路运输许可证");
                return false;
              }
            }
-           if(_this.nowStep < 2){
+           if(_this.nowStep == 3){
+             if(_this.message.third.transportCode == ""){
+               bomb.first("请选择运输类型");
+               return false;
+             }
+             if(_this.message.third.carModelCode == ""){
+               bomb.first("请选择车型");
+               return false;
+             }
+             if(_this.message.third.carLengthCode == ""){
+               bomb.first("请选择车长");
+               return false;
+             }
+             if(_this.message.third.carNumberFirst == "" || _this.message.third.carNumberSecond.length < 6){
+               bomb.first("请选择车牌");
+               return false;
+             }
+             if(_this.message.third.carWeight == ""){
+               bomb.first("请填写载重");
+               return false;
+             }
+           }
+           if(_this.nowStep < 3){
              _this.nowStep ++ ;
              _this.showBefore();
-             _this.$nextTick(function () {
-               _this.lic();
-             })
-           }else if(_this.nowStep == 2){
+           }
+           if((_this.nowStep == 3 && _this.driverType == 1) || (_this.nowStep == 1 && _this.driverType != 1)){
              androidIos.loading("正在上传");
              var data = {
-               inviteCode:(_this.message.first.nvitationodeIC).toUpperCase(),
                driverName:_this.message.first.name,
                idCardNum : _this.message.first.idCode,
                driverLic:_this.message.second.driverLicense.http,
                idCardPos:_this.message.first.idCardZ.http,
                idCardNeg:_this.message.first.idCardF.http,
-               licType:_this.message.second.licTypeCode,
                source :sessionStorage.getItem("source"),
                userCode:sessionStorage.getItem("token"),
                photo:_this.message.first.people.http,
+               transport:_this.message.third.transportCode,
+               carModel:_this.message.third.carModelCode,
+               carLength:_this.message.third.carLengthCode,
+               carNumber:_this.message.third.carNumberFirst + _this.message.third.carNumberSecond,
+               carWeight:_this.message.third.carWeight,
+               meno:_this.message.third.meno,
              }
              $.ajax({
                type: "POST",
@@ -724,7 +1016,7 @@
                }),
                contentType: "application/json;charset=utf-8",
                dataType: "json",
-               timeout: 30000,
+               timeout: 60000,
                success: function (json) {
                  if (json.success == "1") {
                    if(type == 1){
@@ -769,6 +1061,12 @@
                    }else if(type == 4){
                      _this.message.second.driverLicense.bendi = base64;
                      _this.message.second.driverLicense.http = json.path;
+                   }else if(type == 5){
+                     _this.message.second.drivingLicence.bendi = base64;
+                     _this.message.second.drivingLicence.http = json.path;
+                   }else if(type == 6){
+                     _this.message.second.roadtransport.bendi = base64;
+                     _this.message.second.roadtransport.http = json.path;
                    }
                  } else{
                    androidIos.second(json.message);
@@ -783,6 +1081,59 @@
                  }
                }
              });
+           }
+         },
+         plateametrue:function () {
+           var _this = this;
+           _this.carList = true;
+           for(var i=0;i<_this.carTypeList.length;i++){
+             if( _this.message.third.carNumberFirst ==  _this.carTypeList[i].region){
+               _this.carTypeList[i].code=2;
+             }else{
+               _this.carTypeList[i].code=1;
+             }
+           }
+         },
+         carClick:function (number,carname) {
+           var _this = this;
+           _this.message.third.carNumberFirst = carname;
+           for(var i=0;i<_this.carTypeList.length;i++){
+             _this.carTypeList[i].code=1;
+           }
+           _this.carTypeList[number].code=2;
+         },
+         carListHideAgain:function (even) {
+           var el = even.target.id;
+           if(el=="carListBox"){
+             this.carList = false;
+           }
+         },
+         keyboardshow:function () {
+           var _this = this;
+           _this.keyboard = true;
+         },
+         keyboardHideAgain:function (even) {
+           var el = even.target.id;
+           if(el=="keyboardBox"){
+             this.keyboard = false;
+           }
+         },
+         carkeyboard:function (name) {
+           var _this = this;
+           if(_this.message.third.carNumberSecond.length<7){
+             _this.message.third.carNumberSecond = _this.message.third.carNumberSecond + name;
+           }
+         },
+         keyremove:function () {
+           var _this = this;
+           if(_this.message.third.carNumberSecond!=""){
+             var lenth = _this.message.third.carNumberSecond.length;
+             if(lenth>0){
+               _this.message.third.carNumberSecond = _this.message.third.carNumberSecond.substr(0,lenth-1);
+             }
+             if(_this.message.third.carNumberSecond.length==0){
+               _this.message.third.carNumberSecond="";
+             }
            }
          },
        }
@@ -831,7 +1182,7 @@
   margin:0 0.1rem;
 }
   .stepNow{
-     background: #2c9cff!important;
+     background: #1D69A8!important;
   }
   .stepBefore{
     background: #90caf6!important;
@@ -840,7 +1191,7 @@
     background: #e7e6e7!important;
   }
 .stepNowColor{
-  color: #2c9cff!important;
+  color: #1D69A8!important;
 }
 .stepBeforeColor{
   color: #90caf6!important;
@@ -1004,10 +1355,7 @@
     color:white;
     border-radius: 0.2rem;
     margin:0.4rem auto;
-    background: -webkit-linear-gradient(left, #00C4FF , #0074FF); /* Safari 5.1 - 6.0 */
-    background: -o-linear-gradient(right, #00C4FF, #0074FF); /* Opera 11.1 - 12.0 */
-    background: -moz-linear-gradient(right, #00C4FF, #0074FF); /* Firefox 3.6 - 15 */
-    background: linear-gradient(to right, #00C4FF , #0074FF); /* 标准的语法 */
+    background:#1D69A8;
     font-size: 0.427rem;
     line-height: 1.08rem;
   }
@@ -1038,64 +1386,16 @@
   font-size:0.426rem ;
   color:#333;
   width:6.15rem;
-  margin-right: 0.2rem;
+  margin-right: 0.53rem;
+  text-align: right;
 }
-  #X00{
-    float: right;
-    line-height: 0.45rem;
-    margin-top:0.44rem ;
-    font-size:0.426rem ;
-    color:#BCBCBC;
-    width:6.15rem;
-    margin-right: 0.2rem;
-    overflow: hidden;
-    text-overflow:ellipsis;
-    white-space: nowrap;
-  }
-  .classCompanyName{
-    float: right;
-    line-height: 1.33rem;
-    font-size:0.426rem ;
-    color:#333;
-    width:6.15rem;
-    margin-right: 0.2rem;
-    overflow: hidden;
-    text-overflow:ellipsis;
-    white-space: nowrap;
-  }
-  #tranTypeBigBox{
-    float: right;
-    line-height: 1.33rem;
-    font-size:0.426rem ;
-    color:#BCBCBC;
-    width:6.15rem;
-    margin-right: 0.2rem;
-    overflow: hidden;
-    text-overflow:ellipsis;
-    white-space: nowrap;
-  }
-  .blackColor{
+.blackColor{
     color: #333333!important;
   }
-#tranTypeBox{
-  position: fixed;
-  width:100%;
-  top:0;
-  bottom:0;
-  height: auto;
-  z-index: 44;
-  background: rgba(0,0,0,0.3);
-}
-#tranType{
-  width: 100%;
-  background: white;
-  position: absolute;
-  bottom:0;
-}
 #tranType button{
   width:90%;
   line-height: 1rem;
-  background: #2c9cff;
+  background: #1D69A8;
   color:white;
   display: block;
   margin: 0.8rem auto 0.3rem auto;
@@ -1118,7 +1418,7 @@
   margin-top: 0.3rem;
 }
 .chooseTrue{
-  background:#2C9CFF!important;
+  background:#1D69A8!important;
   color:white!important;
 }
 .chooseLicType{
@@ -1152,7 +1452,7 @@
   margin-left: 3%;
 }
 .chooseTrue{
-  background-color: #2c9cff!important;
+  background-color: #1D69A8!important;
   color:white!important;
 }
 #tranType img{
@@ -1168,17 +1468,26 @@
     height:auto;
     overflow-y: scroll;
   }
-#Z00{
+#Z00,#Z01,#Z02,#carNumberBox,.carNumberFirst{
   float: right;
   line-height: 0.45rem;
   margin-top:0.44rem ;
   font-size:0.426rem ;
   color:#BCBCBC;
   width:6.15rem;
-  margin-right: 0.2rem;
+  text-align: right;
+  margin-right: 0.53rem;
   overflow: hidden;
   text-overflow:ellipsis;
   white-space: nowrap;
+}
+.carNumberFirst{
+   width:1rem;
+  color:#333;
+  margin-right: 0.1rem;
+}
+#carNumberBox{
+  width:2.5rem;
 }
   #baiduhuotiBox{
      position: fixed;
@@ -1233,9 +1542,9 @@
   -webkit-border-radius: 0.3rem;
   -moz-border-radius: 0.3rem;
   border-radius:  0.3rem;
-  border: 1px solid #0073eb;
+  border: 1px solid #1D69A8;
   text-align: center;
-  color: #0073eb;
+  color: #1D69A8;
   display: inline-block;
   width: 0.42688rem;
   height:0.42688rem;
@@ -1259,7 +1568,7 @@
   height:0.608rem;
   margin: .13344rem 0 .13344rem .1888rem;
   width: 0;
-  border-left: 1px dotted #0073eb;
+  border-left: 1px dotted #1D69A8;
   display: block;
 }
   #baiduhuoti button{
@@ -1268,10 +1577,7 @@
     color:white;
     border-radius: 0.2rem;
     margin:0.4rem auto;
-    background: -webkit-linear-gradient(left, #00C4FF , #0074FF); /* Safari 5.1 - 6.0 */
-    background: -o-linear-gradient(right, #00C4FF, #0074FF); /* Opera 11.1 - 12.0 */
-    background: -moz-linear-gradient(right, #00C4FF, #0074FF); /* Firefox 3.6 - 15 */
-    background: linear-gradient(to right, #00C4FF , #0074FF); /* 标准的语法 */
+    background:#1D69A8;
     font-size: 0.427rem;
     line-height: 1.08rem;
   }
@@ -1293,10 +1599,7 @@
   display: block;
   color:white;
   border-radius: 0.2rem;
-  background: -webkit-linear-gradient(left, #00C4FF , #0074FF); /* Safari 5.1 - 6.0 */
-  background: -o-linear-gradient(right, #00C4FF, #0074FF); /* Opera 11.1 - 12.0 */
-  background: -moz-linear-gradient(right, #00C4FF, #0074FF); /* Firefox 3.6 - 15 */
-  background: linear-gradient(to right, #00C4FF , #0074FF); /* 标准的语法 */
+  background:#1D69A8;
   font-size: 0.427rem;
   line-height: 1.08rem;
 }
@@ -1347,4 +1650,131 @@
     width:1rem;
     margin:0.3rem auto 0 auto
   }
+#carListBox,#keyboardBox,#InvitationDriverBox{
+  position: fixed;
+  bottom:0;
+  width:100%;
+  top:0;
+  height:auto;
+  background: rgba(0,0,0,0);
+  z-index: 10;
+}
+#InvitationDriverBox{
+  background: rgba(0,0,0,0.3);
+}
+#carList,#keyboard{
+  position: fixed;
+  bottom:0;
+  width:100%;
+  height:5.2rem;
+  overflow: hidden;
+  background:#d4d9dc ;
+  border-top: 1px solid #e9ebea;
+}
+#keyboard{
+  height: 6.5rem;
+}
+#carList p,#keyboard p{
+  float: left;
+  width:0.87rem;
+  height: 1.0687rem;
+  text-align: center;
+  line-height: 1.0687rem;
+  background: white;
+  box-shadow: 0 0.03125rem 0rem #999;
+  margin: 0.1832rem 0.065rem 0 0.065rem;
+  font-size: 0.375rem;
+  border-radius: 0.18rem;
+  color:#333;
+}
+#carList button{
+  width: 2.8rem;
+  height:1.1rem;
+  margin: 0.1832rem 0.065rem 0 0.065rem;
+  float: right;
+  border-radius: 0.18rem;
+  color:white;
+  background: #3399FF;
+  font-size: 0.375rem;
+  letter-spacing: 0.0625rem;
+}
+.carCode{
+  background: #3399FF!important;
+  color:white!important;
+}
+.carnumber{
+  color:#d2d2d2;
+}
+.carGreen{
+  color:#5ad85a!important;
+}
+.carBrown{
+  color:brown!important;
+}
+.keyRemove{
+  background-color:#abb4bd!important;
+  width: 1.0687rem!important;
+  height: 1.0687rem!important;
+  float: right!important;
+  background-image: url("../../images/clone.png")!important;
+  background-size:0.62977rem  0.458rem!important;
+  background-repeat: no-repeat!important;
+  background-position: 45% 50%!important;
+}
+.keyBlack{
+  background:#abb4bd!important;
+  width: 1.0687rem!important;
+  height: 1.0687rem!important;
+  line-height: 1.0687rem!important;
+}
+.keySpace{
+  width: 4.86641rem!important;
+  height: 1.0687rem!important;
+  line-height: 1.0687rem!important;
+}
+.keyOk{
+  background:#abb4bd!important;
+  width: 2.309rem!important;
+  height: 1.0687rem!important;
+  line-height: 1.0687rem!important;
+}
+.addColor{
+  background: red!important;
+}
+.slide-fade-enter-active {
+  transition: all .2s ease;
+}
+.slide-fade-leave-active {
+  transition: all .2s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+}
+.slide-fade-enter, .slide-fade-leave-to
+  /* .slide-fade-leave-active for below version 2.1.8 */ {
+  transform: translateY(0.13rem);
+  opacity: 0;
+}
+  .textarea{
+    width:8.88rem;
+    padding:0.44rem 0.56rem;
+    margin-top: 0.28rem;
+    background: white;
+  }
+.textarea p{
+  font-size: 0.426rem;
+  color: #333;
+}
+.textarea textarea{
+   width:94%;
+  height:1.4rem;
+  padding:0.3rem 3% ;
+  color:#373737;
+  font-size:0.375rem ;
+}
+.w2{
+  letter-spacing:2em; /*如果需要y个字两端对齐，则为(x-y)/(y-1),这里是（4-2）/(2-1)=2em */
+  margin-right:-2em;
+}
+.w3{
+  letter-spacing:0.5em; /*如果需要y个字两端对齐，则为(x-y)/(y-1),这里是（4-3）/(3-1)=2em */
+  margin-right:-0.5em;
+}
 </style>
