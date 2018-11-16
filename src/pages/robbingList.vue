@@ -31,7 +31,7 @@
           </li>
         </ul>
       </div>
-      <footComponent ref="footcomponent" :idx='0'></footComponent>
+      <footComponent ref="footcomponent" :idx='1'></footComponent>
     </div>
 </template>
 

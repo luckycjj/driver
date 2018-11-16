@@ -1,40 +1,39 @@
 <template>
-  <div id="register" style="top:1.3rem;">
+  <div id="register" style="top:0rem;">
     <div id="title" v-title data-title="注册"></div>
+    <div id="top">
+       <img id="topImg" src="../../images/register-top.png" style="height:3.78rem;">
+       <img id="gobackImg" src="../../images/register-goback.png" style="top:0.9rem" @click="goback()">
+    </div>
     <div id="registerBody">
-      <div class="modelView">
-        <span class="w3">手机号</span>
+      <div class="modelView img1">
         <input @keyup="filterInput()"  type="tel" v-model="mobile" placeholder="请输入手机号" maxlength="11"/>
       </div>
-      <div class="modelView">
-        <span class="w2">密码</span>
-        <input @keyup="filterInput()"  :type="lookPassWord ? 'text' : 'password' "  maxlength="25"  v-model="password" placeholder="请输入密码"/>
-        <div id="lookPassWord" :class="lookPassWord ? 'lookPassWord' : '' " @click="lookpass(1)"></div>
-        <div class="clearBoth"></div>
-      </div>
-      <div class="modelView">
-        <span> 确认密码</span>
-        <input @keyup="filterInput()"  :type="lookPassWord1 ? 'text' : 'password' "  maxlength="25"  v-model="passwordSure" placeholder="请输入密码"/>
-        <div id="lookPassWord1" :class="lookPassWord1 ? 'lookPassWord' : '' " @click="lookpass(2)"></div>
-        <div class="clearBoth"></div>
-      </div>
-      <div class="modelView">
-        <span class="w3">邀请码</span>
-        <input @keyup="filterInput()"  type="text" v-model="invitation" placeholder="请输入邀请码" maxlength="6"/>
-      </div>
-      <div class="modelView" style="border:none">
-        <span class="w3">验证码</span>
+      <div class="modelView img5">
         <input @keyup="filterInput()"  type="tel" v-model="verification" placeholder="请输入验证码" maxlength="6"/>
         <span class="verificationCome" @click="verificationCome()">{{name}}</span>
         <div class="clearBoth"></div>
       </div>
+      <div class="modelView img2">
+        <input @keyup="filterInput()"  :type="lookPassWord ? 'text' : 'password' "  maxlength="25"  v-model="password" placeholder="请输入密码"/>
+        <div id="lookPassWord" :class="lookPassWord ? 'lookPassWord' : '' " @click="lookpass(1)"></div>
+        <div class="clearBoth"></div>
+      </div>
+      <div class="modelView img3">
+        <input @keyup="filterInput()"  :type="lookPassWord1 ? 'text' : 'password' "  maxlength="25"  v-model="passwordSure" placeholder="请确认密码"/>
+        <div id="lookPassWord1" :class="lookPassWord1 ? 'lookPassWord' : '' " @click="lookpass(2)"></div>
+        <div class="clearBoth"></div>
+      </div>
+      <div class="modelView img4">
+        <input @keyup="filterInput()"  type="text" v-model="invitation" placeholder="请输入邀请码" maxlength="6"/>
+      </div>
     </div>
+    <button @click="registerOn()">注册</button>
     <div class="checkBox">
       <div class="checked" @click="checked = !checked" :class="checked ? 'checkedTrue' : '' "></div>
       <span>我同意用户协议及声明</span>
       <div class="clearBoth"></div>
     </div>
-    <button @click="registerOn()">注册</button>
   </div>
 </template>
 
@@ -51,7 +50,7 @@
              passwordSure:"",
              invitation :"",
              verification:"",
-             checked:false,
+             checked:true,
              lookPassWord:false,
              lookPassWord1:false,
              name:"获取验证码",
@@ -60,13 +59,19 @@
       },
       mounted:function () {
         var _this = this;
-        androidIos.judgeIphoneX("register",2);
+        androidIos.judgeIphoneX("topImg",5);
+        androidIos.judgeIphoneX("gobackImg",2);
+        androidIos.judgeIphoneX("checkBox",1);
         androidIos.bridge(_this);
       },
       methods:{
           go:function () {
 
           },
+        goback:function () {
+          var _this = this;
+          androidIos.gobackFrom(_this);
+        },
         filterInput:function () {
           var _this = this;
           _this.mobile =  _this.mobile.replace(/[^\0-9]/g,'');
@@ -196,11 +201,25 @@
 <style scoped>
   #register{
     position: absolute;
-    top:1.3rem;
+    top:0rem;
     bottom:0;
-    background: #f6f6f6;
+    background: white;
     height: auto;
     width:100%;
+  }
+  #top{
+    width:100%;
+    position: relative;
+  }
+  #top  #gobackImg{
+      position: absolute;
+     width:0.253rem;
+    left:0.4rem;
+    top:0.9rem;
+  }
+  #top #topImg{
+    width:100%;
+    height: 3.78rem;
   }
  #registerBody{
    width:100%;
@@ -208,11 +227,15 @@
    margin: 0.27rem auto;
  }
  .modelView{
-   width:9.6rem;
+   width:7.6rem;
    border-bottom: 1px solid #E5E5E5;
-   margin-left:0.4rem;
+  margin-left:auto;
+   margin-right: auto;
    height:1.2rem;
    position: relative;
+   background-size:0.53rem ;
+   background-repeat: no-repeat;
+   background-position: 0.13rem 50%;
  }
  .modelView span{
    line-height: 1.2rem;
@@ -220,20 +243,27 @@
    font-size:0.375rem ;
  }
  .modelView input{
-   width:5rem;
+   width:4.2rem;
    height: 0.5rem;
    margin-top: 0.35rem;
    font-size: 0.375rem;
-   margin-left: 0.65rem;
+   margin-left: 1.06rem;
  }
- .w2{
-   letter-spacing:2em; /*如果需要y个字两端对齐，则为(x-y)/(y-1),这里是（4-2）/(2-1)=2em */
-   margin-right:-2em;
- }
- .w3{
-   letter-spacing:0.5em; /*如果需要y个字两端对齐，则为(x-y)/(y-1),这里是（4-3）/(3-1)=2em */
-   margin-right:-0.5em;
- }
+.img1{
+  background-image: url("../../images/register-user.png");
+}
+  .img2{
+    background-image: url("../../images/register-mima.png");
+  }
+  .img3{
+    background-image: url("../../images/register-queren.png");
+  }
+  .img4{
+    background-image: url("../../images/register-yaoqingma.png");
+  }
+  .img5{
+    background-image: url("../../images/register-yanzhengma.png");
+  }
  #lookPassWord,#lookPassWord1{
    width: 10%;
    position: absolute;
@@ -249,46 +279,48 @@
    background-image: url("../../images/passwordLock.png")!important;
  }
  button{
-   width:9.2rem;
+   width:7.8rem;
    margin:0.74rem auto 0 auto ;
    display: block;
    background:#1D69A8;
    color:white;
    font-size: 0.42rem;
    letter-spacing: 2px;
-   height: 1.08rem;
-   box-shadow: 0 0 10px #80d6ff;
+   height: 1.37rem;
    border-radius: 0.1rem;
  }
   .verificationCome{
     float: right;
-    color:#0091FF!important;
+    color:#1869A9!important;
     font-size: 0.32rem!important;
     margin-right: 0.42rem;
   }
   .checkBox{
-    width:9.2rem;
-    margin:0.37rem auto 0 auto ;
+    width:4.4rem;
+    position: absolute;
+    bottom:0.58rem;
+    left:50%;
+    margin-left: -2.2rem;
   }
   .checked{
-    width:0.53rem;
-    height: 0.53rem;
-    border: 1px solid #333;
+    width:0.34rem;
+    height: 0.34rem;
+    border: 1px solid #999999;
     border-radius: 0.0625rem;
+    margin-top: 0.08rem;
     float: left;
   }
   .checkedTrue{
     background-image: url("../../images/checkTrue.png");
     background-repeat: no-repeat;
     background-position: 50% 50%;
-    background-size:0.38rem ;
+    background-size:0.3rem ;
   }
  .checkBox span{
    line-height: 0.53rem;
-   margin-left:0.32rem ;
+   margin-left:0.16rem ;
    color:#999;
    font-size:0.375rem ;
-   letter-spacing: 1px;
    float: left;
  }
 </style>

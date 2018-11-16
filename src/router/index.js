@@ -8,6 +8,7 @@ import Secondmessage from '../pages/Secondmessage'
 import authenticationS from '@/components/authentication/authenticationS'
 import user from '../pages/user'
 import track from '../pages/track'
+import taskMoreHomePage from '../pages/taskMoreHomePage'
 import Vue from 'vue'
 import Router from 'vue-router'
 import  trackF from '@/components/track/trackMore'
@@ -137,6 +138,11 @@ Vue.filter('orderTypeName', function(value) {
 export default new Router(
   {
   routes: [
+    {
+      path:'/taskMoreHomePage',
+      name:'taskMoreHomePage',
+      component:taskMoreHomePage,
+    },
     {
       path:'/upProductImg',
       name:'upProductImg',

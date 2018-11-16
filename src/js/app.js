@@ -65,8 +65,8 @@ var androidIos = {
   },
   ajaxHttp: function () {
    //var http = 'http://10.10.10.156:8085';
-   var http = 'http://10.10.10.219:8085';
- // var http = 'http://222.73.159.76:8085';
+     var http = 'http://10.10.10.219:8085';
+   //var http = 'http://222.73.159.76:8085';
     return http;
   },
   addPageList: function () {
@@ -592,6 +592,8 @@ var androidIos = {
           document.getElementById(id).style.top =  document.getElementById(id).style.top.replace("rem","")*1 + paddingTop.replace("px","")/html + "rem";
         }else if(type == 4){
           document.getElementById(id).style.height =  paddingTop.replace("px","")/html + "rem";
+        }else if(type == 5){
+          document.getElementById(id).style.height =  document.getElementById(id).style.height.replace("rem","")*1 +  paddingTop.replace("px","")/html + "rem";
         }
       }
 

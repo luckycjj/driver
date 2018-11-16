@@ -32,15 +32,15 @@
              json = [{
                number:0,
                marginRight:0,
-               cls: "robbing",
-               name: "找货",
-               push: "/robbingList"
+               cls: "track",
+               name: "任务",
+               push: "/taskMoreHomePage"
              },{
                number:0,
                marginRight:0,
-               cls: "track",
-               name: "任务",
-               push: "/trackList"
+               cls: "robbing",
+               name: "找货",
+               push: "/robbingList"
              },
                {
                  number:0,
@@ -63,7 +63,7 @@
               marginRight:0,
               cls: "track",
               name: "任务",
-              push: "/trackList"
+              push: "/taskMoreHomePage"
             },{
               number:0,
               marginRight:0,

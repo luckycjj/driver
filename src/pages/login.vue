@@ -1,14 +1,12 @@
 <template>
   <div id="login">
     <div id="title" v-title data-title="登陆"></div>
-    <img src="../images/logo.png" id="logo">
+    <img src="../images/logo2.png" id="logo">
     <div class="modelView">
-      <span class="w3">手机号</span>
-      <input  @keyup="filterInput()" type="tel" v-model="mobile" placeholder="请输入手机号" maxlength="11"/>
+      <input autocomplete="off"  @keyup="filterInput()" type="tel" v-model="mobile" placeholder="请输入手机号" maxlength="11"/>
     </div>
     <div class="modelView">
-      <span class="w2">密码</span>
-      <input  @keyup="filterInput()" :type="lookPassWord ? 'text' : 'password' "  v-model="password" placeholder="请输入密码"/>
+      <input autocomplete="off"  @keyup="filterInput()" :type="lookPassWord ? 'text' : 'password' "  v-model="password" placeholder="请输入密码"/>
       <div id="lookPassWord" :class="lookPassWord ? 'lookPassWord' : '' " @click="lookpass()"></div>
     </div>
     <button @click="loginOn()">登录</button>
@@ -37,7 +35,8 @@
           sessionStorage.removeItem("driverMessage");
           localStorage.removeItem("DRIVERSFETMESSAGE");
           sessionStorage.removeItem("trackTap");
-         sessionStorage.removeItem("histroyTrackTap");
+          sessionStorage.removeItem("histroyTrackTap");
+          sessionStorage.removeItem("driverBottomIcon");
           localStorage.removeItem("PEOPLEPHOTO");
           androidIos.bridge(_this);
       },
@@ -96,6 +95,48 @@
                 sessionStorage.setItem("token",login.data.userCode);
                 sessionStorage.setItem("tokenBefore",login.data.userCode);
                 userCodeFirst = login.data.userCode;
+                $.ajax({
+                  type: "POST",
+                  url: androidIos.ajaxHttp() + "/getUserInfo",
+                  data:JSON.stringify({
+                    userCode:sessionStorage.getItem("token"),
+                    source:sessionStorage.getItem("source")
+                  }),
+                  contentType: "application/json;charset=utf-8",
+                  dataType: "json",
+                  timeout: 30000,
+                  async:false,
+                  success: function (getUserInfo) {
+                    if (getUserInfo.success == "1") {
+                      sessionStorage.setItem("driverMessage",JSON.stringify({
+                        licType: getUserInfo.licType,
+                        name:  getUserInfo.name,
+                        photo:  getUserInfo.photo,
+                        status:  getUserInfo.status,
+                        corpName:  getUserInfo.corpName,
+                        driverType:1,
+                      }));
+                      status =   getUserInfo.status;
+                    }else{
+                      androidIos.second(getUserInfo.message);
+                    }
+                  },
+                  complete: function (XMLHttpRequest, status) { //请求完成后最终执行参数
+                    if (status == 'timeout') { //超时,status还有success,error等值的情况
+                      androidIos.second("当前状况下网络状态差，请检查网络！");
+                    } else if (status == "error") {
+                      androidIos.errorwife();
+                    }
+                  }
+                });
+                androidIos.setcookie("MESSAGEDRIVER",JSON.stringify({
+                  token:userCodeFirst,
+                  status:status,
+                }),80);
+                _this.$cjj("登录成功");
+                setTimeout(function () {
+                  _this.$router.push({ path: '/taskMoreHomePage'});
+                },500)
               }else{
                 androidIos.second(login.message);
               }
@@ -109,48 +150,6 @@
               }
             }
           });
-          $.ajax({
-            type: "POST",
-            url: androidIos.ajaxHttp() + "/getUserInfo",
-            data:JSON.stringify({
-              userCode:sessionStorage.getItem("token"),
-              source:sessionStorage.getItem("source")
-            }),
-            contentType: "application/json;charset=utf-8",
-            dataType: "json",
-            timeout: 30000,
-            async:false,
-            success: function (getUserInfo) {
-              if (getUserInfo.success == "1") {
-                sessionStorage.setItem("driverMessage",JSON.stringify({
-                  licType: getUserInfo.licType,
-                  name:  getUserInfo.name,
-                  photo:  getUserInfo.photo,
-                  status:  getUserInfo.status,
-                  corpName:  getUserInfo.corpName,
-                  driverType:1,
-                }));
-                status =   getUserInfo.status;
-              }else{
-                androidIos.second(getUserInfo.message);
-              }
-            },
-            complete: function (XMLHttpRequest, status) { //请求完成后最终执行参数
-              if (status == 'timeout') { //超时,status还有success,error等值的情况
-                androidIos.second("当前状况下网络状态差，请检查网络！");
-              } else if (status == "error") {
-                androidIos.errorwife();
-              }
-            }
-          });
-          androidIos.setcookie("MESSAGEDRIVER",JSON.stringify({
-            token:userCodeFirst,
-            status:status,
-          }),80);
-          _this.$cjj("登录成功");
-          setTimeout(function () {
-            _this.$router.push({ path: '/trackList'});
-          },500)
         },
         lookpass:function () {
           var _this = this;
@@ -171,28 +170,49 @@
 </script>
 
 <style scoped>
+  input::-webkit-input-placeholder{
+    color: #A4B9E0!important;
+  }
+  input:-moz-placeholder {  /* Mozilla Firefox 4 to 18*/
+    color:#A4B9E0!important;
+  }
+  input::-moz-placeholder {  /* Mozilla Firefox 19+*/
+    　　color:#A4B9E0!important;
+  }
+  input:-ms-input-placeholder { /* Internet Explorer 10+*/
+    　　color:#A4B9E0;
+  }
+  #login{
+     position: absolute;
+    top:0;
+    bottom:0;
+    height: auto;
+    width:100%;
+    background: -webkit-linear-gradient(135deg, #535DAD , #2A82CC); /* Safari 5.1 - 6.0 */
+    background: -o-linear-gradient(135deg, #535DAD, #2A82CC); /* Opera 11.1 - 12.0 */
+    background: -moz-linear-gradient(135deg, #535DAD, #2A82CC); /* Firefox 3.6 - 15 */
+    background: linear-gradient(135deg, #535DAD , #2A82CC); /* 标准的语法 */
+  }
   #logo{
-    width:2rem;
-    margin:2.14rem auto  1.88rem auto;
+    width:5.33rem;
+    margin:3.68rem auto  1.28rem auto;
   }
   .modelView{
-    width:9rem;
-    border-bottom: 2px solid #E9EEF3;
+    width:7.8rem;
     margin: 0 auto 0.5rem auto;
-    height:1rem;
+    height:1.37rem;
     position: relative;
-  }
-  .modelView span{
-     line-height: 1rem;
-    color:#333;
-    font-size:0.375rem ;
+    background: rgba(255,255,255,0.2);
+    border-radius: 0.16rem;
   }
   .modelView input{
-     width:5rem;
+     width:5.84rem;
     height: 0.5rem;
-    margin-top: 0.25rem;
-    font-size: 0.375rem;
-    margin-left: 0.65rem;
+    margin-top: 0.435rem;
+    background: transparent;
+    font-size: 0.42rem;
+    margin-left: 0.48rem;
+    color:white;
   }
   .w2{
     letter-spacing:1em; /*如果需要y个字两端对齐，则为(x-y)/(y-1),这里是（4-2）/(2-1)=2em */
@@ -205,36 +225,36 @@
   #lookPassWord{
     width: 10%;
     position: absolute;
-    right: 1%;
+    right: 0.3rem;
     top:0;
     height: 100%;
-    background-image: url("../images/passwordNolock.png");
+    background-image: url("../images/passwordNolock2.png");
     background-repeat: no-repeat;
     background-size: 0.6rem;
     background-position: 50% 50%;
   }
   .lookPassWord{
-    background-image: url("../images/passwordLock.png")!important;
+    background-image: url("../images/passwordLock2.png")!important;
   }
   button{
-     width:8.5rem;
-    margin:1.04rem auto 0 auto ;
+     width:7.8rem;
+    margin:0.46rem auto 0 auto ;
     display: block;
-    background:#1D69A8;
-    color:white;
-    font-size: 0.48rem;
+    background:transparent;
+    color:#F7F9FD;
+    font-size: 0.4267rem;
     letter-spacing: 2px;
-    height: 1.3rem;
-    box-shadow: 0 0 10px #80d6ff;
+    height: 1.37rem;
+    border: 2px solid #5D92D1;
     border-radius: 0.2rem;
   }
   .newOwner{
-     width:8.5rem;
+     width:7.8rem;
     display: block;
     margin: 0.4rem auto;
   }
   .newOwner span{
-    color:#999;
+    color:#F7F9FD;
     font-size: 0.37rem;
     float: left;
   }
