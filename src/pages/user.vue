@@ -89,17 +89,21 @@
                icon:require("../images/shortMessage.png"),
              }],
              tabList:[{
+               name:"结算中心",
+               icon:require("../images/icon-userMoney.png"),
+               url:"/settlementCenter"
+             },{
                name:"扫一扫",
                icon:require("../images/saoyisao.png"),
+               url:""
+             },{
+               name:"邀请码",
+               icon:require("../images/icon-yaoqingma.png"),
                url:""
              },{
                name:"分享",
                icon:require("../images/share.png"),
                url:""
-             },{
-               name:"我的上传",
-               icon:require("../images/myfileup.png"),
-               url:"/myfileup"
              },{
                name:"建议反馈",
                icon:require("../images/feedback.png"),
@@ -116,7 +120,7 @@
         },
       mounted:function () {
         var _this = this;
-        _this.driverType = JSON.parse(sessionStorage.getItem("driverMessage")).driverType == 1 ? 3 : 2;
+        _this.driverType = JSON.parse(sessionStorage.getItem("driverMessage")).driverType == 1 ? 2 : 2;
         var PEOPLEPHOTO = localStorage.getItem("PEOPLEPHOTO");
         if(PEOPLEPHOTO != undefined){
           _this.message.photo =  PEOPLEPHOTO;

@@ -3,6 +3,7 @@
       <div id="title" v-title data-title="结算中心"></div>
       <div id="topBox">
         <div id="top">
+          <img id="gobackImg" src="../images/register-goback.png"  @click="goback()">
           结算中心
           <h3>明细</h3>
         </div>
@@ -51,6 +52,10 @@
       methods:{
         go:function () {
 
+        },
+        goback:function () {
+          var _this = this;
+          androidIos.gobackFrom(_this);
         },
         lookUrl:function (url) {
           var _this = this;
@@ -131,5 +136,12 @@
      background-position: 90% 50%;
      background-repeat: no-repeat;
      background-size:0.23rem ;
+   }
+   #gobackImg{
+     position: absolute;
+     width:0.253rem;
+     left:0.4rem;
+     top:50%;
+     margin-top: -0.213rem;
    }
 </style>
