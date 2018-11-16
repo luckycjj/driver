@@ -114,7 +114,7 @@
                         photo:  getUserInfo.photo,
                         status:  getUserInfo.status,
                         corpName:  getUserInfo.corpName,
-                        driverType:1,
+                        driverType:getUserInfo.type == 1 ? 2 : 1,
                       }));
                       status =   getUserInfo.status;
                     }else{

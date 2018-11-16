@@ -146,10 +146,6 @@
             bomb.first("两次密码输入不相同");
             return false;
           }
-          if(_this.invitation.length <4){
-            bomb.first("请输入正确的邀请码");
-            return false;
-          }
           if(_this.verification.length < 4){
             bomb.first("请输入正确的验证码");
             return false;
