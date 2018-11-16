@@ -2,7 +2,7 @@
   <div id="footer">
     <ul>
       <li :style="{width:100 /  (items.length) + '%'}" v-for='(item,index) of items' :class='[{on:index === idx} ]' @click="$router.push(item.push)">
-        <div class="imgBox"  :class='[ item.cls , {imgSure:index === idx} ]'><div :style="{marginRight:item.marginRight}" class="corner" v-show="((index == 1 && type == 1) || (index == 0 && type != 1) )&& item.number > 0">{{item.number}}</div></div>
+        <div class="imgBox"  :class='[ item.cls , {imgSure:index === idx} ]'><div :style="{marginRight:item.marginRight}" class="corner" v-show="index == 0&& item.number > 0">{{item.number}}</div></div>
         <div id="footerUserTX" v-if="index == items.length - 1" :style="{display: item.show ? 'block' : 'none'}"></div>
         {{item.name}}
       </li>
@@ -114,11 +114,7 @@
                 timeout: 30000,
                 success: function (driverBottomIcon) {
                   if (driverBottomIcon.success == "1") {
-                    if(_this.type == 1){
-                      _this.items[1].number = driverBottomIcon.orderCount*1;
-                    }else{
                       _this.items[0].number = driverBottomIcon.orderCount*1;
-                    }
                     _this.$nextTick(function () {
                       _this.marginWidth();
                       sessionStorage.setItem("driverBottomIcon",JSON.stringify(_this.items));

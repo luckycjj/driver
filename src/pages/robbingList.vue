@@ -53,7 +53,7 @@
             setHis:[{
                name:"接单设置",
                icon:require("../images/robbingSet.png"),
-              http:"/findProHis"
+              http:"/getOrderSet"
             },{
               name:"找货记录",
               icon:require("../images/robbingHis.png"),
@@ -189,22 +189,53 @@
                 if(pageNum == 1){
                   _this.$refs.footcomponent.go();
                 }
+                var GETORDERSETUSER = localStorage.getItem("GETORDERSETUSER" + sessionStorage.getItem("token") );
+                if(GETORDERSETUSER != undefined){
+                  GETORDERSETUSER = JSON.parse(GETORDERSETUSER);
+                   if(!GETORDERSETUSER.getOrderYes){
+                     successCallback([]);
+                     return false;
+                   }
+                }
+                var deliTime = [],carType = [],carModel = [],carLength = [],lootLines = [];
+                if(GETORDERSETUSER != undefined) {
+                  for (var i = 0; i < GETORDERSETUSER.timeType.length; i++) {
+                    deliTime.push(GETORDERSETUSER.timeType[i].value);
+                  }
+                  for(var i = 0 ; i < GETORDERSETUSER.proList.length;i++){
+                    carType.push(GETORDERSETUSER.proList[i].value);
+                  }
+                  for(var i = 0 ; i < GETORDERSETUSER.carModel.length;i++){
+                    carModel.push(GETORDERSETUSER.carModel[i].value);
+                  }
+                  for(var i = 0 ; i < GETORDERSETUSER.carLength.length;i++){
+                    carLength.push(GETORDERSETUSER.carLength[i].value);
+                  }
+                  for(var i = 0 ;i <GETORDERSETUSER.addressList.length;i++ ){
+                    var json = {
+                      province:GETORDERSETUSER.addressList[i].startList[0] == undefined ? "" : GETORDERSETUSER.addressList[i].startList[0] ,
+                      city:GETORDERSETUSER.addressList[i].startList[1] == undefined ? "" : GETORDERSETUSER.addressList[i].startList[1] ,
+                      area:GETORDERSETUSER.addressList[i].startList[2] == undefined ? "" : GETORDERSETUSER.addressList[i].startList[2] ,
+                      provinceId:GETORDERSETUSER.addressList[i].endList[0] == undefined ? "" : GETORDERSETUSER.addressList[i].endList[0] ,
+                      cityId: GETORDERSETUSER.addressList[i].endList[1] == undefined ? "" : GETORDERSETUSER.addressList[i].endList[1] ,
+                      areaId:GETORDERSETUSER.addressList[i].endList[2] == undefined ? "" : GETORDERSETUSER.addressList[i].endList[2]
+                    }
+                    lootLines.push(json);
+                  }
+                }
                 $.ajax({
                   type: "POST",
-                  url: androidIos.ajaxHttp() + "/order/loadSegment",
+                  url: androidIos.ajaxHttp() + "/order/loadDriverSegment",
                   data:JSON.stringify({
                     page:pageNum,
                     size:pageSize,
-                    type:curNavIndex,
                     userCode:sessionStorage.getItem("token"),
                     source:sessionStorage.getItem("source"),
-                    startCity: "",
-                    endCity: "",
-                    transType:"",
-                    range: "", //不传
-                    pkTransType:"",//不传
-                    gta: "",
-                    lta: "",
+                    lootLines:lootLines,
+                    carModel:carModel.join(","),
+                    carLength:carLength.join(","),
+                    deliTime:deliTime.join(","),
+                    carType:carType.join(",")
                   }),
                   contentType: "application/json;charset=utf-8",
                   dataType: "json",

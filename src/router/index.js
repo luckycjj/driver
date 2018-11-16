@@ -30,6 +30,7 @@ import statusNow from '@/components/myBox/statusNow'
 import robbingMore from '@/components/robbing/robbingMore'
 import findProHis from '@/components/robbing/findProHis'
 import robbingYesNo from '@/components/robbing/robbingYesNo'
+import getOrderSet from '@/components/robbing/getOrderSet'
 import settlementYes from '@/components/settlementBox/settlementYes'
 Vue.use(Router);
 
@@ -138,6 +139,11 @@ Vue.filter('orderTypeName', function(value) {
 export default new Router(
   {
   routes: [
+    {
+      path:'/getOrderSet',
+      name:'getOrderSet',
+      component:getOrderSet,
+    },
     {
       path:'/taskMoreHomePage',
       name:'taskMoreHomePage',
