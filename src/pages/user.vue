@@ -89,10 +89,6 @@
                icon:require("../images/shortMessage.png"),
              }],
              tabList:[{
-               name:"结算中心",
-               icon:require("../images/icon-userMoney.png"),
-               url:"/settlementCenter"
-             },{
                name:"扫一扫",
                icon:require("../images/saoyisao.png"),
                url:""
@@ -121,6 +117,13 @@
       mounted:function () {
         var _this = this;
         _this.driverType = JSON.parse(sessionStorage.getItem("driverMessage")).driverType == 1 ? 3 : 2;
+        if(JSON.parse(sessionStorage.getItem("driverMessage")).driverType == 1 ){
+          _this.tabList.unshift({
+            name:"结算中心",
+            icon:require("../images/icon-userMoney.png"),
+            url:"/settlementCenter"
+          });
+        }
         var PEOPLEPHOTO = localStorage.getItem("PEOPLEPHOTO");
         if(PEOPLEPHOTO != undefined){
           _this.message.photo =  PEOPLEPHOTO;
