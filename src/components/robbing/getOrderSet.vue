@@ -483,16 +483,20 @@
              GETORDERSETUSER = JSON.parse(GETORDERSETUSER);
              _this.getOrderYes = GETORDERSETUSER.getOrderYes;
              _this.addressList = GETORDERSETUSER.addressList;
-             for(var x = 0 ; x < GETORDERSETUSER.proList.length;x++){
-               for(var i = 0 ; i < _this.proList.length ; i++){
-                  if(GETORDERSETUSER.proList[x].value ==  _this.proList[i].value){
-                    _this.proList[i].check = true;
-                    if(_this.proList[i].value != "e5e602a22c5a4689b8d151c76a4d1179"){
+             if(GETORDERSETUSER.proList.length > 0){
+               for(var x = 0 ; x < GETORDERSETUSER.proList.length;x++){
+                 for(var i = 0 ; i < _this.proList.length ; i++){
+                   if(GETORDERSETUSER.proList[x].value ==  _this.proList[i].value){
+                     _this.proList[i].check = true;
+                     if(_this.proList[i].value != "e5e602a22c5a4689b8d151c76a4d1179"){
                        _this.show = true;
-                    }
-                    break;
-                  }
+                     }
+                     break;
+                   }
+                 }
                }
+             }else{
+               _this.show = true;
              }
              for(var x = 0 ; x < GETORDERSETUSER.timeType.length;x++){
                for(var i = 0 ; i < _this.timeType.length ; i++){
@@ -520,6 +524,7 @@
              }
            }else{
              _this.getOrderYes = true;
+             _this.show = true;
            }
          },
         countId:function(data){

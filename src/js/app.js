@@ -570,7 +570,7 @@ var androidIos = {
       }
       catch (e){
         paddingBottom = 0 + "px";
-        paddingTop = 10 + "px";
+        paddingTop =10 + "px";
       }
       var docuId = document.getElementById(id);
       if(docuId == null){
@@ -594,6 +594,8 @@ var androidIos = {
           document.getElementById(id).style.height =  paddingTop.replace("px","")/html + "rem";
         }else if(type == 5){
           document.getElementById(id).style.height =  document.getElementById(id).style.height.replace("rem","")*1 +  paddingTop.replace("px","")/html + "rem";
+        }else if(type == 6){
+          document.getElementById(id).style.bottom =  document.getElementById(id).style.bottom.replace("rem","")*1 + paddingBottom.replace("px","")/html + "rem";
         }
       }
 

@@ -9,8 +9,8 @@
       <ul id="dataList" class="data-list">
         <li v-for="item in pdlist">
           <div class="top">
-            <p>查看规划路线<img src="../../images/lookMore2.png"></p>
-            <div class="carNumber" v-for="car in carList" @click="mapGo(car)">
+            <p>车辆信息</p>
+            <div class="carNumber" v-for="car in carList">
               <h1 class="carFloatLeft">{{car.carno}}<br>{{car.carHangNo}}</h1>
               <div class="carFloatRight">
                 <h3 v-html="type == 1 || type == 2 ? '距离提货点' : '距离目的地'"></h3> <h2 v-html="car.length < 1 ? car.length * 1000 + '米' : car.length + '公里'"></h2>
@@ -72,6 +72,8 @@
           </div>
           <div id="sure">
             <div class="go gogogo" id="gogogo" v-if="peopleType==1">
+              <button v-if="type==0"  class="upImg2" @click="jvjue()">拒绝</button>
+              <button v-if="type==0" style="width:3.4rem;float: right;margin-right: 0.5rem;" @click="tongyi()">同意</button>
               <button v-if="type==1" @click="chufa()">出发</button>
               <button v-if="type==2" @click="daoda(31)">提货到达</button>
               <button v-if="type==3" @click="daoda(32)">开始装货</button>
@@ -94,44 +96,46 @@
         </li>
       </ul>
     </div>
-    <div id="errorAbnormalBox" v-if="errorAbnormalBox">
-         <div id="errorAbnormal">
-            <div id="errorabnormalTitle">
-              <img src="../../images/closed.png" @click="errorAbnormalClosed()">
-              <p>选择异常事故</p>
-            </div>
-           <ul class="errorUl">
-             <li v-for="(item,index) in errorAbnormal" :class="index%2==0?'errorAbnormalLeft':'errorAbnormalRight'" @click="errorAbnormalClick($event)">
-                {{item.displayName}}
-             </li>
-             <div class="clearBoth"></div>
-             <input type="text"   @keyup="filterInput()" placeholder="其他异常" maxlength="100" v-model="errorabnormal">
-           </ul>
-           <!--<div id="errorAbnormalChange">
-             <span>是否需要更换运力</span>
-             <img src="../../images/checked.png" class="gray" id="errorAbnormalChangeImg" @click="errorAbnormalChangeImg()">
-             <div class="clearBoth"></div>
-           </div>-->
-           <button @click="errorAbnormalChange()"  class="gogogo" id="gogogo2">提交</button>
-         </div>
-    </div>
-    <div id="errorPriceBox" v-if="errorPriceBox">
-      <div id="errorPrice">
-        <div id="errorpriceTitle">
-          <img src="../../images/closed.png" @click="errorPriceClosed()">
-          <p>填写费用</p>
+    <transition name="slide-fade">
+      <div id="errorAbnormalBox" v-if="errorAbnormalBox">
+        <div id="errorAbnormal">
+          <div id="errorabnormalTitle">
+            <img src="../../images/closed.png" @click="errorAbnormalClosed()">
+            <p>选择异常事故</p>
+          </div>
+          <ul class="errorUl">
+            <li v-for="(item,index) in errorAbnormal" :class="index%2==0?'errorAbnormalLeft':'errorAbnormalRight'" @click="errorAbnormalClick($event)">
+              {{item.displayName}}
+            </li>
+            <div class="clearBoth"></div>
+            <input type="text"   @keyup="filterInput()" placeholder="其他异常" maxlength="100" v-model="errorabnormal">
+          </ul>
+          <!--<div id="errorAbnormalChange">
+            <span>是否需要更换运力</span>
+            <img src="../../images/checked.png" class="gray" id="errorAbnormalChangeImg" @click="errorAbnormalChangeImg()">
+            <div class="clearBoth"></div>
+          </div>-->
+          <button @click="errorAbnormalChange()"  class="gogogo" id="gogogo2">提交</button>
         </div>
-        <ul style="border: none;" class="errorUl">
-          <li v-for="(item,index) in errorPriceList" :class="index%2==0?'errorAbnormalLeft':'errorAbnormalRight'" @click="errorPriceListListClick($event)">
-            {{item.displayName}}
-          </li>
-          <div class="clearBoth"></div>
-          <input  @keyup="filterInput()" type="text" placeholder="填写原因" maxlength="40" style="margin-bottom: 0;" v-model="errorPricetype"/>
-          <input type="text" placeholder="金额" maxlength="40" v-model="errorPrice"/>
-        </ul>
-        <button @click="errorPriceChange()" id="gogogo4" class="gogogo">提交</button>
       </div>
-    </div>
+      <div id="errorPriceBox" v-if="errorPriceBox">
+        <div id="errorPrice">
+          <div id="errorpriceTitle">
+            <img src="../../images/closed.png" @click="errorPriceClosed()">
+            <p>填写费用</p>
+          </div>
+          <ul style="border: none;" class="errorUl">
+            <li v-for="(item,index) in errorPriceList" :class="index%2==0?'errorAbnormalLeft':'errorAbnormalRight'" @click="errorPriceListListClick($event)">
+              {{item.displayName}}
+            </li>
+            <div class="clearBoth"></div>
+            <input  @keyup="filterInput()" type="text" placeholder="填写原因" maxlength="40" style="margin-bottom: 0;" v-model="errorPricetype"/>
+            <input type="text" placeholder="金额" maxlength="40" v-model="errorPrice"/>
+          </ul>
+          <button @click="errorPriceChange()" id="gogogo4" class="gogogo">提交</button>
+        </div>
+      </div>
+    </transition>
   </div>
 </template>
 
@@ -580,12 +584,74 @@
         }
         return number
       },
+      tongyi:function () {
+        var _this = this;
+        androidIos.loading("正在确认");
+        $.ajax({
+          type: "POST",
+          url: androidIos.ajaxHttp()+"/order/driverConfirmation",
+          data:JSON.stringify({pk:_this.$route.query.pk,userCode:sessionStorage.getItem("token"),source:sessionStorage.getItem("source")}),
+          contentType: "application/json;charset=utf-8",
+          dataType: "json",
+          timeout: 10000,
+          success: function (driverConfirmation) {
+            if(driverConfirmation.success=="1" ||driverConfirmation.success == ""){
+              _this.$cjj("接收成功");
+              setTimeout(function () {
+                _this.mescroll.resetUpScroll();
+              },500)
+            }else{
+              androidIos.second(driverConfirmation.message);
+            }
+          },
+          complete : function(XMLHttpRequest,status){ //请求完成后最终执行参数
+            $("#common-blackBox").remove();
+            if(status=='timeout'){//超时,status还有success,error等值的情况
+              androidIos.second("网络请求超时");
+            }else if(status=='error'){
+              androidIos.errorwife();
+            }
+          }
+        })
+      },
+      jvjue:function () {
+        var _this = this;
+        androidIos.first("确定拒绝吗？");
+        $(".tanBox-yes").unbind('click').click(function(){
+          $(".tanBox-bigBox").remove();
+          androidIos.loading("正在拒绝");
+          $.ajax({
+            type: "POST",
+            url: androidIos.ajaxHttp()+"/order/driverCancel",
+            data:JSON.stringify({pk:_this.$route.query.pk,memo:"取消原因",userCode:sessionStorage.getItem("token"),source:sessionStorage.getItem("source")}),
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            timeout: 10000,
+            success: function (driverCancel) {
+              if(driverCancel.success=="1" ||driverCancel.success == ""){
+                _this.$cjj("拒绝成功");
+                setTimeout(function () {
+                  _this.ajaxorder();
+                },500)
+              }else{
+                androidIos.second(driverCancel.message);
+              }
+            },
+            complete : function(XMLHttpRequest,status){ //请求完成后最终执行参数
+              $("#common-blackBox").remove();
+              if(status=='timeout'){//超时,status还有success,error等值的情况
+                androidIos.second("网络请求超时");
+              }else if(status=='error'){
+                androidIos.errorwife();
+              }
+            }
+          })
+        });
+      },
       chufa:function(){
         var _this = this;
-        if(bomb.hasClass("gogogo","gogogo")){
-          androidIos.loading("正在出发");
-          bomb.removeClass("gogogo","gogogo");
-          $.ajax({
+        androidIos.loading("正在出发");
+        $.ajax({
             type: "POST",
             url: androidIos.ajaxHttp()+"/order/driverOut",
             data:JSON.stringify({pk:_this.$route.query.pk,userCode:sessionStorage.getItem("token"),source:sessionStorage.getItem("source")}),
@@ -593,7 +659,6 @@
             dataType: "json",
             timeout: 10000,
             success: function (driverOut) {
-              bomb.addClass("gogogo","gogogo");
               $("#common-blackBox").remove();
               if(driverOut.success=="1" ||driverOut.success == ""){
                 _this.$cjj("出发成功");
@@ -605,7 +670,6 @@
               }
             },
             complete : function(XMLHttpRequest,status){ //请求完成后最终执行参数
-              bomb.addClass("gogogo","gogogo");
               if(status=='timeout'){//超时,status还有success,error等值的情况
                 $("#common-blackBox").remove();
                 androidIos.second("网络请求超时");
@@ -615,9 +679,6 @@
               }
             }
           })
-        }else{
-          bomb.first("请不要频繁点击");
-        }
 
       },
       daoda:function(type){
@@ -1215,7 +1276,7 @@
     width:8.4rem;
     margin-left:0.44rem ;
     padding-left: 1.16rem;
-    background-image: url("../../images/trackMoreAddress.png");
+    background-image: url("../../images/icon-luxianguihua.png");
     background-repeat: no-repeat;
     background-position: 0 50%;
     background-size: 0.85rem;
@@ -1244,6 +1305,19 @@
     color:#373737;
     font-size:0.427rem ;
     border-bottom: 1px solid #F5F5F5;
+  }
+  /* 可以设置不同的进入和离开动画 */
+  /* 设置持续时间和动画函数 */
+  .slide-fade-enter-active {
+    transition: all .3s ease;
+  }
+  .slide-fade-leave-active {
+    transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+  }
+  .slide-fade-enter, .slide-fade-leave-to
+    /* .slide-fade-leave-active for below version 2.1.8 */ {
+    transform: translateY(0.13rem);
+    opacity: 0;
   }
   .proStatus p{
     width:8.4rem;
@@ -1398,5 +1472,12 @@
     background-size:0.48rem;
     background-repeat: no-repeat;
     background-position:0.42rem 50% ;
+  }
+  .upImg2{
+    width:3.4rem!important;
+    margin-left: 0.5rem;
+    border-color:#666666!important;
+    color:#666666!important;
+    background-color: transparent!important;
   }
 </style>

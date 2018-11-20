@@ -12,7 +12,7 @@
 </template>
 
 <script>
-  import {androidIos} from "../../js/app";
+    import {androidIos} from "../../js/app";
   import {bomb} from "../../js/zujian";
     export default {
         name: "footer",
@@ -41,15 +41,19 @@
                cls: "robbing",
                name: "找货",
                push: "/robbingList"
-             },
-               {
+             },{
+               number:0,
+               marginRight:0,
+               cls: "message",
+               name: "消息",
+               push: "/message"
+             },{
                  number:0,
                  marginRight:0,
                  cls: "user",
                  name: "我的",
                  push: "/user"
-               }
-             ]
+             }]
           }else{
             json = [{
               number:0,
@@ -69,8 +73,7 @@
                 cls: "user",
                 name: "我的",
                 push: "/user"
-              }
-            ]
+              }]
           }
           _this.items = json;
         },
@@ -127,7 +130,7 @@
             }else{
               if(_this.type == 1){
                 _this.items[3].show = true;
-                _this.items[1].number = 0;
+                _this.items[0].number = 0;
               }else{
                 _this.items[2].show = true;
                 _this.items[0].number = 0;

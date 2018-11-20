@@ -17,7 +17,6 @@
           <p>{{item.name}}</p>
         </li>
       </ul>
-      <footComponent ref="footcomponent" :idx='2'></footComponent>
     </div>
 </template>
 

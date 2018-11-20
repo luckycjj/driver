@@ -120,7 +120,7 @@
         },
       mounted:function () {
         var _this = this;
-        _this.driverType = JSON.parse(sessionStorage.getItem("driverMessage")).driverType == 1 ? 2 : 2;
+        _this.driverType = JSON.parse(sessionStorage.getItem("driverMessage")).driverType == 1 ? 3 : 2;
         var PEOPLEPHOTO = localStorage.getItem("PEOPLEPHOTO");
         if(PEOPLEPHOTO != undefined){
           _this.message.photo =  PEOPLEPHOTO;

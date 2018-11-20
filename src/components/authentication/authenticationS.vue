@@ -915,18 +915,20 @@
                driverName:_this.message.first.name,
                idCardNum : _this.message.first.idCode,
                driverLic:_this.message.second.driverLicense.http,
+               drivingLicence:_this.driverType == 1 ?_this.message.second.drivingLicence.http : "",
+               roadTransportPermit:_this.driverType == 1 ? _this.message.second.roadtransport.http : "",
                idCardPos:_this.message.first.idCardZ.http,
                idCardNeg:_this.message.first.idCardF.http,
                source :sessionStorage.getItem("source"),
                userCode:sessionStorage.getItem("token"),
                photo:_this.message.first.people.http,
                driverCarInfoDto:{
-                 transType:_this.message.third.transportCode,
-                 carType:_this.message.third.carModelCode,
-                 length:_this.message.third.carLengthCode,
-                 carNo:_this.message.third.carNumberFirst + _this.message.third.carNumberSecond,
-                 loadWeight:_this.message.third.carWeight,
-                 memo:_this.message.third.meno,
+                 transType:_this.driverType == 1 ? _this.message.third.transportCode : "",
+                 carType:_this.driverType == 1 ? _this.message.third.carModelCode : "",
+                 length:_this.driverType == 1 ?  _this.message.third.carLengthCode : "",
+                 carNo:_this.driverType == 1 ? _this.message.third.carNumberFirst + _this.message.third.carNumberSecond : "",
+                 loadWeight:_this.driverType == 1 ? _this.message.third.carWeight : "",
+                 memo:_this.driverType == 1 ? _this.message.third.meno : "",
                }
              }
              $.ajax({

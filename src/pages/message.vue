@@ -12,7 +12,7 @@
         </li>
       </ul>
     </div>
-    <footComponent :idx='1'></footComponent>
+    <footComponent :idx='driverType'></footComponent>
   </div>
 </template>
 
@@ -24,6 +24,7 @@
       name: "message",
       data(){
          return{
+           driverType:0,
            messageList:[{
              name : "系统信息",
              type:2,
@@ -35,6 +36,7 @@
       mounted:function () {
         var _this = this;
         androidIos.judgeIphoneX("message",2);
+        _this.driverType = JSON.parse(sessionStorage.getItem("driverMessage")).driverType == 1 ? 2 : 1;
         androidIos.bridge(_this);
       },
       methods:{

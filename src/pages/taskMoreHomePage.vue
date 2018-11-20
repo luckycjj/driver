@@ -1,9 +1,23 @@
 <template>
     <div id="taskMoreHomePage">
       <div id="title" v-title data-title="任务"></div>
-      <div id="container"></div>
+      <div id="container" style="bottom:1.3rem;"></div>
       <div id="panel"></div>
-      <div id="proBox" v-if="listBox.pkTransType != ''">
+      <div id="search">
+         <input type="text" placeholder="请输入订单号或货品名称"/>
+         <img src="../images/huatong-3.png">
+        <div class="clearBoth"></div>
+      </div>
+      <div id="tabList" style="top:2.5rem;">
+          <ul>
+            <li @click="tabClick(item.value)" v-for="(item,index) in tabList" :style="{backgroundImage:'url('+item.icon+')'}">
+                {{item.name}}
+              <div v-if="index != tabList.length - 1" class="hengxian"></div>
+            </li>
+          </ul>
+      </div>
+      <div id="proBox" v-if="listBox.pkTransType != ''" style="bottom: 1.5rem;">
+        <img src="../images/jiaji.png" class="jiajiImg"  v-if="listBox.ifUrgent == 'Y'">
         <div class="message" @click="lookTrackMore(listBox.pkInvoice)">
           <div class="proStatus">
             <p :style="{backgroundImage: 'url(' + require('../images/trackMoreIcon'+ listBox.type +'.png') + ')' }" >{{listBox.statusName}}</p>
@@ -26,23 +40,60 @@
               <div class="clearBoth"></div>
             </div>
             <ul id="proUl">
-              <li v-for="pro in listBox.itemDaos">运单编号:{{listBox.vbillno}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{listBox.transType}}/{{pro.pkTransType}}/{{pro.num}}件<span v-if="pro.weight.replace(/[^0-9]/g,'')*1 > 0 ">/{{pro.weight}}{{pro.weightUnit}}</span><span  v-if="pro.volume.replace(/[^0-9]/g,'')*1 > 0">/{{pro.volume}}{{pro.volumeUnit}}</span></li>
+              <li v-for="pro in listBox.itemDaos">运单编号:{{listBox.vbillno}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{listBox.transType}}/{{pro.pkTransType}}/{{pro.num}}件<span v-if="pro.weight.replace(/[^0-9]/g,'')*1 > 0 ">/{{pro.weight}}吨</span><span  v-if="pro.volume.replace(/[^0-9]/g,'')*1 > 0">/{{pro.volume}}立方米</span></li>
             </ul>
           </div>
         </div>
+        <button v-if="listBox.type==0" @click="tongyi()">同意</button>
+        <button v-if="listBox.type== 0" @click="jvjue()">拒绝</button>
         <button v-if=" listBox.type==1" @click="chufa()">出发</button>
         <button v-if="listBox.type==2" @click="daoda(31)">提货到达</button>
         <button v-if="listBox.type==3" @click="daoda(32)">开始装货</button>
-        <button v-if="listBox.type==4"  class="upImg" @click="upImg(0)">&nbsp;&nbsp;&nbsp;&nbsp;上传货品</button>
-        <button v-if="listBox.type==4" style="width:3.4rem;float: right;margin-right: 0.5rem;" @click="daoda(33)">装货完毕</button>
+        <button v-if="listBox.type==4"  class="upImg" @click="upImg(0)">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;上传</button>
+        <button v-if="listBox.type==4" @click="daoda(33)">装货完毕</button>
         <button v-if="listBox.type==5" @click="daoda(41)">运输到达</button>
         <button v-if="listBox.type==6" @click="daoda(42)">开始卸货</button>
-        <button v-if="listBox.type==7"  class="upImg" @click="upImg(1)">&nbsp;&nbsp;&nbsp;&nbsp;上传货品</button>
-        <button v-if="listBox.type==7" style="width:3.4rem;float: right;margin-right: 0.5rem;"  @click="daoda(43)">卸货完毕</button>
+        <button v-if="listBox.type==7"  class="upImg" @click="upImg(1)">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;上传</button>
+        <button v-if="listBox.type==7" @click="daoda(43)">卸货完毕</button>
         <button v-if="listBox.type==8" @click="qianshou(1)">签收</button>
         <div class="clearBoth"></div>
       </div>
       <footComponent ref="footcomponent" :idx='0'></footComponent>
+      <transition name="slide-fade">
+        <div id="errorAbnormalBox" v-if="errorAbnormalBox">
+          <div id="errorAbnormal">
+            <div id="errorabnormalTitle">
+              <img src="../images/closed.png" @click="errorAbnormalClosed()">
+              <p>选择异常事故</p>
+            </div>
+            <ul class="errorUl">
+              <li v-for="(item,index) in errorAbnormal" :class="index%2==0?'errorAbnormalLeft':'errorAbnormalRight'" @click="errorAbnormalClick($event)">
+                {{item.displayName}}
+              </li>
+              <div class="clearBoth"></div>
+              <input type="text"   @keyup="filterInput()" placeholder="其他异常" maxlength="100" v-model="errorabnormal">
+            </ul>
+            <button @click="errorAbnormalChange()"  class="gogogo" id="gogogo2">提交</button>
+          </div>
+        </div>
+        <div id="errorPriceBox" v-if="errorPriceBox">
+          <div id="errorPrice">
+            <div id="errorpriceTitle">
+              <img src="../images/closed.png" @click="errorPriceClosed()">
+              <p>填写费用</p>
+            </div>
+            <ul style="border: none;" class="errorUl">
+              <li v-for="(item,index) in errorPriceList" :class="index%2==0?'errorAbnormalLeft':'errorAbnormalRight'" @click="errorPriceListListClick($event)">
+                {{item.displayName}}
+              </li>
+              <div class="clearBoth"></div>
+              <input  @keyup="filterInput()" type="text" placeholder="填写原因" maxlength="40" style="margin-bottom: 0;" v-model="errorPricetype"/>
+              <input type="text" placeholder="金额" maxlength="40" v-model="errorPrice"/>
+            </ul>
+            <button @click="errorPriceChange()" id="gogogo4" class="gogogo">提交</button>
+          </div>
+        </div>
+      </transition>
     </div>
 </template>
 
@@ -86,21 +137,291 @@
                   type:0,
                 statusName:""
               },
+              tabList:[],
               peopleJ:"",
               peopleW:"",
+              errorAbnormalBox:false,
+              errorPriceBox:false,
+              errorAbnormal:[],
+              errorPriceList:[],
+              errorabnormal:"",
+              errorPricetype:"",
+              errorPrice:"",
               setTime:null,
             }
         },
         mounted:function () {
           var _this = this;
+          androidIos.judgeIphoneX("tabList",2);
+          androidIos.judgeIphoneX("container",6);
           _this.ajaxorder();
           _this.setTime = setInterval(function () {
             _this.ajaxorder();
           },60000)
         },
       methods:{
+        jvjue:function () {
+          var _this = this;
+          androidIos.first("确定拒绝吗？");
+          $(".tanBox-yes").unbind('click').click(function(){
+            $(".tanBox-bigBox").remove();
+            androidIos.loading("正在拒绝");
+            $.ajax({
+              type: "POST",
+              url: androidIos.ajaxHttp()+"/order/driverCancel",
+              data:JSON.stringify({pk:_this.listBox.pkInvoice,memo:"取消原因",userCode:sessionStorage.getItem("token"),source:sessionStorage.getItem("source")}),
+              contentType: "application/json;charset=utf-8",
+              dataType: "json",
+              timeout: 10000,
+              success: function (driverCancel) {
+                if(driverCancel.success=="1" ||driverCancel.success == ""){
+                  _this.$cjj("拒绝成功");
+                  setTimeout(function () {
+                    _this.ajaxorder();
+                  },500)
+                }else{
+                  androidIos.second(driverCancel.message);
+                }
+              },
+              complete : function(XMLHttpRequest,status){ //请求完成后最终执行参数
+                $("#common-blackBox").remove();
+                if(status=='timeout'){//超时,status还有success,error等值的情况
+                  androidIos.second("网络请求超时");
+                }else if(status=='error'){
+                  androidIos.errorwife();
+                }
+              }
+            })
+          });
+        },
+          tongyi:function () {
+              var _this = this;
+              androidIos.loading("正在确认");
+              $.ajax({
+                type: "POST",
+                url: androidIos.ajaxHttp()+"/order/driverConfirmation",
+                data:JSON.stringify({pk:_this.listBox.pkInvoice,userCode:sessionStorage.getItem("token"),source:sessionStorage.getItem("source")}),
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                timeout: 10000,
+                success: function (driverConfirmation) {
+                  if(driverConfirmation.success=="1" ||driverConfirmation.success == ""){
+                    _this.$cjj("接收成功");
+                    setTimeout(function () {
+                      _this.ajaxorder();
+                    },500)
+                  }else{
+                    androidIos.second(driverConfirmation.message);
+                  }
+                },
+                complete : function(XMLHttpRequest,status){ //请求完成后最终执行参数
+                  $("#common-blackBox").remove();
+                  if(status=='timeout'){//超时,status还有success,error等值的情况
+                    androidIos.second("网络请求超时");
+                  }else if(status=='error'){
+                    androidIos.errorwife();
+                  }
+                }
+              })
+          },
         telphone:function(tel){
           androidIos.telCall(tel);
+        },
+        tabClick:function (index) {
+           var _this = this;
+           if(index == 0){
+             androidIos.addPageList();
+             _this.$router.push({ path: '/histroyTrack'});
+           }else if(index == 1){
+             _this.errorAbnormalBox = true;
+             if(_this.errorAbnormal.length == 0){
+               $.ajax({
+                 type: "GET",
+                 url: androidIos.ajaxHttp()+"/settings/getSysConfigList",
+                 data:{str:"exception_feedback",userCode:sessionStorage.getItem("token"),source:sessionStorage.getItem("source")},
+                 dataType: "json",
+                 timeout: 10000,
+                 success: function (getSysConfigList) {
+                   _this.errorAbnormal = getSysConfigList;
+                 },
+                 complete : function(XMLHttpRequest,status){ //请求完成后最终执行参数
+                   if(status=='timeout'){//超时,status还有success,error等值的情况
+                     androidIos.second("网络请求超时");
+                   }else if(status=='error'){
+                     androidIos.errorwife();
+                   }
+                 }
+               })
+             }
+           }else if(index == 2){
+             _this.errorPriceBox = true;
+             if(_this.errorPriceList.length == 0){
+               $.ajax({
+                 type: "GET",
+                 url: androidIos.ajaxHttp()+"/settings/getSysConfigList",
+                 data:{str:"cost_Feedback",userCode:sessionStorage.getItem("token"),source:sessionStorage.getItem("source")},
+                 dataType: "json",
+                 timeout: 10000,
+                 success: function (getSysConfigList) {
+                   _this.errorPriceList = getSysConfigList;
+                 },
+                 complete : function(XMLHttpRequest,status){ //请求完成后最终执行参数
+                   if(status=='timeout'){//超时,status还有success,error等值的情况
+                     androidIos.second("网络请求超时");
+                   }else if(status=='error'){
+                     androidIos.errorwife();
+                   }
+                 }
+               })
+             }
+           }else if(index == 3){
+             androidIos.addPageList();
+             _this.$router.push({ path: '/track/qrcode',query:{ty:1}});
+           }
+        },
+        errorAbnormalChange:function () {
+          var _this = this;
+          if(bomb.hasClass("gogogo2","gogogo")){
+            var list = [];
+            for(var i = 0 ;i<_this.errorAbnormal.length;i++){
+              if($(".errorUl li").eq(i).hasClass("errorPriceBoxLi")){
+                list.push(_this.errorAbnormal[i])
+              }
+            }
+            if((list.length == 0  || list[0].value == 0 )&& _this.errorabnormal == ''){
+              bomb.first("请选择或填写异常");
+              return false;
+            }
+            var json = {
+              userCode : sessionStorage.getItem("token"),
+              source : sessionStorage.getItem("source"),
+              expType : list[0] == undefined || (list[0] != undefined && list[0].displayName == "其他") ? "" : androidIos.checkText(list[0].value),
+              trackingMemo : androidIos.checkText(_this.errorabnormal),
+              entrustVbillno :_this.listBox.pkInvoice == undefined ? "" : androidIos.checkText(_this.listBox.pkInvoice)
+            }
+            bomb.removeClass("gogogo2","gogogo");
+            $.ajax({
+              type: "POST",
+              url: androidIos.ajaxHttp()+"/driver/abnormalFeedback",
+              data:JSON.stringify(json),
+              contentType: "application/json;charset=utf-8",
+              dataType: "json",
+              timeout: 10000,
+              success: function (abnormalFeedback) {
+                if(abnormalFeedback.success == "1"){
+                  _this.errorAbnormalBox = false;
+                  _this.errorabnormal = "";
+                  $("#errorAbnormalBox .errorUl li").removeClass("errorPriceBoxLi");
+                  _this.$cjj("反馈成功");
+                  setTimeout(function () {
+                    _this.mescroll.resetUpScroll();
+                  },500)
+                }else{
+                  androidIos.second(abnormalFeedback.message);
+                }
+              },
+              complete : function(XMLHttpRequest,status){ //请求完成后最终执行参数
+                bomb.addClass("gogogo2","gogogo");
+                if(status=='timeout'){//超时,status还有success,error等值的情况
+                  androidIos.second("网络请求超时");
+                }else if(status=='error'){
+                  androidIos.errorwife();
+                }
+              }
+            })
+          }else{
+            bomb.first("请不要频繁点击");
+          }
+        },
+        errorAbnormalClosed:function () {
+          var _this = this;
+          _this.errorAbnormalBox = false;
+          _this.errorabnormal = "";
+          $("#errorAbnormalBox .errorUl li").removeClass("errorPriceBoxLi");
+        },
+        errorPriceChange:function () {
+          var _this = this;
+          if(bomb.hasClass("gogogo4","gogogo")){
+            var list = [];
+            for(var i = 0 ;i<_this.errorPriceList.length;i++){
+              if($("#errorPriceBox .errorUl li").eq(i).hasClass("errorPriceBoxLi")){
+                list.push(_this.errorPriceList[i].value)
+              }
+            }
+            if(list.length == 0){
+              bomb.first("请选择费用类型");
+              return false;
+            }
+            if( _this.errorPrice == ''){
+              bomb.first("请填写费用");
+              return false;
+            }
+            var json = {
+              userCode:sessionStorage.getItem("token"),
+              source:sessionStorage.getItem("source"),
+              costType:list[0]==undefined?'':androidIos.checkText(list[0]),
+              memo:androidIos.checkText(_this.errorPricetype),
+              amount:androidIos.checkText(_this.errorPrice),
+              entrustVbillno:androidIos.checkText(_this.listBox.pkInvoice)
+            }
+            bomb.removeClass("gogogo4","gogogo");
+            $.ajax({
+              type: "POST",
+              url: androidIos.ajaxHttp()+"/driver/costFeedback",
+              data:JSON.stringify(json),
+              contentType: "application/json;charset=utf-8",
+              dataType: "json",
+              timeout: 10000,
+              success: function (abnormalFeedback) {
+                if(abnormalFeedback.success == "1"){
+                  _this.errorPriceBox = false;
+                  _this.errorPricetype = "";
+                  _this.errorPrice = "";
+                  $("#errorPriceBox .errorUl li").removeClass("errorPriceBoxLi");
+                  _this.$cjj("反馈成功");
+                  setTimeout(function () {
+                    _this.mescroll.resetUpScroll();
+                  },500)
+                }else{
+                  androidIos.second(abnormalFeedback.message);
+                }
+              },
+              complete : function(XMLHttpRequest,status){ //请求完成后最终执行参数
+                bomb.addClass("gogogo4","gogogo");
+                if(status=='timeout'){//超时,status还有success,error等值的情况
+                  androidIos.second("网络请求超时");
+                }else if(status=='error'){
+                  androidIos.errorwife();
+                }
+              }
+            })
+          }else{
+            bomb.first("请不要频繁点击");
+          }
+
+        },
+        errorPriceClosed:function(){
+          var _this = this;
+          _this.errorPriceBox = false;
+          _this.errorPricetype = "";
+          _this.errorPrice = "";
+          $("#errorPriceBox .errorUl li").removeClass("errorPriceBoxLi");
+        },
+        errorPriceListListClick:function (e) {
+          if(!this.hasClass(e.target,"errorPriceBoxLi")){
+            $("#errorPriceBox .errorUl li").removeClass("errorPriceBoxLi");
+            this.addClass(e.target,"errorPriceBoxLi");
+          }else{
+            $("#errorPriceBox .errorUl li").removeClass("errorPriceBoxLi");
+          }
+        },
+        errorAbnormalClick:function(e){
+          if(!this.hasClass(e.target,"errorPriceBoxLi")){
+            $("#errorAbnormalBox .errorUl li").removeClass("errorPriceBoxLi");
+            this.addClass(e.target,"errorPriceBoxLi");
+          }else{
+            $("#errorAbnormalBox .errorUl li").removeClass("errorPriceBoxLi");
+          }
         },
         lookTrackMore:function (pk) {
           var _this = this;
@@ -136,7 +457,43 @@
                   _this.listBox.arriDate = arriDate.join(":");
                   _this.listBox.type = _this.listBox.status == '0'? 0 : _this.listBox.status == '10'?1: _this.listBox.status == '20'?2: _this.listBox.status == '31'?3: _this.listBox.status == '32'?4: _this.listBox.status== '33'?5: _this.listBox.status== '41'?6: _this.listBox.status== '42'?7: _this.listBox.status== '43'?8: _this.listBox.status== '50'?9:10;
                   _this.listBox.statusName = _this.listBox.status == '0'? "待确认" : _this.listBox.status == '10' ? "已确认" : _this.listBox.status == '20' ? "司机出发" : _this.listBox.status == '31' ? "提货到达" : _this.listBox.status == '32' ? "开始装货" : _this.listBox.status== '33' ? "开始运输" : _this.listBox.status== '41' ? "运输到达" : _this.listBox.status== '42' ? "开始卸货" : _this.listBox.status== '43' ? "卸货完毕" : _this.listBox.status== '50' ? "已签收" : 10;
-
+                  if( _this.listBox.type < 2){
+                    _this.tabList = [{
+                      icon:require("../images/lishi-4.png"),
+                      name:"历史任务",
+                      value:0,
+                    }]
+                  }else if(_this.listBox.type >= 2 && _this.listBox.type < 8){
+                    _this.tabList = [{
+                      icon:require("../images/lishi-4.png"),
+                      name:"历史任务",
+                      value:0,
+                    },{
+                      icon:require("../images/yichang-4.png"),
+                      name:"异常反馈",
+                      value:1,
+                    },{
+                      icon:require("../images/feiyong-3.png"),
+                      name:"费用反馈",
+                      value:2,
+                    }]
+                  }else if(_this.listBox.type == 8){
+                    _this.tabList = [{
+                      icon:require("../images/lishi-4.png"),
+                      name:"历史任务",
+                      value:0,
+                    },{
+                      icon:require("../images/erweima-2.png"),
+                      name:"签收码",
+                      value:3,
+                    }]
+                  }else{
+                    _this.tabList = [{
+                      icon:require("../images/lishi-4.png"),
+                      name:"历史任务",
+                      value:0,
+                    }]
+                  }
                 }else{
                   androidIos.second(loadEntrust.message);
                 }
@@ -180,6 +537,7 @@
           });
           Promise.all([ajax,ajax1]).then(function(values) {
             androidIos.bridge(_this);
+            androidIos.judgeIphoneX("proBox",6);
           })
         },
 
@@ -202,7 +560,7 @@
             map: map,
             panel: "panel"
           });
-          if(self.listBox.deliAddrPoint!= "" &&self.listBox.arriAddrPoint!= ""){
+          if(self.listBox.deliAddrPoint!= "" && self.listBox.deliAddrPoint != undefined  && self.listBox.arriAddrPoint!= ""  && self.listBox.arriAddrPoint != undefined){
             driving.search([self.listBox.deliAddrPoint.split(",")[0] , self.listBox.deliAddrPoint.split(",")[1]],[self.listBox.arriAddrPoint.split(",")[0] , self.listBox.arriAddrPoint.split(",")[1]], function(status, result) {});
 
           }
@@ -286,7 +644,27 @@
         upImg:function (type) {
           var _this = this;
           androidIos.addPageList();
-          _this.$router.push({path:'/upProductImg',query:{pk:_this.$route.query.pk,type:type}});
+          _this.$router.push({path:'/upProductImg',query:{pk:_this.listBox.pkInvoice,type:type}});
+        },
+        addClass:function(obj,cls){//增加class
+          var idJson = obj.className.split(" ");
+          for(var i=0;i<idJson.length;i++){
+            if(idJson[i]==cls){
+              return false;
+            }
+          }
+          idJson.push(cls);
+          obj.className = idJson.join(" ");
+          return true;
+        },
+        hasClass:function(obj,cls){//判断是不是有这个class
+          var idJson = obj.className.split(" ");
+          for(var i=0;i<idJson.length;i++){
+            if(idJson[i]==cls){
+              return true;
+            }
+          }
+          return false;
         },
       },
       destroyed:function () {
@@ -475,7 +853,8 @@
     border-bottom: 1px solid #F5F5F5;
   }
   #peoUl  li{
-    width:50%;
+    width:30%;
+    margin: 0 10%;
     float: left;
     border-top: 1px solid white;
     color:#373737;
@@ -496,6 +875,19 @@
     float: left;
     font-size: 0.33rem;
     width:50%;
+  }
+  /* 可以设置不同的进入和离开动画 */
+  /* 设置持续时间和动画函数 */
+  .slide-fade-enter-active {
+    transition: all .3s ease;
+  }
+  .slide-fade-leave-active {
+    transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+  }
+  .slide-fade-enter, .slide-fade-leave-to
+    /* .slide-fade-leave-active for below version 2.1.8 */ {
+    transform: translateY(0.13rem);
+    opacity: 0;
   }
   #proUl{
     width:9.56rem;
@@ -534,5 +926,175 @@
     border-radius: 0.1rem;
     border: 1px solid #1869A9;
     margin:0.4rem 0.45rem 0.4rem 0 ;
+  }
+  .jiajiImg{
+    width:0.64rem;
+    position: absolute;
+    right:0;
+    top:0;
+  }
+  #tabList{
+     position: absolute;
+    top:2.5rem;
+    right:0.24rem;
+    z-index: 11;
+    width:1.5rem;
+    background: white;
+    box-shadow:0px 4px 4px 0px rgba(0,0,0,0.19);
+    border-radius:0.08rem ;
+  }
+  #tabList li{
+    padding-top: 0.78rem;
+    background-repeat: no-repeat;
+    background-size:0.5rem ;
+    background-position:50% 0.24rem ;
+    text-align: center;
+    font-size: 0.3125rem;
+    line-height: 0.8rem;
+    color:#666;
+  }
+  .hengxian{
+     width:70%;
+    height: 1px;
+    background: #dbdbdb;
+    margin: 0 auto;
+  }
+  #errorAbnormalBox,#errorPriceBox,#cancelReasonBox{
+    width:100%;
+    height: 100%;
+    position: fixed;
+    top:0;
+    left:0;
+    z-index:12;
+    background-color:rgba(0,0,0,0.5);
+  }
+  #errorAbnormal,#errorPrice,#cancelReason{
+    position: absolute;
+    bottom:0;
+    background: white;
+    width:100%;
+  }
+  #errorabnormalTitle p,#errorpriceTitle p,#cancelReasonTitle p{
+    width:100%;
+    text-align: center;
+    line-height: 1rem;
+    font-size: 0.375rem;
+    color:#999;
+    position: relative;
+  }
+  #errorabnormalTitle img,#errorpriceTitle img,#cancelReasonTitle img{
+    position: absolute;
+    width:1rem;
+    z-index: 1;
+  }
+  #errorAbnormal ul,.errorUl{
+    width:90%;
+    margin: 0.3rem auto;
+  }
+  #errorAbnormal ul li,.errorUl li{
+    width:48%;
+    font-size: 0.3125rem;
+    color:#666;
+    text-align: center;
+    line-height: 0.8rem;
+    border: 1px solid #666;
+    margin-top: 0.15rem;
+    border-radius: 0.2rem;
+
+  }
+  .errorAbnormalLeft{
+    float:left;
+  }
+  .errorAbnormalRight{
+    float: right;
+  }
+  .meBottom{
+    bottom: 0!important;
+  }
+  #errorAbnormal ul input,.errorUl input{
+    width:96%;
+    padding: 0 2%;
+    background: rgba(242, 242, 242, 1);
+    line-height: 0.8rem;
+    border-radius: 0.2rem;
+    margin: 0.2rem 0;
+    font-size: 0.3125rem;
+  }
+  #errorAbnormalChange,#errorPriceChange{
+    width:90%;
+    margin: 0.1rem auto;
+  }
+  #errorAbnormalChange span,#errorPriceChange span{
+    font-size: 0.3125rem;
+    color:#666;
+    line-height: 0.8rem;
+  }
+  #errorAbnormalChange img,#errorPriceChange img{
+    width:0.6rem;
+    float: right;
+    margin-top: 0.1rem;
+  }
+  #errorAbnormal button,#errorPrice button,#cancelReason button{
+    width:96%;
+    margin-left: 2%;
+    border-radius: 0.3rem;
+    background: #3399FF;
+    color:white;
+    font-size: 0.375rem;
+    letter-spacing: 0.0625rem;
+    line-height: 1rem;
+    margin-bottom: 0.1rem;
+  }
+  .gray {
+    -webkit-filter: grayscale(100%);
+    -moz-filter: grayscale(100%);
+    -ms-filter: grayscale(100%);
+    -o-filter: grayscale(100%);
+
+    filter: grayscale(100%);
+
+    filter: gray;
+  }
+  .errorPriceBoxLi{
+    border-color:#3399FF!important;
+    color:#3399FF!important;
+  }
+  #search{
+    width:9.5rem;
+    position: absolute;
+    top:0.85rem;
+    left:0.25rem;
+    height: 1.34rem;
+    background: white;
+    border-radius: 0.3rem;
+    box-shadow:0px 4px 6px 0px rgba(0,0,0,0.11);
+  }
+  #search img{
+    position: absolute;
+    right:0.5467rem;
+    width:0.347rem;
+    top:0.4rem;
+  }
+  #search input{
+    font-size: 0.43rem;
+    color:#333;
+    padding-left:0.64rem ;
+    margin-left: 0.5rem;
+    background-image: url("../images/icon-fadangjing.png");
+    background-repeat: no-repeat;
+    background-position: 0 50%;
+    background-size:0.5rem ;
+    height: 0.5rem;
+    margin-top: 0.42rem;
+    width:7rem;
+  }
+  .upImg{
+    border-color:#666666!important;
+    color:#666666!important;
+    background-color: transparent!important;
+    background-image: url("../images/icon-canmore.png");
+    background-size:0.48rem;
+    background-repeat: no-repeat;
+    background-position:0.42rem 50% ;
   }
 </style>
