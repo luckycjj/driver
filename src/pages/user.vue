@@ -412,13 +412,16 @@
                       }
                     });
                   } else{
+                    $("#common-blackBox").remove();
                     androidIos.second(json.message);
                   }
                 },
                 complete: function (XMLHttpRequest, status) { //请求完成后最终执行参数
                   if (status == 'timeout') { //超时,status还有success,error等值的情况
+                    $("#common-blackBox").remove();
                     androidIos.second("当前状况下网络状态差，请检查网络！")
                   } else if (status == "error") {
+                    $("#common-blackBox").remove();
                     androidIos.errorwife();
                   }
                 }
