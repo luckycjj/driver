@@ -51,7 +51,7 @@
               <h6 v-if="message.first.idCardF.bendi == ''">点击拍照</h6>
             </div>
             <div class="SFZFLook">
-              <img src="../../images/SFZF.png"    @click="lookImg($event,require('../../images/SFZZ.png'))">
+              <img src="../../images/SFZF.png"    @click="lookImg($event,require('../../images/SFZF.png'))">
               <span>样例</span>
             </div>
             <div class="clearBoth"></div>
@@ -165,7 +165,7 @@
              <textarea placeholder="请填写车辆高度，如若车辆有特殊型号请及时填写(最多40个字)" v-model="message.third.meno" maxlength="40"></textarea>
            </div>
         </div>
-        <h5 class="calltel">有问题请联系客服</h5>
+        <h5 class="calltel" @click="telphoneTe()">有问题请联系客服</h5>
         <button id="gonext" @click="goNext()" v-html="(nowStep == 1 || nowStep == 2) && driverType == 1 ? '下一步': '提交'"></button>
       <div v-if="baiduhuotiBox" id="baiduhuotiBox">
         <div id="baiduhuoti">
@@ -422,6 +422,9 @@
         androidIos.bridge(_this);
       },
        methods:{
+         telphoneTe:function () {
+           androidIos.telCall("021-50929122");
+         },
           go:function(){
              var _this = this;
              _this.$nextTick(function () {
@@ -672,8 +675,7 @@
            var _this = this;
            if(_this.nowStep == 3){
              var ajax1,ajax2,ajax3;
-             if( _this.message.third.transportList.length == 0){
-              ajax1 = $.ajax({
+             ajax1 = $.ajax({
                  type: "GET",
                  url: androidIos.ajaxHttp()+"/settings/getSysConfigList",
                  data:{str:"trans_type",userCode:sessionStorage.getItem("token"),source:sessionStorage.getItem("source")},
@@ -698,9 +700,7 @@
                    }
                  }
                });
-             }
-             if( _this.message.third.carModelList.length == 0){
-               ajax2 = $.ajax({
+             ajax2 = $.ajax({
                  type: "GET",
                  url: androidIos.ajaxHttp()+"/settings/getSysConfigList",
                  data:{str:"car_type",userCode:sessionStorage.getItem("token"),source:sessionStorage.getItem("source")},
@@ -725,8 +725,6 @@
                    }
                  }
                });
-             }
-             if( _this.message.third.carLengthList.length == 0){
                ajax3 = $.ajax({
                  type: "GET",
                  url: androidIos.ajaxHttp()+"/settings/getSysConfigList",
@@ -752,7 +750,6 @@
                    }
                  }
                });
-             }
              Promise.all([ajax1,ajax2,ajax3]).then((result) => {
                var x = 0;
                for(var i = 0;i<_this.message.third.transportList.length;i++){
@@ -897,7 +894,7 @@
                return false;
              }
              if(_this.message.third.carNumberFirst == "" || _this.message.third.carNumberSecond.length < 6){
-               bomb.first("请选择车牌");
+               bomb.first("请填写正确车牌");
                return false;
              }
              if(_this.message.third.carWeight == ""){
@@ -915,7 +912,7 @@
                driverName:_this.message.first.name,
                idCardNum : _this.message.first.idCode,
                driverLic:_this.message.second.driverLicense.http,
-               drivingLicence:_this.driverType == 1 ?_this.message.second.drivingLicence.http : "",
+               drivingLicense:_this.driverType == 1 ?_this.message.second.drivingLicence.http : "",
                roadTransportPermit:_this.driverType == 1 ? _this.message.second.roadtransport.http : "",
                idCardPos:_this.message.first.idCardZ.http,
                idCardNeg:_this.message.first.idCardF.http,
@@ -1491,7 +1488,8 @@
   margin-right: 0.1rem;
 }
 #carNumberBox{
-  width:2.5rem;
+  min-width:2.5rem;
+  width:auto;
 }
   #baiduhuotiBox{
      position: fixed;

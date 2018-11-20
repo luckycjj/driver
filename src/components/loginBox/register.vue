@@ -79,6 +79,8 @@
           _this.verification =  _this.verification.replace(/[^\0-9]/g,'');
           _this.password =  _this.password.replace(/[\u4E00-\u9FA5]/g,'');
           _this.password =  _this.password.replace(/<script>/g,'');
+          _this.passwordSure =  _this.passwordSure.replace(/[\u4E00-\u9FA5]/g,'');
+          _this.passwordSure =  _this.passwordSure.replace(/<script>/g,'');
         },
           lookpass:function (type) {
             var _this = this;
@@ -292,7 +294,7 @@
     margin-right: 0.42rem;
   }
   .checkBox{
-    width:4.4rem;
+    width:4.7rem;
     position: absolute;
     bottom:0.58rem;
     left:50%;
