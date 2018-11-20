@@ -94,7 +94,7 @@
                 <div class="clearBoth"></div>
               </div>
               <ul id="proUl">
-                <li v-for="pro in listBox.itemDaos">运单编号:{{listBox.vbillno}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{listBox.transType}}/{{pro.pkTransType}}/{{pro.num}}件<span v-if="pro.weight.replace(/[^0-9]/g,'')*1 > 0 ">/{{pro.weight}}吨</span><span  v-if="pro.volume.replace(/[^0-9]/g,'')*1 > 0">/{{pro.volume}}立方米</span></li>
+                <li v-for="pro in listBox.itemDaos">运单编号:{{listBox.vbillno}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span v-html="listBox.pkTransType == 1 ? '冷链' : listBox.pkTransType == 2 ? '普货' : listBox.pkTransType == 3 ? '危险品' :listBox.pkTransType == 4 ? '集装箱' : '' "></span>/{{listBox.transType}}/{{pro.num}}件<span v-if="pro.weight.replace(/[^0-9]/g,'')*1 > 0 ">/{{pro.weight}}吨</span><span  v-if="pro.volume.replace(/[^0-9]/g,'')*1 > 0">/{{pro.volume}}立方米</span></li>
               </ul>
             </div>
           </div>
