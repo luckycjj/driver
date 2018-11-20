@@ -5,7 +5,7 @@
       <ul>
         <li v-for="(item,index) in messageList" @click="messageLook(item.type)">
           <div class="imgBox">
-             <div class="messageCorner" v-if="item.number > 0">{{item.number}}</div>
+            <div class="messageCorner" v-if="item.show"></div>
              <img :src="item.icon">
           </div>
           <p>{{item.name}}</p>
@@ -30,6 +30,7 @@
              type:2,
              icon:require("../images/systemInformation.png"),
              number:0,
+             show:false,
            }]
          }
       },
@@ -37,6 +38,37 @@
         var _this = this;
         androidIos.judgeIphoneX("message",2);
         _this.driverType = JSON.parse(sessionStorage.getItem("driverMessage")).driverType == 1 ? 2 : 1;
+        $.ajax({
+          type: "POST",
+          url: androidIos.ajaxHttp()+"/settings/getBulletin",
+          data:JSON.stringify({userCode:sessionStorage.getItem("token"),source:sessionStorage.getItem("source")}),
+          contentType: "application/json;charset=utf-8",
+          dataType: "json",
+          timeout: 30000,
+          success: function (getBulletin) {
+            if (getBulletin.success == "1") {
+              var newMessage = localStorage.getItem("newMessage");
+              if(newMessage != undefined){
+                if(JSON.parse(newMessage).length < getBulletin.list.length){
+                  _this.messageList[0].show = true;
+                }
+              }else{
+                if(getBulletin.list.length > 0){
+                  _this.messageList[0].show = true;
+                }
+              }
+            }else{
+              androidIos.second(getBulletin.message);
+            }
+          },
+          complete : function(XMLHttpRequest,status){ //请求完成后最终执行参数
+            if(status=='timeout'){//超时,status还有success,error等值的情况
+              androidIos.second("网络请求超时");
+            }else if(status=='error'){
+              androidIos.errorwife();
+            }
+          }
+        })
         androidIos.bridge(_this);
       },
       methods:{
@@ -102,7 +134,7 @@
   .imgBox img{
      width:100%;
   }
-  .messageCorner{
+ /* .messageCorner{
     background: #fc4243;
     font-size: 0.3125rem;
     color:white;
@@ -111,5 +143,16 @@
     right:0rem;
     padding: 0.01rem 0.13rem;
     border-radius: 0.2rem;
+  }*/
+  .messageCorner{
+    background: #fc4243;
+    font-size: 0.3125rem;
+    color:white;
+    position: absolute;
+    top:0;
+    right:0rem;
+    width:0.3rem;
+    height:0.3rem;
+    border-radius: 50%;
   }
 </style>

@@ -38,6 +38,7 @@
           sessionStorage.removeItem("histroyTrackTap");
           sessionStorage.removeItem("driverBottomIcon");
           localStorage.removeItem("PEOPLEPHOTO");
+          localStorage.removeItem("newMessage");
           androidIos.bridge(_this);
       },
       methods:{

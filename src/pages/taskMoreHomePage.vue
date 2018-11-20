@@ -4,7 +4,7 @@
       <div id="container" style="bottom:1.3rem;"></div>
       <div id="panel"></div>
       <div id="search">
-         <input type="text" placeholder="请输入订单号或货品名称"/>
+         <input type="text" placeholder="请输入订单号或货品名称" @click="serachOrder()"/>
          <img src="../images/huatong-3.png">
         <div class="clearBoth"></div>
       </div>
@@ -179,6 +179,11 @@
           },60000)
         },
       methods:{
+        serachOrder:function () {
+          var _this = this;
+          androidIos.addPageList();
+          _this.$router.push({ path: "/orderScreen"});
+        },
         jvjue:function () {
           var _this = this;
           _this.driverResultBox = true;

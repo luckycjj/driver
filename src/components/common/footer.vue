@@ -42,12 +42,6 @@
                name: "找货",
                push: "/robbingList"
              },{
-               number:0,
-               marginRight:0,
-               cls: "message",
-               name: "消息",
-               push: "/message"
-             },{
                  number:0,
                  marginRight:0,
                  cls: "user",
@@ -94,7 +88,7 @@
             var status = JSON.parse(driverMessage).status;
             if(status != 0 && sessionStorage.getItem("token") != undefined){
               if(_this.type == 1){
-                _this.items[3].show = false;
+                _this.items[2].show = false;
               }else{
                 _this.items[2].show = false;
               }
@@ -129,7 +123,7 @@
               });
             }else{
               if(_this.type == 1){
-                _this.items[3].show = true;
+                _this.items[2].show = true;
                 _this.items[0].number = 0;
               }else{
                 _this.items[2].show = true;

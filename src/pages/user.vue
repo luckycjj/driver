@@ -116,7 +116,7 @@
         },
       mounted:function () {
         var _this = this;
-        _this.driverType = JSON.parse(sessionStorage.getItem("driverMessage")).driverType == 1 ? 3 : 2;
+        _this.driverType = JSON.parse(sessionStorage.getItem("driverMessage")).driverType == 1 ? 2 : 2;
         if(JSON.parse(sessionStorage.getItem("driverMessage")).driverType == 1 ){
           _this.tabList.unshift({
             name:"结算中心",
