@@ -20,6 +20,55 @@
         查看
       </div>
       <footComponent ref="footcomponent" :idx='0'></footComponent>
+      <div id="errorAbnormalBox" v-if="errorAbnormalBox">
+        <div id="errorAbnormal">
+          <div id="errorabnormalTitle">
+            <img src="../images/closed.png" @click="errorAbnormalClosed()">
+            <p>选择异常事故</p>
+          </div>
+          <ul class="errorUl">
+            <li v-for="(item,index) in errorAbnormal" :class="index%2==0?'errorAbnormalLeft':'errorAbnormalRight'" @click="errorAbnormalClick($event)">
+              {{item.displayName}}
+            </li>
+            <div class="clearBoth"></div>
+            <input type="text"   @keyup="filterInput()" placeholder="其他异常" maxlength="100" v-model="errorabnormal">
+          </ul>
+          <button @click="errorAbnormalChange()"  class="gogogo" id="gogogo2">提交</button>
+        </div>
+      </div>
+      <div id="errorPriceBox" v-if="errorPriceBox">
+        <div id="errorPrice">
+          <div id="errorpriceTitle">
+            <img src="../images/closed.png" @click="errorPriceClosed()">
+            <p>填写费用</p>
+          </div>
+          <ul style="border: none;" class="errorUl">
+            <li v-for="(item,index) in errorPriceList" :class="index%2==0?'errorAbnormalLeft':'errorAbnormalRight'" @click="errorPriceListListClick($event)">
+              {{item.displayName}}
+            </li>
+            <div class="clearBoth"></div>
+            <input  @keyup="filterInput()" type="text" placeholder="填写原因" maxlength="40" style="margin-bottom: 0;" v-model="errorPricetype"/>
+            <input type="text" placeholder="金额" maxlength="40" v-model="errorPrice"/>
+          </ul>
+          <button @click="errorPriceChange()" id="gogogo4" class="gogogo">提交</button>
+        </div>
+      </div>
+      <div id="driverResultBox" v-if="driverResultBox">
+        <div id="driverResult">
+          <div id="driverResultTitle">
+            <img src="../images/closed.png" @click="driverResultClosed()">
+            <p>选择拒绝理由</p>
+          </div>
+          <ul class="errorUl">
+            <li v-for="(item,index) in driverResult" :class="index%2==0?'errorAbnormalLeft':'errorAbnormalRight'" @click="driverResultClick($event)">
+              {{item.displayName}}
+            </li>
+            <div class="clearBoth"></div>
+            <input type="text"   @keyup="filterInput()" placeholder="其他理由" maxlength="100" v-model="driverresult">
+          </ul>
+          <button @click="driverResultChange()"  class="gogogo" id="gogogo2">提交</button>
+        </div>
+      </div>
       <transition name="slide-fade">
         <div id="proBox" v-if="listBox.pkTransType != '' && boxShow" style="bottom: 1.5rem;">
           <img src="../images/jiaji.png" class="jiajiImg"  v-if="listBox.ifUrgent == 'Y'">
@@ -62,55 +111,6 @@
           <button v-if="listBox.type==7" @click="daoda(43)">卸货完毕</button>
           <button v-if="listBox.type==8" @click="qianshou(1)">签收</button>
           <div class="clearBoth"></div>
-        </div>
-        <div id="errorAbnormalBox" v-if="errorAbnormalBox">
-          <div id="errorAbnormal">
-            <div id="errorabnormalTitle">
-              <img src="../images/closed.png" @click="errorAbnormalClosed()">
-              <p>选择异常事故</p>
-            </div>
-            <ul class="errorUl">
-              <li v-for="(item,index) in errorAbnormal" :class="index%2==0?'errorAbnormalLeft':'errorAbnormalRight'" @click="errorAbnormalClick($event)">
-                {{item.displayName}}
-              </li>
-              <div class="clearBoth"></div>
-              <input type="text"   @keyup="filterInput()" placeholder="其他异常" maxlength="100" v-model="errorabnormal">
-            </ul>
-            <button @click="errorAbnormalChange()"  class="gogogo" id="gogogo2">提交</button>
-          </div>
-        </div>
-        <div id="errorPriceBox" v-if="errorPriceBox">
-          <div id="errorPrice">
-            <div id="errorpriceTitle">
-              <img src="../images/closed.png" @click="errorPriceClosed()">
-              <p>填写费用</p>
-            </div>
-            <ul style="border: none;" class="errorUl">
-              <li v-for="(item,index) in errorPriceList" :class="index%2==0?'errorAbnormalLeft':'errorAbnormalRight'" @click="errorPriceListListClick($event)">
-                {{item.displayName}}
-              </li>
-              <div class="clearBoth"></div>
-              <input  @keyup="filterInput()" type="text" placeholder="填写原因" maxlength="40" style="margin-bottom: 0;" v-model="errorPricetype"/>
-              <input type="text" placeholder="金额" maxlength="40" v-model="errorPrice"/>
-            </ul>
-            <button @click="errorPriceChange()" id="gogogo4" class="gogogo">提交</button>
-          </div>
-        </div>
-        <div id="driverResultBox" v-if="driverResultBox">
-          <div id="driverResult">
-            <div id="driverResultTitle">
-              <img src="../images/closed.png" @click="driverResultClosed()">
-              <p>选择拒绝理由</p>
-            </div>
-            <ul class="errorUl">
-              <li v-for="(item,index) in driverResult" :class="index%2==0?'errorAbnormalLeft':'errorAbnormalRight'" @click="driverResultClick($event)">
-                {{item.displayName}}
-              </li>
-              <div class="clearBoth"></div>
-              <input type="text"   @keyup="filterInput()" placeholder="其他理由" maxlength="100" v-model="driverresult">
-            </ul>
-            <button @click="driverResultChange()"  class="gogogo" id="gogogo2">提交</button>
-          </div>
         </div>
       </transition>
     </div>
@@ -1225,6 +1225,6 @@
     text-align: center;
     line-height: 1.5rem;
     letter-spacing: 2px;
-    z-index: 100;
+    z-index: 10;
   }
 </style>

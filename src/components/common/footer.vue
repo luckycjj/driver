@@ -58,9 +58,9 @@
             },{
               number:0,
               marginRight:0,
-              cls: "message",
-              name: "消息",
-              push: "/message"
+              cls: "robbing",
+              name: "找货",
+              push: "/robbingList"
             },{
                 number:0,
                 marginRight:0,

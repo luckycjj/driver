@@ -47,7 +47,7 @@
             订单编号：{{item.number}}<br>
             下单时间：{{item.time}}
           </div>
-          <button @click="qD()">抢单</button>
+          <button @click="qD()" v-if="robbingShow">抢单</button>
         </li>
       </ul>
     </div>
@@ -74,11 +74,13 @@
         pdlist:[],
         httpurl:"",
         carloading:true,
-        errorlogo: 'this.src="' + require('../../images/carpeople.png') + '"'
+        errorlogo: 'this.src="' + require('../../images/carpeople.png') + '"',
+        robbingShow:false
       }
     },
     mounted:function () {
       var _this = this;
+      _this.robbingShow = JSON.parse(sessionStorage.getItem("driverMessage")).driverType == 1 ? true : false;
       androidIos.bridge(_this);
       androidIos.judgeIphoneX("robbingMore",2);
     },
