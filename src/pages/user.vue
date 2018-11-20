@@ -376,46 +376,46 @@
                 success: function (json) {
                   if (json.success == "1") {
                     photoUrl = json.path;
+                    $.ajax({
+                      type: "POST",
+                      url: androidIos.ajaxHttp() + "/uploadAvatar",
+                      data:JSON.stringify({
+                        path:photoUrl,
+                        userCode:sessionStorage.getItem("token"),
+                        source:sessionStorage.getItem("source")
+                      }),
+                      contentType: "application/json;charset=utf-8",
+                      dataType: "json",
+                      async:false,
+                      timeout: 30000,
+                      success: function (uploadAvatar) {
+                        if (uploadAvatar.success == "1") {
+                          _this.$cjj("上传成功");
+                          _this.message.photo = _this.httpurl + photoUrl;
+                          var driverMessage = sessionStorage.getItem("driverMessage");
+                          if( driverMessage != null){
+                            driverMessage = JSON.parse(driverMessage);
+                            driverMessage.photo = _this.message.photo;
+                            sessionStorage.setItem("driverMessage",JSON.stringify(driverMessage));
+                          }
+                        } else{
+                          androidIos.second(uploadAvatar.message);
+                        }
+                      },
+                      complete: function (XMLHttpRequest, status) { //请求完成后最终执行参数
+                        $("#common-blackBox").remove();
+                        if (status == 'timeout') { //超时,status还有success,error等值的情况
+                          androidIos.second("当前状况下网络状态差，请检查网络！")
+                        } else if (status == "error") {
+                          androidIos.errorwife();
+                        }
+                      }
+                    });
                   } else{
                     androidIos.second(json.message);
                   }
                 },
                 complete: function (XMLHttpRequest, status) { //请求完成后最终执行参数
-                  if (status == 'timeout') { //超时,status还有success,error等值的情况
-                    androidIos.second("当前状况下网络状态差，请检查网络！")
-                  } else if (status == "error") {
-                    androidIos.errorwife();
-                  }
-                }
-              });
-              $.ajax({
-                type: "POST",
-                url: androidIos.ajaxHttp() + "/uploadAvatar",
-                data:JSON.stringify({
-                  path:photoUrl,
-                  userCode:sessionStorage.getItem("token"),
-                  source:sessionStorage.getItem("source")
-                }),
-                contentType: "application/json;charset=utf-8",
-                dataType: "json",
-                async:false,
-                timeout: 30000,
-                success: function (uploadAvatar) {
-                  if (uploadAvatar.success == "1") {
-                    _this.$cjj("上传成功");
-                    _this.message.photo = _this.httpurl + photoUrl;
-                    var driverMessage = sessionStorage.getItem("driverMessage");
-                    if( driverMessage != null){
-                      driverMessage = JSON.parse(driverMessage);
-                      driverMessage.photo = _this.message.photo;
-                      sessionStorage.setItem("driverMessage",JSON.stringify(driverMessage));
-                    }
-                  } else{
-                    androidIos.second(uploadAvatar.message);
-                  }
-                },
-                complete: function (XMLHttpRequest, status) { //请求完成后最终执行参数
-                  $("#common-blackBox").remove();
                   if (status == 'timeout') { //超时,status还有success,error等值的情况
                     androidIos.second("当前状况下网络状态差，请检查网络！")
                   } else if (status == "error") {

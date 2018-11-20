@@ -16,50 +16,53 @@
             </li>
           </ul>
       </div>
-      <div id="proBox" v-if="listBox.pkTransType != ''" style="bottom: 1.5rem;">
-        <img src="../images/jiaji.png" class="jiajiImg"  v-if="listBox.ifUrgent == 'Y'">
-        <div class="message" @click="lookTrackMore(listBox.pkInvoice)">
-          <div class="proStatus">
-            <p :style="{backgroundImage: 'url(' + require('../images/trackMoreIcon'+ listBox.type +'.png') + ')' }" >{{listBox.statusName}}</p>
-            <div class="topStatus">
-              <ul id="peoUl">
-                <li @click.stop="telphone(listBox.deliMobile)">
-                  <img src="../images/robbingTel2.png">
-                  发货人{{listBox.deliContact | nameCheck}}
-                </li>
-                <li @click.stop="telphone(listBox.arriMobile)">
-                  <img src="../images/robbingTel1.png">
-                  发货人{{listBox.arriContact | nameCheck}}
-                </li>
-                <div class="clearBoth"></div>
-              </ul>
-            </div>
-            <div class="price">
-              <h1>提货时间: {{listBox.deliDate}}</h1>
-              <h1 style="margin-right: auto">到货时间: {{listBox.arriDate}}</h1>
-              <div class="clearBoth"></div>
-            </div>
-            <ul id="proUl">
-              <li v-for="pro in listBox.itemDaos">运单编号:{{listBox.vbillno}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{listBox.transType}}/{{pro.pkTransType}}/{{pro.num}}件<span v-if="pro.weight.replace(/[^0-9]/g,'')*1 > 0 ">/{{pro.weight}}吨</span><span  v-if="pro.volume.replace(/[^0-9]/g,'')*1 > 0">/{{pro.volume}}立方米</span></li>
-            </ul>
-          </div>
-        </div>
-        <button v-if="listBox.type==0" @click="tongyi()">同意</button>
-        <button v-if="listBox.type== 0" @click="jvjue()">拒绝</button>
-        <button v-if=" listBox.type==1" @click="chufa()">出发</button>
-        <button v-if="listBox.type==2" @click="daoda(31)">提货到达</button>
-        <button v-if="listBox.type==3" @click="daoda(32)">开始装货</button>
-        <button v-if="listBox.type==4"  class="upImg" @click="upImg(0)">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;上传</button>
-        <button v-if="listBox.type==4" @click="daoda(33)">装货完毕</button>
-        <button v-if="listBox.type==5" @click="daoda(41)">运输到达</button>
-        <button v-if="listBox.type==6" @click="daoda(42)">开始卸货</button>
-        <button v-if="listBox.type==7"  class="upImg" @click="upImg(1)">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;上传</button>
-        <button v-if="listBox.type==7" @click="daoda(43)">卸货完毕</button>
-        <button v-if="listBox.type==8" @click="qianshou(1)">签收</button>
-        <div class="clearBoth"></div>
+      <div id="lookOrderMore" v-if="!boxShow"  @click="boxShow = true">
+        查看
       </div>
       <footComponent ref="footcomponent" :idx='0'></footComponent>
       <transition name="slide-fade">
+        <div id="proBox" v-if="listBox.pkTransType != '' && boxShow" style="bottom: 1.5rem;">
+          <img src="../images/jiaji.png" class="jiajiImg"  v-if="listBox.ifUrgent == 'Y'">
+          <div class="message" @click="lookTrackMore(listBox.pkInvoice)">
+            <div class="proStatus">
+              <p :style="{backgroundImage: 'url(' + require('../images/trackMoreIcon'+ listBox.type +'.png') + ')' }" >{{listBox.statusName}}</p>
+              <div class="topStatus">
+                <ul id="peoUl">
+                  <li @click.stop="telphone(listBox.deliMobile)">
+                    <img src="../images/robbingTel2.png">
+                    发货人{{listBox.deliContact | nameCheck}}
+                  </li>
+                  <li @click.stop="telphone(listBox.arriMobile)">
+                    <img src="../images/robbingTel1.png">
+                    发货人{{listBox.arriContact | nameCheck}}
+                  </li>
+                  <div class="clearBoth"></div>
+                </ul>
+              </div>
+              <div class="price">
+                <h1>提货时间: {{listBox.deliDate}}</h1>
+                <h1 style="margin-right: auto">到货时间: {{listBox.arriDate}}</h1>
+                <div class="clearBoth"></div>
+              </div>
+              <ul id="proUl">
+                <li v-for="pro in listBox.itemDaos">运单编号:{{listBox.vbillno}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{listBox.transType}}/{{pro.pkTransType}}/{{pro.num}}件<span v-if="pro.weight.replace(/[^0-9]/g,'')*1 > 0 ">/{{pro.weight}}吨</span><span  v-if="pro.volume.replace(/[^0-9]/g,'')*1 > 0">/{{pro.volume}}立方米</span></li>
+              </ul>
+            </div>
+          </div>
+          <button v-if="listBox.type==0" @click="tongyi()">同意</button>
+          <button v-if="listBox.type== 0" @click="jvjue()">拒绝</button>
+          <button v-if=" listBox.type==1" @click="chufa()">出发</button>
+          <button v-if="listBox.type==2" @click="daoda(31)">提货到达</button>
+          <button v-if="listBox.type==3" @click="daoda(32)">开始装货</button>
+          <button v-if="listBox.type==4"  class="upImg" @click="upImg(0)">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;上传</button>
+          <button v-if="listBox.type==4" @click="daoda(33)">装货完毕</button>
+          <button v-if="listBox.type==5" @click="daoda(41)">运输到达</button>
+          <button v-if="listBox.type==6" @click="daoda(42)">开始卸货</button>
+          <button v-if="listBox.type==7"  class="upImg" @click="upImg(1)">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;上传</button>
+          <button v-if="listBox.type==7" @click="daoda(43)">卸货完毕</button>
+          <button v-if="listBox.type==8" @click="qianshou(1)">签收</button>
+          <div class="clearBoth"></div>
+        </div>
         <div id="errorAbnormalBox" v-if="errorAbnormalBox">
           <div id="errorAbnormal">
             <div id="errorabnormalTitle">
@@ -153,7 +156,11 @@
                   type:0,
                 statusName:""
               },
-              tabList:[],
+              tabList:[{
+                icon:require("../images/lishi-4.png"),
+                name:"历史任务",
+                value:0,
+              }],
               peopleJ:"",
               peopleW:"",
               errorAbnormalBox:false,
@@ -167,6 +174,7 @@
               errorPricetype:"",
               errorPrice:"",
               setTime:null,
+              boxShow:true,
             }
         },
         mounted:function () {
@@ -634,9 +642,9 @@
             center: [self.peopleJ, self.peopleW],//地图中心点
             zoom: 13 //地图显示的缩放级别
           });
-        /*  map.on("click",function () {
-            self.mapLook();
-          })*/
+          map.on("click",function () {
+            self.boxShow = false;
+          })
           AMap.plugin(['AMap.Scale'],
             function(){
               map.addControl(new AMap.Scale());
@@ -644,11 +652,32 @@
           //构造路线导航类
           var driving = new AMap.Driving({
             map: map,
-            panel: "panel"
+            panel: "panel",
+            ferry:1,
           });
-          if(self.listBox.deliAddrPoint!= "" && self.listBox.deliAddrPoint != undefined  && self.listBox.arriAddrPoint!= ""  && self.listBox.arriAddrPoint != undefined){
-            driving.search([self.listBox.deliAddrPoint.split(",")[0] , self.listBox.deliAddrPoint.split(",")[1]],[self.listBox.arriAddrPoint.split(",")[0] , self.listBox.arriAddrPoint.split(",")[1]], function(status, result) {});
-
+          var  ordertype =  self.listBox.status;
+          if(self.listBox.deliAddrPoint!= "" && self.listBox.deliAddrPoint != undefined  && self.listBox.arriAddrPoint!= ""  && self.listBox.arriAddrPoint != undefined && self.listBox.type < 8){
+            if(ordertype ==  "31"   ||ordertype ==  "32"   || ordertype ==  "33"   || ordertype == '41'  || ordertype == '42'){
+              driving.search([self.peopleJ ,self.peopleW],[self.listBox.arriAddrPoint.split(",")[0] , self.listBox.arriAddrPoint.split(",")[1]], function(status, result) {
+                var sss = setInterval(function () {
+                  if($(".amap-lib-marker-to").length>0){
+                    clearInterval(sss);
+                    $("#container").find(".amap-lib-marker-to").addClass("amaplibmarkerto");
+                    $("#container").find(".amap-lib-marker-from").addClass("amaplibmarkerfroms");
+                  }
+                },100)
+              });
+            }else{
+              driving.search([self.peopleJ ,self.peopleW],[self.listBox.deliAddrPoint.split(",")[0] , self.listBox.deliAddrPoint.split(",")[1]], function(status, result) {
+                var sss = setInterval(function () {
+                  if($(".amap-lib-marker-to").length>0){
+                    clearInterval(sss);
+                    $("#container").find(".amap-lib-marker-to").addClass("amaplibmarkertos");
+                    $("#container").find(".amap-lib-marker-from").addClass("amaplibmarkerfroms");
+                  }
+                },100)
+              });
+            }
           }
             var marker;
             marker = new AMap.Marker({
@@ -794,7 +823,7 @@
   #taskMoreHomePage .amap-controls{
     display: none!important;
   }
-  /*  @media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min-resolution: 144dpi){
+    @media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min-resolution: 144dpi){
       #orderLogistics .amap-lib-marker-to{
         background-image: none;
       }
@@ -807,7 +836,7 @@
     }
     #orderLogistics  .amap-lib-marker-to{
       background-image: none;
-    }*/
+    }
   #taskMoreHomePage .amaplibmarkerto{
     background-image: url("../images/end.png")!important;
     background-size:cover!important;
@@ -1182,5 +1211,20 @@
     background-size:0.48rem;
     background-repeat: no-repeat;
     background-position:0.42rem 50% ;
+  }
+  #lookOrderMore{
+    position: fixed;
+    width: 1.5rem;
+    height: 1.5rem;
+    background-color: rgba(29,104,168,0.8);
+    color: white;
+    font-size: 0.35rem;
+    border-radius: 50%;
+    bottom: 15%;
+    right: 5%;
+    text-align: center;
+    line-height: 1.5rem;
+    letter-spacing: 2px;
+    z-index: 100;
   }
 </style>
