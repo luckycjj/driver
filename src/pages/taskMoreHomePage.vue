@@ -93,6 +93,22 @@
             <button @click="errorPriceChange()" id="gogogo4" class="gogogo">提交</button>
           </div>
         </div>
+        <div id="driverResultBox" v-if="driverResultBox">
+          <div id="driverResult">
+            <div id="driverResultTitle">
+              <img src="../images/closed.png" @click="driverResultClosed()">
+              <p>选择拒绝理由</p>
+            </div>
+            <ul class="errorUl">
+              <li v-for="(item,index) in driverResult" :class="index%2==0?'errorAbnormalLeft':'errorAbnormalRight'" @click="driverResultClick($event)">
+                {{item.displayName}}
+              </li>
+              <div class="clearBoth"></div>
+              <input type="text"   @keyup="filterInput()" placeholder="其他理由" maxlength="100" v-model="driverresult">
+            </ul>
+            <button @click="driverResultChange()"  class="gogogo" id="gogogo2">提交</button>
+          </div>
+        </div>
       </transition>
     </div>
 </template>
@@ -141,10 +157,13 @@
               peopleJ:"",
               peopleW:"",
               errorAbnormalBox:false,
+              driverResultBox:false,
               errorPriceBox:false,
               errorAbnormal:[],
               errorPriceList:[],
+              driverResult:[],
               errorabnormal:"",
+              driverresult:"",
               errorPricetype:"",
               errorPrice:"",
               setTime:null,
@@ -162,29 +181,18 @@
       methods:{
         jvjue:function () {
           var _this = this;
-          androidIos.first("确定拒绝吗？");
-          $(".tanBox-yes").unbind('click').click(function(){
-            $(".tanBox-bigBox").remove();
-            androidIos.loading("正在拒绝");
+          _this.driverResultBox = true;
+          if(_this.driverResult.length == 0){
             $.ajax({
-              type: "POST",
-              url: androidIos.ajaxHttp()+"/order/driverCancel",
-              data:JSON.stringify({pk:_this.listBox.pkInvoice,memo:"取消原因",userCode:sessionStorage.getItem("token"),source:sessionStorage.getItem("source")}),
-              contentType: "application/json;charset=utf-8",
+              type: "GET",
+              url: androidIos.ajaxHttp()+"/settings/getSysConfigList",
+              data:{str:"driverRefuseReason",userCode:sessionStorage.getItem("token"),source:sessionStorage.getItem("source")},
               dataType: "json",
               timeout: 10000,
-              success: function (driverCancel) {
-                if(driverCancel.success=="1" ||driverCancel.success == ""){
-                  _this.$cjj("拒绝成功");
-                  setTimeout(function () {
-                    _this.ajaxorder();
-                  },500)
-                }else{
-                  androidIos.second(driverCancel.message);
-                }
+              success: function (getSysConfigList) {
+                _this.driverResult = getSysConfigList;
               },
               complete : function(XMLHttpRequest,status){ //请求完成后最终执行参数
-                $("#common-blackBox").remove();
                 if(status=='timeout'){//超时,status还有success,error等值的情况
                   androidIos.second("网络请求超时");
                 }else if(status=='error'){
@@ -192,7 +200,7 @@
                 }
               }
             })
-          });
+          }
         },
           tongyi:function () {
               var _this = this;
@@ -226,6 +234,12 @@
           },
         telphone:function(tel){
           androidIos.telCall(tel);
+        },
+        filterInput:function () {
+          var _this = this;
+          _this.errorPricetype =  _this.errorPricetype.replace(/[^\a-\z\A-\Z0-9\u4E00-\u9FA5\,\，\.\。\;\!\[\]\【\】\-]/g,'');
+          _this.errorabnormal =  _this.errorabnormal.replace(/[^\a-\z\A-\Z0-9\u4E00-\u9FA5\,\，\.\。\;\!\[\]\【\】\-]/g,'');
+          _this.driverresult =  _this.driverresult.replace(/[^\a-\z\A-\Z0-9\u4E00-\u9FA5\,\，\.\。\;\!\[\]\【\】\-]/g,'');
         },
         tabClick:function (index) {
            var _this = this;
@@ -297,7 +311,7 @@
               source : sessionStorage.getItem("source"),
               expType : list[0] == undefined || (list[0] != undefined && list[0].displayName == "其他") ? "" : androidIos.checkText(list[0].value),
               trackingMemo : androidIos.checkText(_this.errorabnormal),
-              entrustVbillno :_this.listBox.pkInvoice == undefined ? "" : androidIos.checkText(_this.listBox.pkInvoice)
+              entrustVbillno :_this.listBox.vbillno == undefined ? "" : androidIos.checkText(_this.listBox.vbillno)
             }
             bomb.removeClass("gogogo2","gogogo");
             $.ajax({
@@ -314,7 +328,7 @@
                   $("#errorAbnormalBox .errorUl li").removeClass("errorPriceBoxLi");
                   _this.$cjj("反馈成功");
                   setTimeout(function () {
-                    _this.mescroll.resetUpScroll();
+                    _this.ajaxorder();
                   },500)
                 }else{
                   androidIos.second(abnormalFeedback.message);
@@ -362,7 +376,7 @@
               costType:list[0]==undefined?'':androidIos.checkText(list[0]),
               memo:androidIos.checkText(_this.errorPricetype),
               amount:androidIos.checkText(_this.errorPrice),
-              entrustVbillno:androidIos.checkText(_this.listBox.pkInvoice)
+              entrustVbillno:androidIos.checkText(_this.listBox.vbillno)
             }
             bomb.removeClass("gogogo4","gogogo");
             $.ajax({
@@ -380,7 +394,7 @@
                   $("#errorPriceBox .errorUl li").removeClass("errorPriceBoxLi");
                   _this.$cjj("反馈成功");
                   setTimeout(function () {
-                    _this.mescroll.resetUpScroll();
+                    _this.ajaxorder();
                   },500)
                 }else{
                   androidIos.second(abnormalFeedback.message);
@@ -421,6 +435,73 @@
             this.addClass(e.target,"errorPriceBoxLi");
           }else{
             $("#errorAbnormalBox .errorUl li").removeClass("errorPriceBoxLi");
+          }
+        },
+        driverResultClick:function(e){
+          if(!this.hasClass(e.target,"errorPriceBoxLi")){
+            $("#driverResultBox .errorUl li").removeClass("errorPriceBoxLi");
+            this.addClass(e.target,"errorPriceBoxLi");
+          }else{
+            $("#driverResultBox .errorUl li").removeClass("errorPriceBoxLi");
+          }
+        },
+        driverResultClosed:function(){
+          var _this = this;
+          $("#driverResultBox .errorUl li").removeClass("errorPriceBoxLi");
+          _this.driverResultBox = false;
+          _this.driverresult = "";
+        },
+        driverResultChange:function () {
+          var _this = this;
+          if(bomb.hasClass("gogogo2","gogogo")){
+            var list = [];
+            for(var i = 0 ;i<_this.driverResult.length;i++){
+              if($(".errorUl li").eq(i).hasClass("errorPriceBoxLi")){
+                list.push(_this.driverResult[i])
+              }
+            }
+            if((list.length == 0  || list[0].value == 0 )&& _this.driverresult == ''){
+              bomb.first("请选择或填写理由");
+              return false;
+            }
+            var json = {
+              userCode : sessionStorage.getItem("token"),
+              source : sessionStorage.getItem("source"),
+              memo : androidIos.checkText(list[0].displayName + "," + _this.driverresult),
+              pk :_this.listBox.pkInvoice == undefined ? "" : androidIos.checkText(_this.listBox.pkInvoice)
+            }
+            bomb.removeClass("gogogo2","gogogo");
+            $.ajax({
+              type: "POST",
+              url: androidIos.ajaxHttp()+"/driver/abnormalFeedback",
+              data:JSON.stringify(json),
+              contentType: "application/json;charset=utf-8",
+              dataType: "json",
+              timeout: 10000,
+              success: function (abnormalFeedback) {
+                if(abnormalFeedback.success == "1"){
+                  _this.driverResultBox = false;
+                  _this.driverresult = "";
+                  $("#driverResultBox .errorUl li").removeClass("errorPriceBoxLi");
+                  _this.$cjj("拒绝成功");
+                  setTimeout(function () {
+                    _this.ajaxorder();
+                  },500)
+                }else{
+                  androidIos.second(abnormalFeedback.message);
+                }
+              },
+              complete : function(XMLHttpRequest,status){ //请求完成后最终执行参数
+                bomb.addClass("gogogo2","gogogo");
+                if(status=='timeout'){//超时,status还有success,error等值的情况
+                  androidIos.second("网络请求超时");
+                }else if(status=='error'){
+                  androidIos.errorwife();
+                }
+              }
+            })
+          }else{
+            bomb.first("请不要频繁点击");
           }
         },
         lookTrackMore:function (pk) {
@@ -959,7 +1040,7 @@
     background: #dbdbdb;
     margin: 0 auto;
   }
-  #errorAbnormalBox,#errorPriceBox,#cancelReasonBox{
+  #errorAbnormalBox,#errorPriceBox,#driverResultBox{
     width:100%;
     height: 100%;
     position: fixed;
@@ -968,13 +1049,13 @@
     z-index:12;
     background-color:rgba(0,0,0,0.5);
   }
-  #errorAbnormal,#errorPrice,#cancelReason{
+  #errorAbnormal,#errorPrice,#driverResult{
     position: absolute;
     bottom:0;
     background: white;
     width:100%;
   }
-  #errorabnormalTitle p,#errorpriceTitle p,#cancelReasonTitle p{
+  #errorabnormalTitle p,#errorpriceTitle p,#cancelReasonTitle p,#driverResultTitle p{
     width:100%;
     text-align: center;
     line-height: 1rem;
@@ -982,7 +1063,7 @@
     color:#999;
     position: relative;
   }
-  #errorabnormalTitle img,#errorpriceTitle img,#cancelReasonTitle img{
+  #errorabnormalTitle img,#errorpriceTitle img,#cancelReasonTitle img,#driverResultTitle img{
     position: absolute;
     width:1rem;
     z-index: 1;
@@ -1034,7 +1115,7 @@
     float: right;
     margin-top: 0.1rem;
   }
-  #errorAbnormal button,#errorPrice button,#cancelReason button{
+  #errorAbnormal button,#errorPrice button,#cancelReason button,#driverResultBox button{
     width:96%;
     margin-left: 2%;
     border-radius: 0.3rem;
