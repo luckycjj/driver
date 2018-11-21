@@ -83,7 +83,7 @@
                   </li>
                   <li @click.stop="telphone(listBox.arriMobile)">
                     <img src="../images/robbingTel1.png">
-                    发货人{{listBox.arriContact | nameCheck}}
+                    到货人{{listBox.arriContact | nameCheck}}
                   </li>
                   <div class="clearBoth"></div>
                 </ul>
@@ -486,7 +486,7 @@
             bomb.removeClass("gogogo2","gogogo");
             $.ajax({
               type: "POST",
-              url: androidIos.ajaxHttp()+"/driver/abnormalFeedback",
+              url: androidIos.ajaxHttp()+"/order/driverCancel",
               data:JSON.stringify(json),
               contentType: "application/json;charset=utf-8",
               dataType: "json",
@@ -667,13 +667,23 @@
                   }
                 },100)
               });
-            }else{
+            }else if(ordertype*1 > 10 && ordertype*1 < 31){
               driving.search([self.peopleJ ,self.peopleW],[self.listBox.deliAddrPoint.split(",")[0] , self.listBox.deliAddrPoint.split(",")[1]], function(status, result) {
                 var sss = setInterval(function () {
                   if($(".amap-lib-marker-to").length>0){
                     clearInterval(sss);
                     $("#container").find(".amap-lib-marker-to").addClass("amaplibmarkertos");
                     $("#container").find(".amap-lib-marker-from").addClass("amaplibmarkerfroms");
+                  }
+                },100)
+              });
+            }else{
+              driving.search([self.listBox.deliAddrPoint.split(",")[0] , self.listBox.deliAddrPoint.split(",")[1]],[self.listBox.arriAddrPoint.split(",")[0] , self.listBox.arriAddrPoint.split(",")[1]], function(status, result) {
+                var sss = setInterval(function () {
+                  if($(".amap-lib-marker-to").length>0){
+                    clearInterval(sss);
+                    $("#container").find(".amap-lib-marker-to").addClass("amaplibmarkerto");
+                    $("#container").find(".amap-lib-marker-from").addClass("amaplibmarkertos");
                   }
                 },100)
               });
@@ -1199,8 +1209,8 @@
     background-repeat: no-repeat;
     background-position: 0 50%;
     background-size:0.5rem ;
-    height: 0.5rem;
-    margin-top: 0.42rem;
+    height: 0.6rem;
+    margin-top: 0.37rem;
     width:7rem;
   }
   .upImg{

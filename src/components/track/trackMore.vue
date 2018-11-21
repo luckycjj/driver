@@ -47,7 +47,7 @@
                 </li>
                 <li @click="telphone(item.endMessage.tel)">
                   <img src="../../images/robbingTel1.png">
-                  发货人{{item.endMessage.name | nameCheck}}
+                  到货人{{item.endMessage.name | nameCheck}}
                 </li>
                 <div class="clearBoth"></div>
               </ul>
@@ -553,7 +553,7 @@
           bomb.removeClass("gogogo2","gogogo");
           $.ajax({
             type: "POST",
-            url: androidIos.ajaxHttp()+"/driver/abnormalFeedback",
+            url: androidIos.ajaxHttp()+"/order/driverCancel",
             data:JSON.stringify(json),
             contentType: "application/json;charset=utf-8",
             dataType: "json",
