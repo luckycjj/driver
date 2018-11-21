@@ -406,19 +406,19 @@
                    }
                  },
                  third:{
-                  transportValue:"",
-                    transportCode:"",
+                    transportValue:"",
+                    transportCode:getCarrAndCompanyInfo.carListDto.transType,
                     transportList:[],
                     carModelValue:"",
-                    carModelCode:"",
+                    carModelCode:getCarrAndCompanyInfo.carListDto.carModel,
                     carModelList:[],
                     carLengthValue:"",
-                    carLengthCode:"",
+                    carLengthCode:getCarrAndCompanyInfo.carListDto.length,
                     carLengthList:[],
-                    carNumberFirst:"沪",
-                    carNumberSecond:"",
-                    carWeight:"",
-                    meno:"",
+                    carNumberFirst:getCarrAndCompanyInfo.carListDto.carNo.substring(0,1),
+                    carNumberSecond:getCarrAndCompanyInfo.carListDto.carNo.substring(1),
+                    carWeight:(getCarrAndCompanyInfo.carListDto.loadWeight*1).toString(),
+                    meno:getCarrAndCompanyInfo.carListDto.mome,
                 }
                }
               }else{
@@ -768,8 +768,8 @@
              Promise.all([ajax1,ajax2,ajax3]).then((result) => {
                var x = 0;
                for(var i = 0;i<_this.message.third.transportList.length;i++){
-                 if(_this.message.third.transportList[i].region == _this.message.third.transportValue){
-                   _this.message.third.transportCode = _this.message.third.transportList[i].code;
+                 if(_this.message.third.transportList[i].code == _this.message.third.transportCode){
+                   _this.message.third.transportValue = _this.message.third.transportList[i].region;
                    x = i;
                  }
                }
@@ -792,8 +792,8 @@
                }
                var y = 0;
                for(var i = 0;i<_this.message.third.carModelList.length;i++){
-                 if(_this.message.third.carModelList[i].region == _this.message.third.carModelValue){
-                   _this.message.third.carModelCode = _this.message.third.carModelList[i].code;
+                 if(_this.message.third.carModelList[i].code == _this.message.third.carModelCode){
+                   _this.message.third.carModelValue = _this.message.third.carModelList[i].region;
                    y = i;
                  }
                }
@@ -816,8 +816,8 @@
                }
                var z = 0;
                for(var i = 0;i<_this.message.third.carLengthList.length;i++){
-                 if(_this.message.third.carLengthList[i].region == _this.message.third.carLengthValue){
-                   _this.message.third.carLengthCode = _this.message.third.carLengthList[i].code;
+                 if(_this.message.third.carLengthList[i].region == _this.message.third.carLengthCode){
+                   _this.message.third.carLengthValue = _this.message.third.carLengthList[i].region;
                    z = i;
                  }
                }
