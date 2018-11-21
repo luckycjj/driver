@@ -181,6 +181,7 @@
           var _this = this;
           androidIos.judgeIphoneX("tabList",2);
           androidIos.judgeIphoneX("container",6);
+          sessionStorage.removeItem("orderPk");
           _this.ajaxorder();
           _this.setTime = setInterval(function () {
             _this.ajaxorder();
@@ -215,7 +216,7 @@
             })
           }
         },
-          tongyi:function () {
+        tongyi:function () {
               var _this = this;
               androidIos.loading("正在确认");
               $.ajax({
@@ -542,52 +543,56 @@
               timeout: 30000,
               success: function (loadEntrust) {
                 if (loadEntrust.success == "1") {
-                  _this.listBox = loadEntrust.list[0];
-                  var deliDate = _this.listBox.deliDate.split(":");
-                  deliDate.splice(2,1);
-                  _this.listBox.deliDate = deliDate.join(":");
-                  var arriDate = _this.listBox.arriDate.split(":");
-                  arriDate.splice(2,1);
-                  _this.listBox.arriDate = arriDate.join(":");
-                  _this.listBox.type = _this.listBox.status == '0'? 0 : _this.listBox.status == '10'?1: _this.listBox.status == '20'?2: _this.listBox.status == '31'?3: _this.listBox.status == '32'?4: _this.listBox.status== '33'?5: _this.listBox.status== '41'?6: _this.listBox.status== '42'?7: _this.listBox.status== '43'?8: _this.listBox.status== '50'?9:10;
-                  _this.listBox.statusName = _this.listBox.status == '0'? "待确认" : _this.listBox.status == '10' ? "已确认" : _this.listBox.status == '20' ? "司机出发" : _this.listBox.status == '31' ? "提货到达" : _this.listBox.status == '32' ? "开始装货" : _this.listBox.status== '33' ? "开始运输" : _this.listBox.status== '41' ? "运输到达" : _this.listBox.status== '42' ? "开始卸货" : _this.listBox.status== '43' ? "卸货完毕" : _this.listBox.status== '50' ? "已签收" : 10;
-                  if( _this.listBox.type < 2){
-                    _this.tabList = [{
-                      icon:require("../images/lishi-4.png"),
-                      name:"历史任务",
-                      value:0,
-                    }]
-                  }else if(_this.listBox.type >= 2 && _this.listBox.type < 8){
-                    _this.tabList = [{
-                      icon:require("../images/lishi-4.png"),
-                      name:"历史任务",
-                      value:0,
-                    },{
-                      icon:require("../images/yichang-4.png"),
-                      name:"异常反馈",
-                      value:1,
-                    },{
-                      icon:require("../images/feiyong-3.png"),
-                      name:"费用反馈",
-                      value:2,
-                    }]
-                  }else if(_this.listBox.type == 8){
-                    _this.tabList = [{
-                      icon:require("../images/lishi-4.png"),
-                      name:"历史任务",
-                      value:0,
-                    },{
-                      icon:require("../images/erweima-2.png"),
-                      name:"签收码",
-                      value:3,
-                    }]
-                  }else{
-                    _this.tabList = [{
-                      icon:require("../images/lishi-4.png"),
-                      name:"历史任务",
-                      value:0,
-                    }]
+                  if(loadEntrust.list.length > 0){
+                    _this.listBox = loadEntrust.list[0];
+                    var deliDate = _this.listBox.deliDate.split(":");
+                    deliDate.splice(2,1);
+                    _this.listBox.deliDate = deliDate.join(":");
+                    var arriDate = _this.listBox.arriDate.split(":");
+                    arriDate.splice(2,1);
+                    _this.listBox.arriDate = arriDate.join(":");
+                    _this.listBox.type = _this.listBox.status == '0'? 0 : _this.listBox.status == '10'?1: _this.listBox.status == '20'?2: _this.listBox.status == '31'?3: _this.listBox.status == '32'?4: _this.listBox.status== '33'?5: _this.listBox.status== '41'?6: _this.listBox.status== '42'?7: _this.listBox.status== '43'?8: _this.listBox.status== '50'?9:10;
+                    _this.listBox.statusName = _this.listBox.status == '0'? "待确认" : _this.listBox.status == '10' ? "已确认" : _this.listBox.status == '20' ? "司机出发" : _this.listBox.status == '31' ? "提货到达" : _this.listBox.status == '32' ? "开始装货" : _this.listBox.status== '33' ? "开始运输" : _this.listBox.status== '41' ? "运输到达" : _this.listBox.status== '42' ? "开始卸货" : _this.listBox.status== '43' ? "卸货完毕" : _this.listBox.status== '50' ? "已签收" : 10;
+                    sessionStorage.setItem("orderPk",_this.listBox.pkInvoice);
+                    if( _this.listBox.type < 2){
+                      _this.tabList = [{
+                        icon:require("../images/lishi-4.png"),
+                        name:"历史任务",
+                        value:0,
+                      }]
+                    }else if(_this.listBox.type >= 2 && _this.listBox.type < 8){
+                      _this.tabList = [{
+                        icon:require("../images/lishi-4.png"),
+                        name:"历史任务",
+                        value:0,
+                      },{
+                        icon:require("../images/yichang-4.png"),
+                        name:"异常反馈",
+                        value:1,
+                      },{
+                        icon:require("../images/feiyong-3.png"),
+                        name:"费用反馈",
+                        value:2,
+                      }]
+                    }else if(_this.listBox.type == 8){
+                      _this.tabList = [{
+                        icon:require("../images/lishi-4.png"),
+                        name:"历史任务",
+                        value:0,
+                      },{
+                        icon:require("../images/erweima-2.png"),
+                        name:"签收码",
+                        value:3,
+                      }]
+                    }else{
+                      _this.tabList = [{
+                        icon:require("../images/lishi-4.png"),
+                        name:"历史任务",
+                        value:0,
+                      }]
+                    }
                   }
+
                 }else{
                   androidIos.second(loadEntrust.message);
                 }
