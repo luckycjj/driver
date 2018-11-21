@@ -942,7 +942,7 @@
                    setTimeout(function () {
                      androidIos.gobackFrom(_this);
                    },500)
-                 }else if(data.success=="-1"){
+                 }else{
                    androidIos.second(data.message);
                  }
                },

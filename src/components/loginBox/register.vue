@@ -7,25 +7,25 @@
     </div>
     <div id="registerBody">
       <div class="modelView img1">
-        <input @keyup="filterInput()"  type="tel" v-model="mobile" placeholder="请输入手机号" maxlength="11"/>
+        <input @input="filterInput()"  type="tel" v-model="mobile" placeholder="请输入手机号" maxlength="11"/>
       </div>
       <div class="modelView img5">
-        <input @keyup="filterInput()"  type="tel" v-model="verification" placeholder="请输入验证码" maxlength="6"/>
+        <input @input="filterInput()"  type="tel" v-model="verification" placeholder="请输入验证码" maxlength="6"/>
         <span class="verificationCome" @click="verificationCome()">{{name}}</span>
         <div class="clearBoth"></div>
       </div>
       <div class="modelView img2">
-        <input @keyup="filterInput()"  :type="lookPassWord ? 'text' : 'password' "  maxlength="25"  v-model="password" placeholder="请输入密码"/>
+        <input @input="filterInput()"  :type="lookPassWord ? 'text' : 'password' "  maxlength="25"  v-model="password" placeholder="请输入密码"/>
         <div id="lookPassWord" :class="lookPassWord ? 'lookPassWord' : '' " @click="lookpass(1)"></div>
         <div class="clearBoth"></div>
       </div>
       <div class="modelView img3">
-        <input @keyup="filterInput()"  :type="lookPassWord1 ? 'text' : 'password' "  maxlength="25"  v-model="passwordSure" placeholder="请确认密码"/>
+        <input @input="filterInput()"  :type="lookPassWord1 ? 'text' : 'password' "  maxlength="25"  v-model="passwordSure" placeholder="请确认密码"/>
         <div id="lookPassWord1" :class="lookPassWord1 ? 'lookPassWord' : '' " @click="lookpass(2)"></div>
         <div class="clearBoth"></div>
       </div>
       <div class="modelView img4">
-        <input @keyup="filterInput()"  type="text" v-model="invitation" placeholder="请输入邀请码" maxlength="6"/>
+        <input @input="filterInput()"  type="text" v-model="invitation" placeholder="请输入邀请码" maxlength="6"/>
       </div>
     </div>
     <button @click="registerOn()">注册</button>
