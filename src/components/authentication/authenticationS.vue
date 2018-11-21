@@ -407,18 +407,18 @@
                  },
                  third:{
                     transportValue:"",
-                    transportCode:getCarrAndCompanyInfo.carListDto.transType,
+                    transportCode:getCarrAndCompanyInfo.carListDto != null ? getCarrAndCompanyInfo.carListDto.transType : "",
                     transportList:[],
                     carModelValue:"",
-                    carModelCode:getCarrAndCompanyInfo.carListDto.carModel,
+                    carModelCode:getCarrAndCompanyInfo.carListDto != null ?getCarrAndCompanyInfo.carListDto.carModel : "",
                     carModelList:[],
                     carLengthValue:"",
-                    carLengthCode:getCarrAndCompanyInfo.carListDto.length,
+                    carLengthCode:getCarrAndCompanyInfo.carListDto != null ?getCarrAndCompanyInfo.carListDto.length : "",
                     carLengthList:[],
-                    carNumberFirst:getCarrAndCompanyInfo.carListDto.carNo.substring(0,1),
-                    carNumberSecond:getCarrAndCompanyInfo.carListDto.carNo.substring(1),
-                    carWeight:(getCarrAndCompanyInfo.carListDto.loadWeight*1).toString(),
-                    meno:getCarrAndCompanyInfo.carListDto.mome,
+                    carNumberFirst:getCarrAndCompanyInfo.carListDto != null ?getCarrAndCompanyInfo.carListDto.carNo.substring(0,1) : "",
+                    carNumberSecond:getCarrAndCompanyInfo.carListDto != null ?getCarrAndCompanyInfo.carListDto.carNo.substring(1) : "",
+                    carWeight:getCarrAndCompanyInfo.carListDto != null ? (getCarrAndCompanyInfo.carListDto.loadWeight*1).toString(): "",
+                    meno:getCarrAndCompanyInfo.carListDto != null ? getCarrAndCompanyInfo.carListDto.mome : "",
                 }
                }
               }else{
