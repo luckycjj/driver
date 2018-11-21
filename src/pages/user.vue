@@ -93,10 +93,6 @@
                icon:require("../images/saoyisao.png"),
                url:""
              },{
-               name:"邀请码",
-               icon:require("../images/icon-yaoqingma.png"),
-               url:""
-             },{
                name:"分享",
                icon:require("../images/share.png"),
                url:""
