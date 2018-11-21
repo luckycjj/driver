@@ -57,7 +57,7 @@
               </div>
             </div>
           </div>
-          <div class="error" v-if="type > 1 && type < 8 && peopleType == 1">
+          <!--<div class="error" v-if="type > 1 && type < 8 && peopleType == 1">
             <div class="errorFirst" @click="errorFirst()">
                异常反馈
             </div>
@@ -65,7 +65,7 @@
                费用反馈
             </div>
             <div class="clearBoth"></div>
-          </div>
+          </div>-->
           <div class="number">
             运单编号：{{item.number}}<br>
             下单时间：{{item.time}}
