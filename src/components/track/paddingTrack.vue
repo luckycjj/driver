@@ -1,14 +1,7 @@
 <template>
   <div id="histroyTrack" style="top:1.3rem">
-    <div id="title" v-title data-title="历史任务"></div>
+    <div id="title" v-title data-title="待执行"></div>
     <div id="showBox">
-      <div class="wrapper" id="trackTab">
-        <div class="scroller">
-          <ul class="clearfix">
-            <li :style="{width:10/(list.length) + 'rem'}" tapmode=""  v-for="(item,index) in list" :i="index"><a tapmode="">{{item.name}}<span v-if="item.number*1 > 0">({{item.number}})</span></a></li>
-          </ul>
-        </div>
-      </div>
       <div v-for="(item,index) in list" :id="'mescroll' + index" :class="index != tabShow ? 'hide' :''" class="mescroll">
         <ul :id="'dataList' + index" class="data-list">
           <li v-for="(items,indexs) in item.prolist" @click="lookTrackMore(items.pkInvoice)">
@@ -43,11 +36,7 @@
     data(){
       return{
         list:[{
-          name:"已完成",
-          number:0,
-          prolist:[]
-        },{
-          name:"异常",
+          name:"待执行",
           number:0,
           prolist:[]
         }],
@@ -73,12 +62,6 @@
       go:function () {
         var _this = this;
         _this.corner();
-        var histroyTrackTap = sessionStorage.getItem("histroyTrackTap");
-        if(histroyTrackTap != undefined){
-          _this.tabShow = histroyTrackTap*1;
-          sessionStorage.removeItem("histroyTrackTap");
-        }
-        $('.wrapper').navbarscroll({defaultSelect:_this.tabShow});
         var curNavIndex = _this.tabShow;//首页0; 奶粉1; 面膜2; 图书3;
         var mescrollArr=new Array(_this.list.length);//4个菜单所对应的4个mescroll对象
         //初始化首页
@@ -168,7 +151,7 @@
                   page:pageNum,
                   size:pageSize,
                   type:1,
-                  state:curNavIndex == 0 ? '7' : curNavIndex == 1 ? '9' :'',
+                  state: '9',
                   userCode:sessionStorage.getItem("token"),
                   source:sessionStorage.getItem("source")
                 }),
@@ -286,7 +269,7 @@
   }
   .mescroll{
     position: absolute;
-    top:1.2rem;
+    top:0rem;
     bottom:0rem;
     height: auto!important;
   }

@@ -31,6 +31,7 @@
               <ul>
                 <li v-for="pro in item.goodsmessage.productList">{{item.goodsmessage.tranType}}/{{pro.goods}}&nbsp;&nbsp;&nbsp;{{pro.number}}件<span v-if="pro.weight.replace(/[^0-9]/g,'')*1 > 0 ">/{{pro.weight}}</span><span  v-if="pro.volume.replace(/[^0-9]/g,'')*1 > 0">/{{pro.volume}}</span></li>
                 <li :style="{backgroundImage:'url('+require('../../images/trackListbeizhu.png')+')'}">{{item.pickPay.remark}}</li>
+                <li style="background-image: none;" v-for="abnormalaEventVo in item.abnormalaEventVo">{{abnormalaEventVo.createTime}} {{abnormalaEventVo.memo}}</li>
                 <div class="price">
                   <h1>提货时间: {{item.goodsmessage.startTime}}</h1>
                   <h1 style="margin-right: auto">到货时间: {{item.goodsmessage.endTime}}</h1>
@@ -41,13 +42,13 @@
             <div class="topStatus">
               <p>联系人信息</p>
               <ul>
-                <li @click="telphone(item.pickMessage.tel)">
+                <li @click="telphone('021-50929122')">
                   <img src="../../images/robbingTel2.png">
                   发货人{{item.pickMessage.name | nameCheck}}
                 </li>
                 <li @click="telphone(item.endMessage.tel)">
                   <img src="../../images/robbingTel1.png">
-                  到货人{{item.endMessage.name | nameCheck}}
+                  收货人{{item.endMessage.name | nameCheck}}
                 </li>
                 <div class="clearBoth"></div>
               </ul>
@@ -885,15 +886,15 @@
                 sessionStorage.setItem("weh",weh);
                 sessionStorage.setItem("nowOrderCartype",loadSegmentDetail.transType);
                 var tracking=[];
-                for(var i =0 ;i<loadSegmentDetail.tracking.length;i++){
+                /*for(var i =0 ;i<loadSegmentDetail.tracking.length;i++){
                   var trackingJson = {
                     memo:loadSegmentDetail.tracking[i].tackingMemo,
                     createTime:loadSegmentDetail.tracking[i].tackingTime,
                   }
                   loadSegmentDetail.abnormalaEventVo.push(trackingJson);
-                }
+                }*/
                 loadSegmentDetail.abnormalaEventVo.sort(function(a,b){
-                  return  (new Date(b.createTime)).getTime()- (new Date(a.createTime)).getTime()});
+                  return  (-(new Date(b.createTime)).getTime())+ (new Date(a.createTime)).getTime()});
                 thisThat.endtype = loadSegmentDetail.type;
                 sessionStorage.setItem("dataStart",loadSegmentDetail.delivery.addressLatAndLon);
                 sessionStorage.setItem("dataEnd",loadSegmentDetail.arrival.addressLatAndLon);
@@ -905,7 +906,8 @@
                 loadSegmentDetail.arriDate = list2.join(":");
                 var pdlist = [{
                   orderType:loadSegmentDetail.trackingStatusValue,
-                  orderValue:loadSegmentDetail.trackingStatus == null ? "已确认" : loadSegmentDetail.trackingStatus,
+                  abnormalaEventVo:loadSegmentDetail.abnormalaEventVo,
+                  orderValue:loadSegmentDetail.trackingStatus == null ? "已拒绝" : loadSegmentDetail.trackingStatus,
                   logistics:tracking,
                   errorBiglist:loadSegmentDetail.abnormalaEventVo == undefined ? [] : loadSegmentDetail.abnormalaEventVo,
                   goodsmessage:{

@@ -89,6 +89,10 @@
                icon:require("../images/shortMessage.png"),
              }],
              tabList:[{
+               name:"历史任务",
+               icon:require("../images/lishirenwu3.png"),
+               url:"/histroyTrack"
+             },{
                name:"扫一扫",
                icon:require("../images/saoyisao.png"),
                url:""

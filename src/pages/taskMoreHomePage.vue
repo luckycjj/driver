@@ -77,13 +77,13 @@
               <p :style="{backgroundImage: 'url(' + require('../images/trackMoreIcon'+ listBox.type +'.png') + ')' }" >{{listBox.statusName}}</p>
               <div class="topStatus">
                 <ul id="peoUl">
-                  <li @click.stop="telphone(listBox.deliMobile)">
+                  <li @click.stop="telphone('021-50929122')">
                     <img src="../images/robbingTel2.png">
                     发货人{{listBox.deliContact | nameCheck}}
                   </li>
                   <li @click.stop="telphone(listBox.arriMobile)">
                     <img src="../images/robbingTel1.png">
-                    到货人{{listBox.arriContact | nameCheck}}
+                    收货人{{listBox.arriContact | nameCheck}}
                   </li>
                   <div class="clearBoth"></div>
                 </ul>
@@ -158,7 +158,7 @@
               },
               tabList:[{
                 icon:require("../images/lishi-4.png"),
-                name:"历史任务",
+                name:"待执行",
                 value:0,
               }],
               peopleJ:"",
@@ -259,7 +259,7 @@
            var _this = this;
            if(index == 0){
              androidIos.addPageList();
-             _this.$router.push({ path: '/histroyTrack'});
+             _this.$router.push({ path: '/paddingTrack'});
            }else if(index == 1){
              _this.errorAbnormalBox = true;
              if(_this.errorAbnormal.length == 0){
@@ -557,13 +557,13 @@
                     if( _this.listBox.type < 2){
                       _this.tabList = [{
                         icon:require("../images/lishi-4.png"),
-                        name:"历史任务",
+                        name:"待执行",
                         value:0,
                       }]
                     }else if(_this.listBox.type >= 2 && _this.listBox.type < 8){
                       _this.tabList = [{
                         icon:require("../images/lishi-4.png"),
-                        name:"历史任务",
+                        name:"待执行",
                         value:0,
                       },{
                         icon:require("../images/yichang-4.png"),
@@ -577,7 +577,7 @@
                     }else if(_this.listBox.type == 8){
                       _this.tabList = [{
                         icon:require("../images/lishi-4.png"),
-                        name:"历史任务",
+                        name:"待执行",
                         value:0,
                       },{
                         icon:require("../images/erweima-2.png"),
@@ -587,7 +587,7 @@
                     }else{
                       _this.tabList = [{
                         icon:require("../images/lishi-4.png"),
-                        name:"历史任务",
+                        name:"待执行",
                         value:0,
                       }]
                     }
@@ -661,8 +661,8 @@
             ferry:1,
           });
           var  ordertype =  self.listBox.status;
-          if(self.listBox.deliAddrPoint!= "" && self.listBox.deliAddrPoint != undefined  && self.listBox.arriAddrPoint!= ""  && self.listBox.arriAddrPoint != undefined && self.listBox.type < 8){
-            if(ordertype ==  "31"   ||ordertype ==  "32"   || ordertype ==  "33"   || ordertype == '41'  || ordertype == '42'){
+          if(self.listBox.deliAddrPoint!= "" && self.listBox.deliAddrPoint != undefined  && self.listBox.arriAddrPoint!= ""  && self.listBox.arriAddrPoint != undefined ){
+            if(ordertype ==  "31"   ||ordertype ==  "32"   || ordertype ==  "33"){
               driving.search([self.peopleJ ,self.peopleW],[self.listBox.arriAddrPoint.split(",")[0] , self.listBox.arriAddrPoint.split(",")[1]], function(status, result) {
                 var sss = setInterval(function () {
                   if($(".amap-lib-marker-to").length>0){

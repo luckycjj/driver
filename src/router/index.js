@@ -18,6 +18,7 @@ import  trackFo from  '@/components/track/uploadBill'
 import  trackSi from '@/components/track/uploadImg'
 import  upProductImg from '@/components/track/upProductImg'
 import  histroyTrack from '@/components/track/histroyTrack'
+import  paddingTrack from '@/components/track/paddingTrack'
 import forgetPassword from '@/components/loginBox/forgetPassword'
 import  orderScreen from '@/components/track/orderScreen'
 import register from '@/components/loginBox/register'
@@ -139,6 +140,11 @@ Vue.filter('orderTypeName', function(value) {
 export default new Router(
   {
   routes: [
+    {
+      path:'/paddingTrack',
+      name:'paddingTrack',
+      component:paddingTrack,
+    },
     {
       path:'/getOrderSet',
       name:'getOrderSet',
