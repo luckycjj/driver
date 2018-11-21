@@ -14,9 +14,6 @@
         <div class="tableTap border">
           <span class="title w2">姓名</span><span class="nei">{{name}}</span>
         </div>
-        <div class="tableTap border">
-          <span class="title">驾驶级别</span><span class="nei">{{licType}}</span>
-        </div>
         <div class="tableTap">
           <span class="title">证件信息</span>
           <div class="clearBoth"></div>
@@ -251,9 +248,7 @@
   }
   .statusS button{
     width:9.1rem;
-    background-image: url("../../images/backgroundJB.png");
-    background-repeat:repeat-y;
-    background-size:9.1rem;
+    background:#1D69A8;
     color:white;
     display: block;
     margin: 0 auto;

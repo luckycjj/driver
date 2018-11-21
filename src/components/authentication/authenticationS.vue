@@ -401,10 +401,25 @@
                      http: getCarrAndCompanyInfo.drivingLicence,
                    },
                    roadtransport:{
-                     bendi: getCarrAndCompanyInfo.ftpUrl + getCarrAndCompanyInfo.roadTransLicense,
-                     http: getCarrAndCompanyInfo.roadTransLicense,
+                     bendi: getCarrAndCompanyInfo.ftpUrl + getCarrAndCompanyInfo.roadTransportPermit,
+                     http: getCarrAndCompanyInfo.roadTransportPermit,
                    }
-                 }
+                 },
+                 third:{
+                  transportValue:"",
+                    transportCode:"",
+                    transportList:[],
+                    carModelValue:"",
+                    carModelCode:"",
+                    carModelList:[],
+                    carLengthValue:"",
+                    carLengthCode:"",
+                    carLengthList:[],
+                    carNumberFirst:"沪",
+                    carNumberSecond:"",
+                    carWeight:"",
+                    meno:"",
+                }
                }
               }else{
                 androidIos.second(getCarrAndCompanyInfo.message);
@@ -902,10 +917,6 @@
                return false;
              }
            }
-           if(_this.nowStep < 3){
-             _this.nowStep ++ ;
-             _this.showBefore();
-           }
            if((_this.nowStep == 3 && _this.driverType == 1) || (_this.nowStep == 1 && _this.driverType != 1)){
              androidIos.loading("正在上传");
              var data = {
@@ -955,6 +966,10 @@
                  }
                }
              });
+           }
+           if(_this.nowStep < 3 && _this.driverType == 1){
+             _this.nowStep ++ ;
+             _this.showBefore();
            }
          },
          fileImgUp:function (e,type) {

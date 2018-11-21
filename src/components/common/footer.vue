@@ -104,7 +104,6 @@
                 timeout: 30000,
                 success: function (driverBottomIcon) {
                   if (driverBottomIcon.success == "1") {
-                      _this.items[0].number = driverBottomIcon.orderCount*1;
                     _this.$nextTick(function () {
                       _this.marginWidth();
                       sessionStorage.setItem("driverBottomIcon",JSON.stringify(_this.items));
