@@ -1,6 +1,6 @@
 <template>
   <div id="trackmap">
-    <div id="title" v-title data-title="地图" v-if="navShow"></div>
+    <div id="title" v-title data-title="地图"></div>
     <div id="container"></div>
     <div id="panel"></div>
   </div>
@@ -69,7 +69,7 @@
             }
           }
         });
-        if(ordertype ==  "10"  || ordertype ==  "20" || ordertype == "31" || ordertype =="32" || ordertype=="33" || ordertype == '41'|| ordertype == '42'){
+        if(ordertype ==  "0" || ordertype ==  "10"  || ordertype ==  "20" || ordertype == "31" || ordertype =="32" || ordertype=="33" || ordertype == '41'|| ordertype == '42'|| ordertype == '43' || ordertype == '50'){
           var map = new AMap.Map("container", {
             resizeEnable: true,
             center: [_this.carList.startJ, _this.carList.startW],//地图中心点
@@ -86,7 +86,7 @@
           });
           var marker;
           var ordertyper = _this.carList.ordertype;
-          if(ordertyper ==  "31"   ||ordertyper ==  "32"   || ordertyper ==  "33"   || ordertype == '41'  || ordertype == '42'){
+          if(ordertyper ==  "31"   ||ordertyper ==  "32"   || ordertyper ==  "33" ){
             driving.search([_this.carList.peopleJ, _this.carList.peopleW], [_this.carList.endJ, _this.carList.endW], function(status, result) {
               var sss = setInterval(function () {
                 if($(".amap-lib-marker-to").length>0){
@@ -96,13 +96,24 @@
                 }
               },100)
             });
-          }else{
+          }else if(ordertyper ==  "20"){
             driving.search([_this.carList.peopleJ, _this.carList.peopleW],[_this.carList.startJ, _this.carList.startW], function(status, result) {
               var sss = setInterval(function () {
                 if($(".amap-lib-marker-to").length>0){
                   clearInterval(sss);
                   $("#container").find(".amap-lib-marker-to").addClass("amaplibmarkertos");
                   $("#container").find(".amap-lib-marker-from").addClass("amaplibmarkerfroms");
+                }
+              },100)
+
+            });
+          }else{
+            driving.search([_this.carList.startJ, _this.carList.startW],[_this.carList.endJ, _this.carList.endW], function(status, result) {
+              var sss = setInterval(function () {
+                if($(".amap-lib-marker-to").length>0){
+                  clearInterval(sss);
+                  $("#container").find(".amap-lib-marker-to").addClass("amaplibmarkerto");
+                  $("#container").find(".amap-lib-marker-from").addClass("amaplibmarkertos");
                 }
               },100)
 
@@ -134,7 +145,7 @@
                 }
               }
             });
-            if(ordertyper ==  "31"   ||ordertyper ==  "32"   || ordertyper ==  "33"   || ordertype == '41'  || ordertype == '42'){
+            if(ordertyper ==  "31"   ||ordertyper ==  "32"   || ordertyper ==  "33" ){
               driving.search([_this.carList.peopleJ, _this.carList.peopleW], [_this.carList.endJ, _this.carList.endW], function(status, result) {
                 var sss = setInterval(function () {
                   if($(".amap-lib-marker-to").length>0){
@@ -144,15 +155,27 @@
                   }
                 },100)
               });
-            }else{
-              driving.search([_this.carList.peopleJ,_this.carList.peopleW],[_this.carList.startJ, _this.carList.startW], function(status, result) {
+            }else if(ordertyper ==  "20"){
+              driving.search([_this.carList.peopleJ, _this.carList.peopleW],[_this.carList.startJ, _this.carList.startW], function(status, result) {
                 var sss = setInterval(function () {
                   if($(".amap-lib-marker-to").length>0){
                     clearInterval(sss);
-                    $(".amap-lib-marker-to").addClass("amaplibmarkertos");
-                    $(".amap-lib-marker-from").addClass("amaplibmarkerfroms");
+                    $("#container").find(".amap-lib-marker-to").addClass("amaplibmarkertos");
+                    $("#container").find(".amap-lib-marker-from").addClass("amaplibmarkerfroms");
                   }
                 },100)
+
+              });
+            }else{
+              driving.search([_this.carList.startJ, _this.carList.startW],[_this.carList.endJ, _this.carList.endW], function(status, result) {
+                var sss = setInterval(function () {
+                  if($(".amap-lib-marker-to").length>0){
+                    clearInterval(sss);
+                    $("#container").find(".amap-lib-marker-to").addClass("amaplibmarkerto");
+                    $("#container").find(".amap-lib-marker-from").addClass("amaplibmarkertos");
+                  }
+                },100)
+
               });
             }
           },20000)

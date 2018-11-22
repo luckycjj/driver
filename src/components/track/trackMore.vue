@@ -9,8 +9,9 @@
       <ul id="dataList" class="data-list">
         <li v-for="item in pdlist">
           <div class="top">
-            <p>车辆信息</p>
-            <div class="carNumber" v-for="car in carList">
+            <p v-if="!showMap">车辆信息</p>
+            <p v-if="showMap">查看规划路线<img src="../../images/lookMore2.png"></p>
+            <div class="carNumber" v-for="car in carList" @click="mapGo(car)">
               <h1 class="carFloatLeft">{{car.carno}}<br>{{car.carHangNo}}</h1>
               <div class="carFloatRight">
                 <h3 v-html="type == 1 || type == 2 ? '距离提货点' : '距离目的地'"></h3> <h2 v-html="car.length < 1 ? car.length * 1000 + '米' : car.length + '公里'"></h2>
@@ -191,6 +192,7 @@
         errorlogo: 'this.src="' + require('../../images/carpeople.png') + '"',
         setTimeGoF:null,
         timeShowF:"",
+        showMap:false,
       }
     },
     watch:{
@@ -204,6 +206,7 @@
     },
     mounted:function () {
       var _this = this;
+      _this.showMap = JSON.parse(sessionStorage.getItem("driverMessage")).driverType == 2 ? true : false;
       androidIos.bridge(_this);
     },
     methods:{

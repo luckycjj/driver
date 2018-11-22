@@ -45,7 +45,8 @@
           timeout: 30000,
           success: function (getBulletin) {
             if (getBulletin.success == "1") {
-              var newMessage = localStorage.getItem("newMessage");
+              var messageName = "newMessage" + sessionStorage.getItem("token");
+              var newMessage = localStorage.getItem(messageName);
               if(newMessage != undefined){
                 if(JSON.parse(newMessage).length < getBulletin.list.length){
                   _this.messageList[0].show = true;

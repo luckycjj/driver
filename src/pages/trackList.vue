@@ -73,7 +73,7 @@
        },
        mounted:function () {
          var _this = this;
-         _this.driverType = JSON.parse(sessionStorage.getItem("driverMessage")).driverType == 1 ? 1 : 0;
+         _this.driverType = JSON.parse(sessionStorage.getItem("driverMessage")).driverType == 1 ? 1 : 1;
          sessionStorage.removeItem("weh");
          sessionStorage.removeItem("nowOrderCartype");
          sessionStorage.removeItem("dataStart");

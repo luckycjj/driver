@@ -127,7 +127,7 @@
                proList:[],
                timeType:[{
                    displayName:"今天",
-                   value:1,
+                   value:0,
                    check:false,
                },{
                  displayName:"明天",

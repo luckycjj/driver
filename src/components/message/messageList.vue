@@ -40,12 +40,12 @@
       methods:{
         look:function (item) {
           if(!item.look){
-            var newMessage = localStorage.getItem("newMessage");
+            var newMessage = localStorage.getItem("newMessage" + sessionStorage.getItem("token"));
             if(newMessage != undefined){
                var json = item.title;
-              localStorage.setItem("newMessage",JSON.stringify(JSON.parse(newMessage).push(json)));
+              localStorage.setItem("newMessage" + sessionStorage.getItem("token"),JSON.stringify(JSON.parse(newMessage).push(json)));
             }else{
-              localStorage.setItem("newMessage",JSON.stringify([item.title]));
+              localStorage.setItem("newMessage" + sessionStorage.getItem("token"),JSON.stringify([item.title]));
             }
             item.look = true;
           }
@@ -99,7 +99,7 @@
           timeout: 30000,
           success: function (getBulletin) {
             if (getBulletin.success == "1") {
-              var newMessage = localStorage.getItem("newMessage");
+              var newMessage = localStorage.getItem("newMessage" + sessionStorage.getItem("token"));
               for(var i = 0;i < getBulletin.list.length;i++){
                 getBulletin.list[i].time = getBulletin.list[i].time.split(".")[0];
                 getBulletin.list[i].look = false;

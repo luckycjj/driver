@@ -58,6 +58,12 @@
             },{
               number:0,
               marginRight:0,
+              cls: "message",
+              name: "已执行",
+              push: "/trackList"
+            },{
+              number:0,
+              marginRight:0,
               cls: "robbing",
               name: "找货",
               push: "/robbingList"

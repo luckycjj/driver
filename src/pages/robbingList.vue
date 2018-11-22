@@ -31,7 +31,7 @@
           </li>
         </ul>
       </div>
-      <footComponent ref="footcomponent" :idx='1'></footComponent>
+      <footComponent ref="footcomponent" :idx='driverType'></footComponent>
     </div>
 </template>
 
@@ -62,6 +62,7 @@
             mescrollArrList:null,
             tabShow:0,
             Messageshow:false,
+            driverType:0,
           }
       },
       mounted:function () {
@@ -69,6 +70,7 @@
         androidIos.judgeIphoneX("robbingList",2);
         androidIos.judgeIphoneX("mescroll",1);
         sessionStorage.removeItem("findProHisTab");
+        _this.driverType = JSON.parse(sessionStorage.getItem("driverMessage")).driverType == 1 ? 1 : 2;
         $.ajax({
           type: "POST",
           url: androidIos.ajaxHttp()+"/settings/getBulletin",
@@ -78,7 +80,7 @@
           timeout: 30000,
           success: function (getBulletin) {
             if (getBulletin.success == "1") {
-              var newMessage = localStorage.getItem("newMessage");
+              var newMessage = localStorage.getItem("newMessage" + sessionStorage.getItem("token"));
               if(newMessage != undefined){
                 if(JSON.parse(newMessage).length < getBulletin.list.length){
                   _this.Messageshow = true;
