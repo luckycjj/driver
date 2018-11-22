@@ -25,7 +25,7 @@
               <div class="proBoxList wvolume"><span>{{items.num}}件</span><span  v-if="items.weight*1 > 0">/{{items.weight*1}}吨</span><span v-if="items.volume*1 > 0">/{{items.volume*1}}立方米</span></div>
               <div class="proBoxList menu" v-html="items.memo == '' || items.memo == null ? '暂无备注' : items.memo "></div>
               <div class="proBoxList deliDateTime">{{items.deliDate | carrierTime}}</div>
-              <div class="proBoxList callTel" @click.stop="tel(items.arriMobile)">{{items.arriMobile}}</div>
+              <div class="proBoxList callTel" @click.stop="tel('021-50929122')">{{items.arriMobile}}</div>
               <div class="clearBoth"></div>
             </div>
           </li>
