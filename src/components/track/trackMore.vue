@@ -42,11 +42,11 @@
             <div class="topStatus">
               <p>联系人信息</p>
               <ul>
-                <li @click="telphone('021-50929122')">
+                <li @touchend="telphone('021-50929122')">
                   <img src="../../images/robbingTel2.png">
                   发货人{{item.pickMessage.name | nameCheck}}
                 </li>
-                <li @click="telphone(item.endMessage.tel)">
+                <li @touchend="telphone(item.endMessage.tel)">
                   <img src="../../images/robbingTel1.png">
                   收货人{{item.endMessage.name | nameCheck}}
                 </li>
@@ -59,10 +59,10 @@
             </div>
           </div>
           <!--<div class="error" v-if="type > 1 && type < 8 && peopleType == 1">
-            <div class="errorFirst" @click="errorFirst()">
+            <div class="errorFirst" @touchend="errorFirst()">
                异常反馈
             </div>
-            <div class="errorSecond" @click="errorSecond()">
+            <div class="errorSecond" @touchend="errorSecond()">
                费用反馈
             </div>
             <div class="clearBoth"></div>
@@ -73,25 +73,25 @@
           </div>
           <div id="sure">
             <div class="go gogogo" id="gogogo" v-if="peopleType==1">
-              <button v-if="type==0"  class="upImg2" @click="jvjue()">拒绝</button>
-              <button v-if="type==0" style="width:3.4rem;float: right;margin-right: 0.5rem;" @click="tongyi()">同意</button>
-              <button v-if="type==1" @click="chufa()">出发</button>
-              <button v-if="type==2" @click="daoda(31)">提货到达</button>
-              <button v-if="type==3" @click="daoda(32)">开始装货</button>
-              <button v-if="type==4"  class="upImg" @click="upImg(0)">&nbsp;&nbsp;&nbsp;&nbsp;上传货品</button>
-              <button v-if="type==4" style="width:3.4rem;float: right;margin-right: 0.5rem;" @click="daoda(33)">装货完毕</button>
-              <button v-if="type==5" @click="daoda(41)">运输到达</button>
-              <button v-if="type==6" @click="daoda(42)">开始卸货</button>
-              <button v-if="type==7"  class="upImg" @click="upImg(1)">&nbsp;&nbsp;&nbsp;&nbsp;上传货品</button>
-              <button v-if="type==7" style="width:3.4rem;float: right;margin-right: 0.5rem;"  @click="daoda(43)">卸货完毕</button>
-              <button v-if="type==8 && endtype == '0' && actFlag == 'Y'" @click="qianshou(endtype)">交接</button>
-              <button v-if="type==8 && endtype == '1'" @click="qianshou(endtype)">签收</button>
-              <button v-if="type==9 && pdlist[0].exp_sign == 1" @click="uploadbill(1)">确认异常签收</button>
-              <button v-if="type==9 && pdlist[0].exp_sign == 0" @click="uploadbill(0)">上传单据</button>
+              <button v-if="type==0"  class="upImg2" @touchend="jvjue()">拒绝</button>
+              <button v-if="type==0" style="width:3.4rem;float: right;margin-right: 0.5rem;" @touchend="tongyi()">同意</button>
+              <button v-if="type==1" @touchend="chufa()">出发</button>
+              <button v-if="type==2" @touchend="daoda(31)">提货到达</button>
+              <button v-if="type==3" @touchend="daoda(32)">开始装货</button>
+              <button v-if="type==4"  class="upImg" @touchend="upImg(0)">&nbsp;&nbsp;&nbsp;&nbsp;上传货品</button>
+              <button v-if="type==4" style="width:3.4rem;float: right;margin-right: 0.5rem;" @touchend="daoda(33)">装货完毕</button>
+              <button v-if="type==5" @touchend="daoda(41)">运输到达</button>
+              <button v-if="type==6" @touchend="daoda(42)">开始卸货</button>
+              <button v-if="type==7"  class="upImg" @touchend="upImg(1)">&nbsp;&nbsp;&nbsp;&nbsp;上传货品</button>
+              <button v-if="type==7" style="width:3.4rem;float: right;margin-right: 0.5rem;"  @touchend="daoda(43)">卸货完毕</button>
+              <button v-if="type==8 && endtype == '0' && actFlag == 'Y'" @touchend="qianshou(endtype)">交接</button>
+              <button v-if="type==8 && endtype == '1'" @touchend="qianshou(endtype)">签收</button>
+              <button v-if="type==9 && pdlist[0].exp_sign == 1" @touchend="uploadbill(1)">确认异常签收</button>
+              <button v-if="type==9 && pdlist[0].exp_sign == 0" @touchend="uploadbill(0)">上传单据</button>
               <div class="clearBoth"></div>
             </div>
             <div class="go"  v-else>
-              <button v-if="type==1" @click="genghuan()">更换车辆</button>
+              <button v-if="type==1" @touchend="genghuan()">更换车辆</button>
             </div>
           </div>
         </li>
@@ -101,55 +101,50 @@
       <div id="errorAbnormalBox" v-if="errorAbnormalBox">
         <div id="errorAbnormal">
           <div id="errorabnormalTitle">
-            <img src="../../images/closed.png" @click="errorAbnormalClosed()">
+            <img src="../../images/closed.png" @touchend="errorAbnormalClosed()">
             <p>选择异常事故</p>
           </div>
           <ul class="errorUl">
-            <li v-for="(item,index) in errorAbnormal" :class="index%2==0?'errorAbnormalLeft':'errorAbnormalRight'" @click="errorAbnormalClick($event)">
+            <li v-for="(item,index) in errorAbnormal" :class="index%2==0?'errorAbnormalLeft':'errorAbnormalRight'" @touchend="errorAbnormalClick($event)">
               {{item.displayName}}
             </li>
             <div class="clearBoth"></div>
             <input type="text"   @keyup="filterInput()" placeholder="其他异常" maxlength="100" v-model="errorabnormal">
           </ul>
-          <!--<div id="errorAbnormalChange">
-            <span>是否需要更换运力</span>
-            <img src="../../images/checked.png" class="gray" id="errorAbnormalChangeImg" @click="errorAbnormalChangeImg()">
-            <div class="clearBoth"></div>
-          </div>-->
-          <button @click="errorAbnormalChange()"  class="gogogo" id="gogogo2">提交</button>
+          <button @touchend="errorAbnormalChange()"  class="gogogo" id="gogogo2">提交</button>
         </div>
       </div>
       <div id="errorPriceBox" v-if="errorPriceBox">
         <div id="errorPrice">
           <div id="errorpriceTitle">
-            <img src="../../images/closed.png" @click="errorPriceClosed()">
+            <img src="../../images/closed.png" @touchend="errorPriceClosed()">
             <p>填写费用</p>
           </div>
           <ul style="border: none;" class="errorUl">
-            <li v-for="(item,index) in errorPriceList" :class="index%2==0?'errorAbnormalLeft':'errorAbnormalRight'" @click="errorPriceListListClick($event)">
+            <li v-for="(item,index) in errorPriceList" :class="index%2==0?'errorAbnormalLeft':'errorAbnormalRight'" @touchend="errorPriceListListClick($event)">
               {{item.displayName}}
             </li>
             <div class="clearBoth"></div>
             <input  @keyup="filterInput()" type="text" placeholder="填写原因" maxlength="40" style="margin-bottom: 0;" v-model="errorPricetype"/>
             <input type="text" placeholder="金额" maxlength="40" v-model="errorPrice"/>
           </ul>
-          <button @click="errorPriceChange()" id="gogogo4" class="gogogo">提交</button>
+          <button @touchend="errorPriceChange()" id="gogogo4" class="gogogo">提交</button>
         </div>
       </div>
       <div id="driverResultBox" v-if="driverResultBox">
         <div id="driverResult">
           <div id="driverResultTitle">
-            <img src="../../images/closed.png" @click="driverResultClosed()">
+            <img src="../../images/closed.png" @touchend="driverResultClosed()">
             <p>选择拒绝理由</p>
           </div>
           <ul class="errorUl">
-            <li v-for="(item,index) in driverResult" :class="index%2==0?'errorAbnormalLeft':'errorAbnormalRight'" @click="driverResultClick($event)">
+            <li v-for="(item,index) in driverResult" :class="index%2==0?'errorAbnormalLeft':'errorAbnormalRight'" @touchend="driverResultClick($event)">
               {{item.displayName}}
             </li>
             <div class="clearBoth"></div>
             <input type="text"   @keyup="filterInput()" placeholder="其他理由" maxlength="100" v-model="driverresult">
           </ul>
-          <button @click="driverResultChange()"  class="gogogo" id="gogogo2">提交</button>
+          <button @touchend="driverResultChange()"  class="gogogo" id="gogogo2">提交</button>
         </div>
       </div>
     </transition>

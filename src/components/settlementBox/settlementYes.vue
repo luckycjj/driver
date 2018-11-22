@@ -12,7 +12,7 @@
        </ul>
       <div v-for="(item,index) in list" :id="'mescroll' + index" :class="index != tabShow ? 'hide' :''" class="mescroll">
         <ul :id="'dataList' + index" class="data-list">
-          <li v-for="(items,indexs) in item.prolist" @click="lookTrackMore(items.pkInvoice)">
+          <li v-for="(items,indexs) in item.prolist" @touchend="lookTrackMore(items.pkInvoice)">
             <h1>{{items.vbillno}}</h1>
             <h3>已完成</h3>
             <h4>￥{{items.price | toThousands}}</h4>

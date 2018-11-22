@@ -3,14 +3,14 @@
       <div id="title" v-title data-title="找货"></div>
       <div id="top">
         找货
-        <div class="messageLDbox" @click="lookMessage()">
+        <div class="messageLDbox" @touchend="lookMessage()">
           <div class="messageCorner" v-if="Messageshow"></div>
           <img src="../images/messageLD.png">
         </div>
       </div>
       <div id="setHis">
         <ul>
-          <li :style="{backgroundImage:'url('+item.icon+')'}" v-for="(item,index) in setHis" @click="findProHis(item)">{{item.name}}</li>
+          <li :style="{backgroundImage:'url('+item.icon+')'}" v-for="(item,index) in setHis" @touchend="findProHis(item)">{{item.name}}</li>
           <div clas="clearBoth"></div>
         </ul>
       </div>

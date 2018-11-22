@@ -6,8 +6,8 @@
         <h1 >请拍摄/上传清晰的照片，以便核实货品数量，可传{{imgListLength}}张货品信息</h1>
         <div id="imgBigBox">
           <div class="imgBox"  v-for="(item,index) in imgList">
-            <img :src="item.file" :onerror="errorlogo"  @click="lookImg($event,item.file)">
-            <div class='closed' @click="removeImg(index)"></div>
+            <img :src="item.file" :onerror="errorlogo"  @touchend="lookImg($event,item.file)">
+            <div class='closed' @touchend="removeImg(index)"></div>
           </div>
           <div class="addImgFirst" v-if="imgList.length < imgListLength">
             <img src="../../images/addImgP.png">

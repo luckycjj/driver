@@ -3,7 +3,7 @@
     <div id="title" v-title data-title="消息列表"></div>
      <div id="mescroll" class="mescroll">
        <ul id="dataList" class="data-list">
-         <li v-for="item in messageList" @click="look(item)">
+         <li v-for="item in messageList" @touchend="look(item)">
            <div class="p"><h1 v-if="!item.look"></h1>{{item.title}}</div>
            <h1 v-html="item.time"></h1>
            <div class="clearBoth"></div>

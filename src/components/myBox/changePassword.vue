@@ -12,7 +12,7 @@
         <input @keyup="filterInput()" type="password" placeholder="请确认新密码"  maxlength="50" v-model="newPassAgain"/>
       </li>
     </ul>
-    <button @click="saveGo()">保存</button>
+    <button @touchend="saveGo()">保存</button>
   </div>
 </template>
 

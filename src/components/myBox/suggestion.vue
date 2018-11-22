@@ -6,7 +6,7 @@
        <p>{{suggest.length}}/{{maxlength}}</p>
       <div class="clearBoth"></div>
     </div>
-    <button @click="submitGo()">提交</button>
+    <button @touchend="submitGo()">提交</button>
   </div>
 </template>
 

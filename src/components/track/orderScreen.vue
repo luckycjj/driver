@@ -1,11 +1,11 @@
 <template>
   <div id="orderScreen" style="top:0rem;">
     <div id="title" v-title data-title="发货地址"></div>
-    <div id="carTitleBox"   @click="event($event)">
+    <div id="carTitleBox"   @touchend="event($event)">
       <div class="carTitleBox">
-        <div class="carTitleback" @click="goback()"></div>
+        <div class="carTitleback" @touchend="goback()"></div>
         <input type="text" placeholder="请输入订单号/货物名称"  id="carNumber" v-model="address"  @focus="aaa()">
-        <p @click="sousuo()" id="sousuo">搜索</p>
+        <p @touchend="sousuo()" id="sousuo">搜索</p>
       </div>
     </div>
     <div id="mescroll" class="mescroll" style="top:1.3rem;">

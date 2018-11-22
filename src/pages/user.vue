@@ -3,7 +3,7 @@
     <div id="title" v-title data-title="个人中心"></div>
     <div id="userBox">
       <div id="headBox">
-        <img src="../images/setUp.png" id="setUpGo" @click="setUpgo()">
+        <img src="../images/setUp.png" id="setUpGo" @touchend="setUpgo()">
         <div class="clearBoth"></div>
         <div id="head">
           <div id="photo" class="imgBox">
@@ -13,7 +13,7 @@
           <div style="float: left;width:50%;">
             <p>{{message.name}} <span v-html="message.status == '0' ? '未认证' :message.status == '1' ? '待审核' : message.status == '2' ? '已审核' : message.status == '3' ? '已驳回' : message.status == '4' ? '已禁用' : ''"></span></p>
           </div>
-          <div class="lookMore"  style="height: 2.16rem" @click="renzhen(message.status)"><span v-if="message.status == 0">去认证</span></div>
+          <div class="lookMore"  style="height: 2.16rem" @touchend="renzhen(message.status)"><span v-if="message.status == 0">去认证</span></div>
           <div class="clearBoth"></div>
           <ul id="fuwuList">
             <li v-for="(item,index) in fuwuList" :style="{width:100/fuwuList.length + '%'}">
@@ -25,7 +25,7 @@
         </div>
       </div>
        <ul id="labelBox">
-         <li @click="lookMore(item)" v-for="(item,index) in tabList" :class="index % 2 == 0 ? (tabList.length -1 == index ? 'marTop' : 'marTop borderShow') : ''">
+         <li @touchend="lookMore(item)" v-for="(item,index) in tabList" :class="index % 2 == 0 ? (tabList.length -1 == index ? 'marTop' : 'marTop borderShow') : ''">
            <div class="tableIcon" :style="{backgroundImage:'url(' + item.icon + ')'}"></div>
            <p>{{item.name}}</p>
            <div class="lookMore"></div>
@@ -41,12 +41,12 @@
             <div id="shareBodyTab">
               <p>分享至...</p>
               <label :style="{width:100 / shareList.length + '%'}" v-for="(item,index) in shareList">
-                <img :src="item.icon" @click="shareType(index)">
+                <img :src="item.icon" @touchend="shareType(index)">
                 <h6>{{item.name}}</h6>
               </label>
               <div class="clearBoth"></div>
             </div>
-            <button @click="shareYes(false)">取消</button>
+            <button @touchend="shareYes(false)">取消</button>
           </div>
         </div>
     </transition>

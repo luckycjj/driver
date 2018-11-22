@@ -1,5 +1,5 @@
 <template>
-  <div class="orderMoreFi" @click="hideDanjv($event)">
+  <div class="orderMoreFi" @touchend="hideDanjv($event)">
     <div id="title" v-title data-title="上传单据"></div>
     <p id="wenzi">请确认您已完成运输，并核实以下信息</p>
     <div class="orderMoreFiaddress">
@@ -10,14 +10,14 @@
       </div>
       <div class="orderMoreFiaddressSecond">
         <p>联系方式</p>
-        <h1 @click="phonecall(phone)">{{phone}}</h1>
+        <h1 @touchend="phonecall(phone)">{{phone}}</h1>
         <div class="clearBoth"></div>
       </div>
     </div>
     <div class="orderMoreFiaddress">
       <div class="piaojv">
         <p>上传单据</p>
-        <div class="addDanjv" @click="addDanjv()" id="addDanjv">添加单据</div>
+        <div class="addDanjv" @touchend="addDanjv()" id="addDanjv">添加单据</div>
         <div id='paojvList' style="display: none;">
           <ul id="typeclick"><li v-if="imgList1.length < imgListLength"><input class="fileInput" type="file" multiple accept=".jpg,.png" @change="inputChange($event,0)">签收单({{imgList1.length}}/{{imgListLength}})</li><li  v-if="imgList2.length < imgListLength"><input class="fileInput" type="file" multiple accept=".jpg,.png" @change="inputChange($event,1)">仓库票据({{imgList2.length}}/{{imgListLength}})</li><li  class='otherpiao' v-if="imgList3.length < imgListLength"> <input class="fileInput" type="file" multiple accept=".jpg,.png" @change="inputChange($event,2)">其他票据({{imgList3.length}}/{{imgListLength}})</li></ul>
         </div>
@@ -26,24 +26,24 @@
     </div>
     <ul id="imgListBox">
         <li v-for="(item,index) in imgList1" class="imgBox">
-          <div class='closed' @click="removeImg(index,0)"></div>
-          <img  :onerror="errorlogo" :src="item.httpfile" @click="lookImg($event,item.httpfile)">
+          <div class='closed' @touchend="removeImg(index,0)"></div>
+          <img  :onerror="errorlogo" :src="item.httpfile" @touchend="lookImg($event,item.httpfile)">
           <div class="imgtype">{{item.type=="1"?"仓库票据":item.type=="0"?"签收单":"其他票据"}}</div>
         </li>
         <li v-for="(item,index) in imgList2">
-          <div class='closed' @click="removeImg(index,1)"></div>
-          <img  :onerror="errorlogo" :src="item.httpfile" @click="lookImg($event,item.httpfile)">
+          <div class='closed' @touchend="removeImg(index,1)"></div>
+          <img  :onerror="errorlogo" :src="item.httpfile" @touchend="lookImg($event,item.httpfile)">
           <div class="imgtype">{{item.type=="1"?"仓库票据":item.type=="0"?"签收单":"其他票据"}}</div>
         </li>
         <li v-for="(item,index) in imgList3">
-          <div class='closed' @click="removeImg(index,2)"></div>
-          <img  :onerror="errorlogo"  :src="item.httpfile" @click="lookImg($event,item.httpfile)">
+          <div class='closed' @touchend="removeImg(index,2)"></div>
+          <img  :onerror="errorlogo"  :src="item.httpfile" @touchend="lookImg($event,item.httpfile)">
           <div class="imgtype">{{item.type=="1"?"仓库票据":item.type=="0"?"签收单":"其他票据"}}</div>
         </li>
         <div class="clearBoth"></div>
       </ul>
     <div id="orderMoreFiBottom">
-      <button @click="okGo()"  id="orderMoreFibutton">完成</button>
+      <button @touchend="okGo()"  id="orderMoreFibutton">完成</button>
     </div>
   </div>
 </template>

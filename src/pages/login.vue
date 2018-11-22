@@ -7,10 +7,10 @@
     </div>
     <div class="modelView">
       <input autocomplete="off"  @keyup="filterInput()" :type="lookPassWord ? 'text' : 'password' "  v-model="password" placeholder="请输入密码"/>
-      <div id="lookPassWord" :class="lookPassWord ? 'lookPassWord' : '' " @click="lookpass()"></div>
+      <div id="lookPassWord" :class="lookPassWord ? 'lookPassWord' : '' " @touchend="lookpass()"></div>
     </div>
-    <button @click="loginOn()">登录</button>
-    <p class="newOwner"><span @click="registerGo(1)">新用户注册</span><span @click="registerGo(2)" class="fRight">忘记密码?</span><div class="clearBoth"></div></p>
+    <button @touchend="loginOn()">登录</button>
+    <p class="newOwner"><span @touchend="registerGo(1)">新用户注册</span><span @touchend="registerGo(2)" class="fRight">忘记密码?</span><div class="clearBoth"></div></p>
   </div>
 </template>
 

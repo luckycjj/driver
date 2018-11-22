@@ -2,7 +2,7 @@
   <div id="aboutus" style="top:1.3rem;">
     <div id="title" v-title data-title="关于我们"></div>
     <img src="../../images/logo.png">
-    <button @click="callT()">客服电话:021-50929122</button>
+    <button @touchend="callT()">客服电话:021-50929122</button>
   </div>
 </template>
 

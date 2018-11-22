@@ -16,14 +16,14 @@
         <div :style="{marginTop: driverType == 1 ? '0rem':'0.27rem'}" id="stepF" v-if="nowStep == 1">
           <div class="stepTtop">
             <p>请拍摄五官清晰头像照</p>
-            <div class="fileup3" @click="BAIDURENLIAN()">
+            <div class="fileup3" @touchend="BAIDURENLIAN()">
               <img src="../../images/addImg.png" v-if="message.first.people.bendi == ''">
              <!-- <input type="file" @change="fileImgUp($event,1)"  accept="firstimage/*"  capture = "user">-->
               <img :onerror="errorlogo" class="fileImg3" :src="message.first.people.bendi" v-if="message.first.people.bendi != ''">
               <h6 v-if="message.first.people.bendi == ''">点击拍照</h6>
             </div>
             <div class="SFZLook">
-              <img src="../../images/ALEX.png"    @click="lookImg($event,require('../../images/ALEX.png'))">
+              <img src="../../images/ALEX.png"    @touchend="lookImg($event,require('../../images/ALEX.png'))">
               <span>样例</span>
             </div>
             <div class="clearBoth"></div>
@@ -37,7 +37,7 @@
               <h6 v-if="message.first.idCardZ.bendi == ''">点击拍照</h6>
             </div>
             <div class="SFZFLook">
-              <img src="../../images/SFZZ.png"    @click="lookImg($event,require('../../images/SFZZ.png'))">
+              <img src="../../images/SFZZ.png"    @touchend="lookImg($event,require('../../images/SFZZ.png'))">
               <span>样例</span>
             </div>
             <div class="clearBoth"></div>
@@ -51,7 +51,7 @@
               <h6 v-if="message.first.idCardF.bendi == ''">点击拍照</h6>
             </div>
             <div class="SFZFLook">
-              <img src="../../images/SFZF.png"    @click="lookImg($event,require('../../images/SFZF.png'))">
+              <img src="../../images/SFZF.png"    @touchend="lookImg($event,require('../../images/SFZF.png'))">
               <span>样例</span>
             </div>
             <div class="clearBoth"></div>
@@ -79,7 +79,7 @@
               <h6 v-if="message.second.driverLicense.bendi == ''">点击拍照</h6>
             </div>
             <div class="SFZFLook">
-              <img src="../../images/JSZ.png"    @click="lookImg($event,require('../../images/JSZ.png'))">
+              <img src="../../images/JSZ.png"    @touchend="lookImg($event,require('../../images/JSZ.png'))">
               <span>样例</span>
             </div>
             <div class="clearBoth"></div>
@@ -95,7 +95,7 @@
               <h6 v-if="message.second.driverLicense.bendi == ''">点击拍照</h6>
             </div>
             <div class="SFZFLook">
-              <img src="../../images/JSZ.png"    @click="lookImg($event,require('../../images/JSZ.png'))">
+              <img src="../../images/JSZ.png"    @touchend="lookImg($event,require('../../images/JSZ.png'))">
               <span>样例</span>
             </div>
             <div class="clearBoth"></div>
@@ -109,7 +109,7 @@
               <h6 v-if="message.second.drivingLicence.bendi == ''">点击拍照</h6>
             </div>
             <div class="SFZFLook">
-              <img src="../../images/XSZ.png"    @click="lookImg($event,require('../../images/XSZ.png'))">
+              <img src="../../images/XSZ.png"    @touchend="lookImg($event,require('../../images/XSZ.png'))">
               <span>样例</span>
             </div>
             <div class="clearBoth"></div>
@@ -123,7 +123,7 @@
               <h6 v-if="message.second.roadtransport.bendi == ''">点击拍照</h6>
             </div>
             <div class="SFZFLook">
-              <img src="../../images/DLYS.png"    @click="lookImg($event,require('../../images/DLYS.png'))">
+              <img src="../../images/DLYS.png"    @touchend="lookImg($event,require('../../images/DLYS.png'))">
               <span>样例</span>
             </div>
             <div class="clearBoth"></div>
@@ -149,8 +149,8 @@
               </li>
               <li>
                 <span>车牌号码</span>
-                <div id="carNumberBox" @click="keyboardshow()" :class="message.third.carNumberSecond.length == 7 ? 'carGreen' : message.third.carNumberSecond.length == 6 ?'carBrown' : ''" :style="{color:message.third.carNumberSecond == '' ? '#BCBCBC' : '#373737'}" v-html="message.third.carNumberSecond== '' ? '司机车牌号' : message.third.carNumberSecond"></div>
-                <h6 @click="plateametrue()" class="carNumberFirst">{{message.third.carNumberFirst}}</h6>
+                <div id="carNumberBox" @touchend="keyboardshow()" :class="message.third.carNumberSecond.length == 7 ? 'carGreen' : message.third.carNumberSecond.length == 6 ?'carBrown' : ''" :style="{color:message.third.carNumberSecond == '' ? '#BCBCBC' : '#373737'}" v-html="message.third.carNumberSecond== '' ? '司机车牌号' : message.third.carNumberSecond"></div>
+                <h6 @touchend="plateametrue()" class="carNumberFirst">{{message.third.carNumberFirst}}</h6>
               </li>
               <li class="borderno">
                 <span class="w2">载重</span>
@@ -165,13 +165,13 @@
              <textarea placeholder="请填写车辆高度，如若车辆有特殊型号请及时填写(最多40个字)" v-model="message.third.meno" maxlength="40"></textarea>
            </div>
         </div>
-        <h5 class="calltel" @click="telphoneTe()">有问题请联系客服</h5>
-        <button id="gonext" @click="goNext()" v-html="(nowStep == 1 || nowStep == 2) && driverType == 1 ? '下一步': '提交'"></button>
+        <h5 class="calltel" @touchend="telphoneTe()">有问题请联系客服</h5>
+        <button id="gonext" @touchend="goNext()" v-html="(nowStep == 1 || nowStep == 2) && driverType == 1 ? '下一步': '提交'"></button>
       <div v-if="baiduhuotiBox" id="baiduhuotiBox">
         <div id="baiduhuoti">
           <div id="baiduhuotiTop">
             <img src="../../images/baiduhuoti.png">
-            <img src="../../images/closed.png" class="closedBaidu" @click="BAIDURENLIANLosed()">
+            <img src="../../images/closed.png" class="closedBaidu" @touchend="BAIDURENLIANLosed()">
             <h6>正面平视手机、保证光线充足<br>请勿遮挡面部</h6>
           </div>
           <div id="baiduhuotiBottom">
@@ -191,7 +191,7 @@
                 <span class="prompt-box-text-content">完成录制，等待验证结果</span>
                 <!---->
               </div>
-              <button @click="baidudumaNumber()">下一步</button>
+              <button @touchend="baidudumaNumber()">下一步</button>
             </div>
           </div>
         </div>
@@ -206,30 +206,30 @@
             <input type="file" accept="video/*"  capture = "camcorder" @change="video($event)">
           </div>
         </div>
-        <img @click="baidunumberClosed()" src="../../images/icon_close.png">
+        <img @touchend="baidunumberClosed()" src="../../images/icon_close.png">
       </div>
         <transition name="slide-fade">
-          <div v-if="carList" id="carListBox" @click="carListHideAgain($event)">
+          <div v-if="carList" id="carListBox" @touchend="carListHideAgain($event)">
             <div id="carList">
-              <p v-for="(item,index) in carTypeList" @click="carClick(index,item.region)" :class="item.code==2?'carCode':''">{{item.region}}</p>
-              <button @click="carList=false"> 完成</button>
+              <p v-for="(item,index) in carTypeList" @touchend="carClick(index,item.region)" :class="item.code==2?'carCode':''">{{item.region}}</p>
+              <button @touchend="carList=false"> 完成</button>
             </div>
           </div>
-          <div v-if="keyboard" id="keyboardBox" @click="keyboardHideAgain($event)">
+          <div v-if="keyboard" id="keyboardBox" @touchend="keyboardHideAgain($event)">
             <div id="keyboard">
-              <p v-for="item in keyboardNumber" @click="carkeyboard(item.name)">{{item.name}}</p>
+              <p v-for="item in keyboardNumber" @touchend="carkeyboard(item.name)">{{item.name}}</p>
               <div class="clearBoth"></div>
-              <p v-for="item in keyboardLetter.first" @click="carkeyboard(item.name)">{{item.name}}</p>
+              <p v-for="item in keyboardLetter.first" @touchend="carkeyboard(item.name)">{{item.name}}</p>
               <div class="clearBoth"></div>
-              <div style="margin-left:0.500115rem" ><p v-for="item in keyboardLetter.second"   @click="carkeyboard(item.name)">{{item.name}}</p></div>
+              <div style="margin-left:0.500115rem" ><p v-for="item in keyboardLetter.second"   @touchend="carkeyboard(item.name)">{{item.name}}</p></div>
               <div class="clearBoth"></div>
-              <div style="margin-left:1.500345rem" ><p v-for="item in keyboardLetter.third"   @click="carkeyboard(item.name)">{{item.name}}</p></div>
-              <p class="keyRemove" @click="keyremove()"></p>
+              <div style="margin-left:1.500345rem" ><p v-for="item in keyboardLetter.third"   @touchend="carkeyboard(item.name)">{{item.name}}</p></div>
+              <p class="keyRemove" @touchend="keyremove()"></p>
               <div class="clearBoth"></div>
               <p class="keyBlack"></p>
               <p class="keyBlack"></p>
               <p class="keySpace">space</p>
-              <p class="keyOk" @click="keyboard=false">down</p>
+              <p class="keyOk" @touchend="keyboard=false">down</p>
             </div>
           </div>
         </transition>

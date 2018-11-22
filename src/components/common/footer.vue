@@ -1,7 +1,7 @@
 <template>
   <div id="footer">
     <ul>
-      <li :style="{width:100 /  (items.length) + '%'}" v-for='(item,index) of items' :class='[{on:index === idx} ]' @touched="$router.push(item.push)">
+      <li :style="{width:100 /  (items.length) + '%'}" v-for='(item,index) of items' :class='[{on:index === idx} ]' @touchend="$router.push(item.push)">
         <div class="imgBox"  :class='[ item.cls , {imgSure:index === idx} ]'><div :style="{marginRight:item.marginRight}" class="corner" v-show="index == 0&& item.number > 0">{{item.number}}</div></div>
         <div id="footerUserTX" v-if="index == items.length - 1" :style="{display: item.show ? 'block' : 'none'}"></div>
         {{item.name}}

@@ -8,8 +8,8 @@
         <div class="addImg">
           <h1>货物异常图片</h1>
           <div class="imgBox"  v-for="(item,index) in imgList">
-            <img :src="item.file"  @click="lookImg($event,item.file)"  :onerror="errorlogo" >
-            <div class='closed' @click="removeImg(index)" v-if="modify"></div>
+            <img :src="item.file"  @touchend="lookImg($event,item.file)"  :onerror="errorlogo" >
+            <div class='closed' @touchend="removeImg(index)" v-if="modify"></div>
           </div>
           <div class="addImgFirst" v-if="imgList.length < imgListLength && modify">
             <img src="../../images/addImgP.png">
@@ -22,7 +22,7 @@
       <div v-else>
         <div id="star_grade" class="star_grade scorelistscore"></div>
         <ul>
-          <li v-for="(item,index) in normalSignList" @click="normalSignListClick(1,index)" :class="item.choose ? 'chooseTrue' : ''">
+          <li v-for="(item,index) in normalSignList" @touchend="normalSignListClick(1,index)" :class="item.choose ? 'chooseTrue' : ''">
             {{item.displayName}}
           </li>
           <div class="clearBoth"></div>
@@ -31,8 +31,8 @@
         <div class="addImg">
           <h1>货物</h1>
           <div class="imgBox"  v-for="(item,index) in imgList">
-            <img :src="item.file" :onerror="errorlogo"  @click="lookImg($event,item.file)">
-            <div class='closed' @click="removeImg(index)"></div>
+            <img :src="item.file" :onerror="errorlogo"  @touchend="lookImg($event,item.file)">
+            <div class='closed' @touchend="removeImg(index)"></div>
           </div>
           <div class="addImgFirst" v-if="imgList.length < imgListLength">
             <img src="../../images/addImgP.png">
@@ -42,7 +42,7 @@
           <div class="clearBoth"></div>
         </div>
       </div>
-      <button id="letGo" @click="fileup()" v-if="modify">提交</button>
+      <button id="letGo" @touchend="fileup()" v-if="modify">提交</button>
     </div>
 </template>
 

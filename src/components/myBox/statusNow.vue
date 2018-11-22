@@ -4,7 +4,7 @@
     <div v-if="status == 0" class="statusF">
       <img src="../../images/noStatus.png">
       <p>对不起，您尚未认证，请前去认证</p>
-      <button @click="goStatus(1)">前往认证</button>
+      <button @touchend="goStatus(1)">前往认证</button>
     </div>
     <div class="statusS" v-else>
       <p>认证状态</p>
@@ -18,22 +18,22 @@
           <span class="title">证件信息</span>
           <div class="clearBoth"></div>
           <div class="imgBox">
-             <img :src="IDpic" :onerror="errorlogo" @click="imgLook(IDpic)">
+             <img :src="IDpic" :onerror="errorlogo" @touchend="imgLook(IDpic)">
               身份证正面
           </div>
-          <div class="imgBox" style="float: right;" @click="imgLook(IDpicfan)">
+          <div class="imgBox" style="float: right;" @touchend="imgLook(IDpicfan)">
             <img :src="IDpicfan" :onerror="errorlogo" >
             身份证反面
           </div>
           <div class="imgBox">
-            <img :src="Drivepic" :onerror="errorlogo"  @click="imgLook(Drivepic)">
+            <img :src="Drivepic" :onerror="errorlogo"  @touchend="imgLook(Drivepic)">
             驾驶证
           </div>
           <div class="clearBoth"></div>
         </div>
       </div>
-      <button v-if="status != 2 && status != 1" @click="goStatus(2)">重新上传</button>
-      <button v-if="status == 1" @click="goStatus(2)">修改资料</button>
+      <button v-if="status != 2 && status != 1" @touchend="goStatus(2)">重新上传</button>
+      <button v-if="status == 1" @touchend="goStatus(2)">修改资料</button>
     </div>
   </div>
 </template>

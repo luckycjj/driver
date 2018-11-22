@@ -14,7 +14,7 @@
             <ul>
               <li v-for="pro in item.goodsmessage.productList">{{item.goodsmessage.tranType}}/{{pro.goods}}&nbsp;&nbsp;&nbsp;{{pro.number}}件<span v-if="pro.weight.replace(/[^0-9]/g,'')*1 > 0 ">/{{pro.weight}}</span><span  v-if="pro.volume.replace(/[^0-9]/g,'')*1 > 0">/{{pro.volume}}</span></li>
               <li :style="{backgroundImage:'url('+require('../../images/trackListbeizhu.png')+')'}">{{item.pickPay.remark}}</li>
-              <li :style="{backgroundImage:'url('+require('../../images/trackListdianhua.png')+')'}" class="proBoxList callTel" @click.stop="telphone(item.pickMessage.tel)" style="margin-bottom: 0;">发货人{{item.pickMessage.name  | nameCheck}}</li>
+              <li :style="{backgroundImage:'url('+require('../../images/trackListdianhua.png')+')'}" class="proBoxList callTel" @touchend="telphone('021-50929122')" style="margin-bottom: 0;">发货人{{item.pickMessage.name  | nameCheck}}</li>
             </ul>
             <div class="price">
               <h1>提货时间: {{item.goodsmessage.startTime}}</h1>

@@ -12,11 +12,11 @@
             <p>待抢单</p>
             <ul>
                <li>
-                 <img src="../../images/robbingTel2.png">
+                 <img src="../../images/robbingTel2.png" @touchend="telphone('021-50929122')">
                  发货人{{item.pickMessage.name | nameCheck}}
                </li>
               <li>
-                <img src="../../images/robbingTel1.png">
+                <img src="../../images/robbingTel1.png" @touchend="telphone(item.endMessage.tel)">
                 发货人{{item.endMessage.name | nameCheck}}
               </li>
               <div class="clearBoth"></div>
@@ -26,8 +26,8 @@
               <h1>发货地址：{{item.endMessage.address}}</h1>
             </div>
             <div class="time">
-              <h1>提货地址：{{item.goodsmessage.startTime}}</h1>
-              <h1>发货地址：{{item.goodsmessage.endTime}}</h1>
+              <h1>提货时间：{{item.goodsmessage.startTime}}</h1>
+              <h1>发货时间：{{item.goodsmessage.endTime}}</h1>
               <div class="clearBoth"></div>
             </div>
           </div>
@@ -47,7 +47,7 @@
             订单编号：{{item.number}}<br>
             下单时间：{{item.time}}
           </div>
-          <button @click="qD()" v-if="robbingShow">抢单</button>
+          <button @touchend="qD()" v-if="robbingShow">抢单</button>
         </li>
       </ul>
     </div>
@@ -85,6 +85,9 @@
       androidIos.judgeIphoneX("robbingMore",2);
     },
     methods:{
+      telphone:function (phone) {
+        androidIos.telCall(phone);
+      },
       go:function () {
         var self = this;
         $.ajax({

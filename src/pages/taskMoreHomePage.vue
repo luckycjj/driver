@@ -4,7 +4,7 @@
       <div id="container" style="bottom:1.3rem;"></div>
       <div id="panel"></div>
       <div id="search">
-         <input type="text" placeholder="请输入订单号或货品名称" @click="serachOrder()"/>
+         <p @touchend="serachOrder()">请输入订单号或货品名称</p>
          <img src="../images/huatong-3.png">
         <div class="clearBoth"></div>
       </div>
@@ -16,63 +16,63 @@
             </li>
           </ul>
       </div>
-      <div id="lookOrderMore" v-if="!boxShow"  @click="boxShow = true">
+      <div id="lookOrderMore" v-if="!boxShow"  @touchend="boxShow = true">
         查看
       </div>
       <footComponent ref="footcomponent" :idx='0'></footComponent>
       <div id="errorAbnormalBox" v-if="errorAbnormalBox">
         <div id="errorAbnormal">
           <div id="errorabnormalTitle">
-            <img src="../images/closed.png" @click="errorAbnormalClosed()">
+            <img src="../images/closed.png" @touchend="errorAbnormalClosed()">
             <p>选择异常事故</p>
           </div>
           <ul class="errorUl">
-            <li v-for="(item,index) in errorAbnormal" :class="index%2==0?'errorAbnormalLeft':'errorAbnormalRight'" @click="errorAbnormalClick($event)">
+            <li v-for="(item,index) in errorAbnormal" :class="index%2==0?'errorAbnormalLeft':'errorAbnormalRight'" @touchend="errorAbnormalClick($event)">
               {{item.displayName}}
             </li>
             <div class="clearBoth"></div>
             <input type="text"   @keyup="filterInput()" placeholder="其他异常" maxlength="100" v-model="errorabnormal">
           </ul>
-          <button @click="errorAbnormalChange()"  class="gogogo" id="gogogo2">提交</button>
+          <button @touchend="errorAbnormalChange()"  class="gogogo" id="gogogo2">提交</button>
         </div>
       </div>
       <div id="errorPriceBox" v-if="errorPriceBox">
         <div id="errorPrice">
           <div id="errorpriceTitle">
-            <img src="../images/closed.png" @click="errorPriceClosed()">
+            <img src="../images/closed.png" @touchend="errorPriceClosed()">
             <p>填写费用</p>
           </div>
           <ul style="border: none;" class="errorUl">
-            <li v-for="(item,index) in errorPriceList" :class="index%2==0?'errorAbnormalLeft':'errorAbnormalRight'" @click="errorPriceListListClick($event)">
+            <li v-for="(item,index) in errorPriceList" :class="index%2==0?'errorAbnormalLeft':'errorAbnormalRight'" @touchend="errorPriceListListClick($event)">
               {{item.displayName}}
             </li>
             <div class="clearBoth"></div>
             <input  @keyup="filterInput()" type="text" placeholder="填写原因" maxlength="40" style="margin-bottom: 0;" v-model="errorPricetype"/>
             <input type="text" placeholder="金额" maxlength="40" v-model="errorPrice"/>
           </ul>
-          <button @click="errorPriceChange()" id="gogogo4" class="gogogo">提交</button>
+          <button @touchend="errorPriceChange()" id="gogogo4" class="gogogo">提交</button>
         </div>
       </div>
       <div id="driverResultBox" v-if="driverResultBox">
         <div id="driverResult">
           <div id="driverResultTitle">
-            <img src="../images/closed.png" @click="driverResultClosed()">
+            <img src="../images/closed.png" @touchend="driverResultClosed()">
             <p>选择拒绝理由</p>
           </div>
           <ul class="errorUl">
-            <li v-for="(item,index) in driverResult" :class="index%2==0?'errorAbnormalLeft':'errorAbnormalRight'" @click="driverResultClick($event)">
+            <li v-for="(item,index) in driverResult" :class="index%2==0?'errorAbnormalLeft':'errorAbnormalRight'" @touchend="driverResultClick($event)">
               {{item.displayName}}
             </li>
             <div class="clearBoth"></div>
             <input type="text"   @keyup="filterInput()" placeholder="其他理由" maxlength="100" v-model="driverresult">
           </ul>
-          <button @click="driverResultChange()"  class="gogogo" id="gogogo2">提交</button>
+          <button @touchend="driverResultChange()"  class="gogogo" id="gogogo2">提交</button>
         </div>
       </div>
       <transition name="slide-fade">
         <div id="proBox" v-if="listBox.pkTransType != '' && boxShow" style="bottom: 1.5rem;">
           <img src="../images/jiaji.png" class="jiajiImg"  v-if="listBox.ifUrgent == 'Y'">
-          <div class="message" @click="lookTrackMore(listBox.pkInvoice)">
+          <div class="message" @touchend="lookTrackMore(listBox.pkInvoice)">
             <div class="proStatus">
               <p :style="{backgroundImage: 'url(' + require('../images/trackMoreIcon'+ listBox.type +'.png') + ')' }" >{{listBox.statusName}}</p>
               <div class="topStatus">
@@ -98,18 +98,18 @@
               </ul>
             </div>
           </div>
-          <button v-if="listBox.type==0" @click="tongyi()">同意</button>
-          <button v-if="listBox.type== 0" @click="jvjue()">拒绝</button>
-          <button v-if=" listBox.type==1" @click="chufa()">出发</button>
-          <button v-if="listBox.type==2" @click="daoda(31)">提货到达</button>
-          <button v-if="listBox.type==3" @click="daoda(32)">开始装货</button>
-          <button v-if="listBox.type==4"  class="upImg" @click="upImg(0)">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;上传</button>
-          <button v-if="listBox.type==4" @click="daoda(33)">装货完毕</button>
-          <button v-if="listBox.type==5" @click="daoda(41)">运输到达</button>
-          <button v-if="listBox.type==6" @click="daoda(42)">开始卸货</button>
-          <button v-if="listBox.type==7"  class="upImg" @click="upImg(1)">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;上传</button>
-          <button v-if="listBox.type==7" @click="daoda(43)">卸货完毕</button>
-          <button v-if="listBox.type==8" @click="qianshou(1)">签收</button>
+          <button v-if="listBox.type==0" @touchend="tongyi()">同意</button>
+          <button v-if="listBox.type== 0" @touchend="jvjue()">拒绝</button>
+          <button v-if=" listBox.type==1" @touchend="chufa()">出发</button>
+          <button v-if="listBox.type==2" @touchend="daoda(31)">提货到达</button>
+          <button v-if="listBox.type==3" @touchend="daoda(32)">开始装货</button>
+          <button v-if="listBox.type==4"  class="upImg" @touchend="upImg(0)">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;上传</button>
+          <button v-if="listBox.type==4" @touchend="daoda(33)">装货完毕</button>
+          <button v-if="listBox.type==5" @touchend="daoda(41)">运输到达</button>
+          <button v-if="listBox.type==6" @touchend="daoda(42)">开始卸货</button>
+          <button v-if="listBox.type==7"  class="upImg" @touchend="upImg(1)">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;上传</button>
+          <button v-if="listBox.type==7" @touchend="daoda(43)">卸货完毕</button>
+          <button v-if="listBox.type==8" @touchend="qianshou(1)">签收</button>
           <div class="clearBoth"></div>
         </div>
       </transition>
@@ -158,7 +158,7 @@
               },
               tabList:[{
                 icon:require("../images/lishi-4.png"),
-                name:"待执行",
+                name:"历史任务",
                 value:0,
               }],
               peopleJ:"",
@@ -259,7 +259,7 @@
            var _this = this;
            if(index == 0){
              androidIos.addPageList();
-             _this.$router.push({ path: '/paddingTrack'});
+             _this.$router.push({ path: '/histroyTrack'});
            }else if(index == 1){
              _this.errorAbnormalBox = true;
              if(_this.errorAbnormal.length == 0){
@@ -557,13 +557,13 @@
                     if( _this.listBox.type < 2){
                       _this.tabList = [{
                         icon:require("../images/lishi-4.png"),
-                        name:"待执行",
+                        name:"历史任务",
                         value:0,
                       }]
                     }else if(_this.listBox.type >= 2 && _this.listBox.type < 8){
                       _this.tabList = [{
                         icon:require("../images/lishi-4.png"),
-                        name:"待执行",
+                        name:"历史任务",
                         value:0,
                       },{
                         icon:require("../images/yichang-4.png"),
@@ -577,7 +577,7 @@
                     }else if(_this.listBox.type == 8){
                       _this.tabList = [{
                         icon:require("../images/lishi-4.png"),
-                        name:"待执行",
+                        name:"历史任务",
                         value:0,
                       },{
                         icon:require("../images/erweima-2.png"),
@@ -587,7 +587,7 @@
                     }else{
                       _this.tabList = [{
                         icon:require("../images/lishi-4.png"),
-                        name:"待执行",
+                        name:"历史任务",
                         value:0,
                       }]
                     }
@@ -1205,9 +1205,9 @@
     width:0.347rem;
     top:0.4rem;
   }
-  #search input{
+  #search p{
     font-size: 0.43rem;
-    color:#333;
+    color:#999;
     padding-left:0.64rem ;
     margin-left: 0.5rem;
     background-image: url("../images/icon-fadangjing.png");

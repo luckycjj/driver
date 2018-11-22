@@ -61,7 +61,6 @@
     methods:{
       go:function () {
         var _this = this;
-        _this.corner();
         var curNavIndex = _this.tabShow;//首页0; 奶粉1; 面膜2; 图书3;
         var mescrollArr=new Array(_this.list.length);//4个菜单所对应的4个mescroll对象
         //初始化首页

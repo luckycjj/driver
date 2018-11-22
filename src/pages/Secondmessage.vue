@@ -3,7 +3,7 @@
     <div id="title" v-title data-title="消息"></div>
     <div id="messageBox">
       <ul>
-        <li v-for="(item,index) in messageList" @click="messageLook(item.type)">
+        <li v-for="(item,index) in messageList" @touchend="messageLook(item.type)">
           <div class="imgBox">
              <div class="messageCorner" v-if="item.show"></div>
              <img :src="item.icon">

@@ -2,14 +2,14 @@
   <div id="setup" style="top:1.3rem;">
     <div id="title" v-title data-title="设置"></div>
     <ul>
-      <li @click="urlGo(item.url)" v-for="(item,index) in tabList" :class="index % 2 == 0 ? (tabList.length -1 == index ? 'marTop' : 'marTop borderShow') : ''">
+      <li @touchend="urlGo(item.url)" v-for="(item,index) in tabList" :class="index % 2 == 0 ? (tabList.length -1 == index ? 'marTop' : 'marTop borderShow') : ''">
         <p>{{item.name}}</p>
         <h1>{{item.message}}</h1>
         <div class="lookMore" v-if="item.message == ''"></div>
         <div class="clearBoth"></div>
       </li>
     </ul>
-    <button @click="loginOut()">退出登录</button>
+    <button @touchend="loginOut()">退出登录</button>
   </div>
 </template>
 

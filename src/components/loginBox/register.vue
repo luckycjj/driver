@@ -3,7 +3,7 @@
     <div id="title" v-title data-title="注册"></div>
     <div id="top">
        <img id="topImg" src="../../images/register-top.png" style="height:3.78rem;">
-       <img id="gobackImg" src="../../images/register-goback.png" style="top:0.9rem" @click="goback()">
+       <img id="gobackImg" src="../../images/register-goback.png" style="top:0.9rem" @touchend="goback()">
     </div>
     <div id="registerBody">
       <div class="modelView img1">
@@ -11,26 +11,26 @@
       </div>
       <div class="modelView img5">
         <input @input="filterInput()"  type="tel" v-model="verification" placeholder="请输入验证码" maxlength="6"/>
-        <span class="verificationCome" @click="verificationCome()">{{name}}</span>
+        <span class="verificationCome" @touchend="verificationCome()">{{name}}</span>
         <div class="clearBoth"></div>
       </div>
       <div class="modelView img2">
         <input @input="filterInput()"  :type="lookPassWord ? 'text' : 'password' "  maxlength="25"  v-model="password" placeholder="请输入密码"/>
-        <div id="lookPassWord" :class="lookPassWord ? 'lookPassWord' : '' " @click="lookpass(1)"></div>
+        <div id="lookPassWord" :class="lookPassWord ? 'lookPassWord' : '' " @touchend="lookpass(1)"></div>
         <div class="clearBoth"></div>
       </div>
       <div class="modelView img3">
         <input @input="filterInput()"  :type="lookPassWord1 ? 'text' : 'password' "  maxlength="25"  v-model="passwordSure" placeholder="请确认密码"/>
-        <div id="lookPassWord1" :class="lookPassWord1 ? 'lookPassWord' : '' " @click="lookpass(2)"></div>
+        <div id="lookPassWord1" :class="lookPassWord1 ? 'lookPassWord' : '' " @touchend="lookpass(2)"></div>
         <div class="clearBoth"></div>
       </div>
       <div class="modelView img4">
         <input @input="filterInput()"  type="text" v-model="invitation" placeholder="请输入邀请码" maxlength="6"/>
       </div>
     </div>
-    <button @click="registerOn()">注册</button>
+    <button @touchend="registerOn()">注册</button>
     <div class="checkBox">
-      <div class="checked" @click="checked = !checked" :class="checked ? 'checkedTrue' : '' "></div>
+      <div class="checked" @touchend="checked = !checked" :class="checked ? 'checkedTrue' : '' "></div>
       <span>我同意用户协议及声明</span>
       <div class="clearBoth"></div>
     </div>

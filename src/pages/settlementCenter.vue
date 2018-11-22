@@ -3,7 +3,7 @@
       <div id="title" v-title data-title="结算中心"></div>
       <div id="topBox">
         <div id="top">
-          <img id="gobackImg" src="../images/register-goback.png"  @click="goback()">
+          <img id="gobackImg" src="../images/register-goback.png"  @touchend="goback()">
           结算中心
           <h3>明细</h3>
         </div>
@@ -13,7 +13,7 @@
         </div>
       </div>
       <ul id="tabList">
-        <li @click="lookUrl(item.url)" v-for="(item,index) in tabList" :style="{backgroundImage:'url('+item.icon+')',marginBottom:index % 2 == 0 ? '1px' : '0.32rem'}">
+        <li @touchend="lookUrl(item.url)" v-for="(item,index) in tabList" :style="{backgroundImage:'url('+item.icon+')',marginBottom:index % 2 == 0 ? '1px' : '0.32rem'}">
           <p>{{item.name}}</p>
         </li>
       </ul>

@@ -3,10 +3,10 @@
     <div id="title" v-title data-title="任务"></div>
     <div id="top">
       任务
-      <div class="messageLDbox" @click="orderScreen()">
+      <div class="messageLDbox" @touchend="orderScreen()">
         <img src="../images/orderScreen.png">
       </div>
-      <h3  id="manage" @click="histroy()" class="asd"><span style="color:#999">历史订单</span></h3>
+      <h3  id="manage" @touchend="histroy()" class="asd"><span style="color:#999">历史订单</span></h3>
     </div>
     <div id="showBox">
       <div class="wrapper" id="trackTab">

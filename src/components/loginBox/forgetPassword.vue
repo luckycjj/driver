@@ -9,17 +9,17 @@
       <div class="modelView">
         <span class="w3">新密码</span>
         <input  @input="filterInput()"  :type="lookPassWord ? 'text' : 'password' " maxlength="25"  v-model="password" placeholder="请输入密码"/>
-        <div id="lookPassWord" :class="lookPassWord ? 'lookPassWord' : '' " @click="lookpass()"></div>
+        <div id="lookPassWord" :class="lookPassWord ? 'lookPassWord' : '' " @touchend="lookpass()"></div>
         <div class="clearBoth"></div>
       </div>
       <div class="modelView" style="border:none">
         <span class="w3">验证码</span>
         <input  @input="filterInput()"  type="tel" v-model="verification" placeholder="请输入验证码" maxlength="6"/>
-        <span class="verificationCome" @click="verificationCome()">{{name}}</span>
+        <span class="verificationCome" @touchend="verificationCome()">{{name}}</span>
         <div class="clearBoth"></div>
       </div>
     </div>
-    <button @click="registerOn()">提交</button>
+    <button @touchend="registerOn()">提交</button>
   </div>
 </template>
 
