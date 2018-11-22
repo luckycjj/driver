@@ -52,6 +52,8 @@ Vue.filter('carrierTime',function (value) {
    var newDate = new Date();
    if(new Date(valTime.replace(/-/g,'/')).getTime() == new Date(newDate.getFullYear() + '/' + (newDate.getMonth() + 1 ) + '/' + newDate.getDate()).getTime()){
      return "今天装货";
+   }else if(new Date(valTime.replace(/-/g,'/')).getTime()  -  new Date(newDate.getFullYear() + '/' + (newDate.getMonth() + 1 ) + '/' + newDate.getDate()).getTime() == 24*60*60*1000){
+     return "明天装货";
    }else{
       return value;
    }

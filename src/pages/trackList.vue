@@ -1,25 +1,25 @@
 <template>
   <div id="trackList" style="top:0rem">
-    <div id="title" v-title data-title="任务"></div>
+    <div id="title" v-title data-title="已执行"></div>
     <div id="top">
-      任务
+      已执行
       <div class="messageLDbox" @touchend="orderScreen()">
         <img src="../images/orderScreen.png">
       </div>
-      <h3  id="manage" @touchend="histroy()" class="asd"><span style="color:#999">历史订单</span></h3>
+      <!--<h3  id="manage" @touchend="histroy()" class="asd"><span style="color:#999">历史订单</span></h3>-->
     </div>
     <div id="showBox">
-      <div class="wrapper" id="trackTab">
+     <!-- <div class="wrapper" id="trackTab">
         <div class="scroller">
           <ul class="clearfix">
             <li :style="{width:10/(list.length) + 'rem'}" tapmode=""  v-for="(item,index) in list" :i="index"><a tapmode="">{{item.name}}<span v-if="item.number*1 > 0">({{item.number}})</span></a></li>
           </ul>
         </div>
-      </div>
+      </div>-->
       <div v-for="(item,index) in list" :id="'mescroll' + index" :class="index != tabShow ? 'hide' :''" class="mescroll">
         <ul :id="'dataList' + index" class="data-list">
           <li v-for="(items,indexs) in item.prolist" @click="lookTrackMore(items.pkInvoice)">
-            <h3 :class="'trackList' + items.status" v-html="items.status == 0 ? '待确认' : items.status == 10 ? '已确认': items.status == 20 ? '司机出发': items.status == 31 ? '提货到达': items.status == 32 ? '开始装货': items.status == 33 ? '开始运输': items.status == 41 ? '运输到达': items.status == 42 ? '开始卸货': items.status == 43 ? '卸货完毕': items.status == 50 ? '已签收': ''"></h3>
+            <h3 :class="'trackList' + items.status" v-html="items.status == 0 ? '待确认' : items.status == 10 ? '已确认': items.status == 20 ? '司机出发': items.status == 31 ? '提货到达': items.status == 32 ? '开始装货': items.status == 33 ? '开始运输': items.status == 41 ? '运输到达': items.status == 42 ? '开始卸货': items.status == 43 ? '卸货完毕': items.status == 50 ? '已签收': items.status == 60 ? '已拒绝': ''"></h3>
             <h1>订单编号：{{items.vbillno}}</h1>
             <div class="proBox">
               <img v-if="items.ifUrgent == 'Y'" class="jinjiOrder" src="../images/jiaji.png">
@@ -54,18 +54,6 @@
                 name:"全部",
                 number:0,
                 prolist:[]
-             },{
-               name:"待运输",
-               number:0,
-               prolist:[]
-             },{
-               name:"运输中",
-               number:0,
-               prolist:[]
-             },{
-               name:"已签收",
-               number:0,
-               prolist:[]
              }],
             tabShow:0,
             driverType:0,
@@ -92,12 +80,12 @@
        methods:{
          go:function () {
              var _this = this;
-             _this.corner();
+           /*  _this.corner();*/
              var trackTap = sessionStorage.getItem("trackTap");
              if(trackTap != undefined){
                 _this.tabShow = trackTap*1;
              }
-            $('.wrapper').navbarscroll({defaultSelect:_this.tabShow});
+          /*  $('.wrapper').navbarscroll({defaultSelect:_this.tabShow});*/
              var curNavIndex = _this.tabShow;
              var mescrollArr=new Array(_this.list.length);//4个菜单所对应的4个mescroll对象
              //初始化首页
@@ -241,10 +229,10 @@
              timeout: 30000,
              success: function (carrOrderListHeaderIcon) {
                if (carrOrderListHeaderIcon.success == "1") {
-                 _this.list[0].number = carrOrderListHeaderIcon.waitTransport*1 + carrOrderListHeaderIcon.transporting*1 + carrOrderListHeaderIcon.alreadySign*1;
+                /* _this.list[0].number = carrOrderListHeaderIcon.waitTransport*1 + carrOrderListHeaderIcon.transporting*1 + carrOrderListHeaderIcon.alreadySign*1;
                  _this.list[1].number = carrOrderListHeaderIcon.waitTransport*1;
                  _this.list[2].number = carrOrderListHeaderIcon.transporting*1;
-                 _this.list[3].number = carrOrderListHeaderIcon.alreadySign*1;
+                 _this.list[3].number = carrOrderListHeaderIcon.alreadySign*1;*/
                }else{
                  androidIos.second(carrOrderListHeaderIcon.message);
                }
@@ -311,7 +299,7 @@
   #top .messageLDbox{
     position: absolute;
     width:0.427rem;
-    left:0.72rem;
+    right:0.72rem;
     top:50%;
     margin-top: -0.22rem;
   }
@@ -332,7 +320,7 @@
   }
   .mescroll{
     position: absolute;
-    top:1.2rem;
+    top:0rem;
     bottom:0rem;
     height: auto!important;
   }
@@ -459,6 +447,10 @@
   .trackList50{
     background-image: url("../images/trackList10.png");
     color:#C3D94D;
+  }
+  .trackList60{
+    background-image: url("../images/trackList11.png");
+    color:#1869A9;
   }
   .deliDateTime{
     background-image: url("../images/trackListshijian.png");

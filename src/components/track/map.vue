@@ -69,7 +69,7 @@
             }
           }
         });
-        if(ordertype ==  "0" || ordertype ==  "10"  || ordertype ==  "20" || ordertype == "31" || ordertype =="32" || ordertype=="33" || ordertype == '41'|| ordertype == '42'|| ordertype == '43' || ordertype == '50'){
+        if(ordertype ==  "0" || ordertype ==  "10"  || ordertype ==  "20" || ordertype == "31" || ordertype =="32" || ordertype=="33" || ordertype == '41'|| ordertype == '42'|| ordertype == '43' || ordertype == '50' || ordertype == '60'){
           var map = new AMap.Map("container", {
             resizeEnable: true,
             center: [_this.carList.startJ, _this.carList.startW],//地图中心点
