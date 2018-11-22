@@ -82,7 +82,11 @@
             }
           }
         });
-        _this.$router.push({ path: '/taskMoreHomePage'});
+        if(JSON.parse(sessionStorage.getItem("driverMessage")).driverType == 2){
+          _this.$router.push({ path: '/searchDayOrder'});
+        }else{
+          _this.$router.push({ path: '/taskMoreHomePage'});
+        }
       }else if(cookie == ""){
         _this.$router.push({ path: '/login'});
       }
@@ -93,7 +97,7 @@
       _this.title = document.title;
       _this.html = location.href;
       androidIos.judgeIphoneX("carTitleBox",0);
-      if(_this.html.indexOf("/taskMoreHomePage") != -1 ||_this.html.indexOf("/login") != -1 || _this.html.indexOf("/robbingList") != -1  || _this.html.indexOf("/settlementCenter") != -1  || _this.html.indexOf("/trackList") != -1 || _this.html.indexOf("/user") != -1){
+      if(_this.html.indexOf("/searchDayOrder") != -1 ||_this.html.indexOf("/taskMoreHomePage") != -1 ||_this.html.indexOf("/login") != -1 || _this.html.indexOf("/robbingList") != -1  || _this.html.indexOf("/settlementCenter") != -1  || _this.html.indexOf("/trackList") != -1 || _this.html.indexOf("/user") != -1){
         $("#appBox").hide();
       }else{
         $("#appBox").show();
@@ -127,7 +131,7 @@
         _this.title = document.title;
         _this.html = location.href;
         androidIos.judgeIphoneX("carTitleBox",0);
-        if(_this.html.indexOf("/register") != -1 || _this.html.indexOf("/taskMoreHomePage") != -1 ||_this.html.indexOf("/login") != -1 || _this.html.indexOf("/robbingList") != -1  || _this.html.indexOf("/settlementCenter") != -1 || _this.html.indexOf("/trackList") != -1|| _this.html.indexOf("/user") != -1){
+        if(_this.html.indexOf("/searchDayOrder") != -1 ||_this.html.indexOf("/register") != -1 || _this.html.indexOf("/taskMoreHomePage") != -1 ||_this.html.indexOf("/login") != -1 || _this.html.indexOf("/robbingList") != -1  || _this.html.indexOf("/settlementCenter") != -1 || _this.html.indexOf("/trackList") != -1|| _this.html.indexOf("/user") != -1){
           $("#appBox").hide();
         }else{
           $("#appBox").show();

@@ -3,6 +3,7 @@ import robbingList from '../pages/robbingList'
 import trackList from '../pages/trackList'
 import login from '../pages/login'
 import message from '../pages/message'
+import searchDayOrder from '../pages/searchDayOrder'
 import settlementCenter from '../pages/settlementCenter'
 import Secondmessage from '../pages/Secondmessage'
 import authenticationS from '@/components/authentication/authenticationS'
@@ -142,6 +143,11 @@ Vue.filter('orderTypeName', function(value) {
 export default new Router(
   {
   routes: [
+    {
+      path:'/searchDayOrder',
+      name:'searchDayOrder',
+      component:searchDayOrder,
+    },
     {
       path:'/paddingTrack',
       name:'paddingTrack',

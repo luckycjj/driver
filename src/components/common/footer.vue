@@ -54,7 +54,7 @@
               marginRight:0,
               cls: "track",
               name: "任务",
-              push: "/taskMoreHomePage"
+              push: "/searchDayOrder"
             },{
               number:0,
               marginRight:0,
