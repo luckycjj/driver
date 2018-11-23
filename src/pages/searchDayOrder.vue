@@ -6,10 +6,27 @@
     </div>
     <div id="DayTime">
         <div class="li" v-for="(item,index) in dayList" :style="{width:10/ dayList.length + 'rem',color:item.clas ? '#666' : '#cccccc'}" @touchend="dayLook(index)">
-          {{item.name}}
+          {{item.name}}<span :style="{color:item.number > 0  ? '#ff5b5b' : '#cccccc'}" v-html="item.number > 0 && item.clas ? '(' + item.number + ')' : item.number  == 0 && item.clas ? '(无)' : ''"></span>
         </div>
       <div class="clearBoth"></div>
     </div>
+    <transition name="slide-fade">
+      <div id="searchDateBox" v-if="searchDateBox">
+        <div id="searchDate">
+          <p>选择时间</p>
+          <img src="../images/closed2.png" class="searchClosed"  @touchend="searchDateBox = false">
+          <ul>
+            <li v-for="(item,index) in searchList" :class="item.check ? 'timeCheck': ''" @touchend="circleChooese(index)" :style="{borderRight:index % 4 == 3 ? 'none':'1px solid #E9EFF3'}">
+              <h1>{{item.name}}</h1>
+              <h2 v-html="item.number > 0 ? item.number + '个任务' : '暂无任务'"></h2>
+              <div class="clearBoth"></div>
+            </li>
+            <div class="clearBoth"></div>
+          </ul>
+          <button @touchend="searchDateGo()">确定</button>
+        </div>
+      </div>
+    </transition>
     <div id="showBox">
       <div v-for="(item,index) in list" :id="'mescroll' + index" :class="index != tabShow ? 'hide' :''" class="mescroll">
         <ul :id="'dataList' + index" class="data-list">
@@ -30,22 +47,6 @@
         </ul>
       </div>
     </div>
-    <transition name="slide-fade">
-      <div id="searchDateBox" v-if="searchDateBox">
-        <div id="searchDate">
-          <p>选择时间</p>
-          <img src="../images/closed2.png" class="searchClosed"  @touchend="searchDateBox = false">
-          <ul>
-            <li v-for="(item,index) in searchList">
-              <h1>{{item.name}}</h1>
-              <div class="circle" @touchend="circleChooese(index)"><div class="circleTrue" v-if="item.check"></div></div>
-              <div class="clearBoth"></div>
-            </li>
-          </ul>
-          <button @touchend="searchDateGo()">确定</button>
-        </div>
-      </div>
-    </transition>
     <footComponent ref="footcomponent" :idx='0'></footComponent>
   </div>
 </template>
@@ -72,7 +73,7 @@
           clas:true,
         },{
           name:"",
-          number:0,
+          number:100,
           clas:true,
         },{
           name:"后一天",
@@ -128,6 +129,29 @@
           _this.dayList[2].clas = true;
         }
       },
+      tabNumber:function () {
+         var _this = this;
+         var date = _this.dayList[1].name;
+         var number = 0;
+         for(var i = 0; i < _this.searchList.length;i++){
+            if(date == _this.searchList[i].value){
+               number = i;
+            }
+         }
+         if(number == 0){
+           _this.dayList[0].number = 0;
+           _this.dayList[1].number = _this.searchList[number].number;
+           _this.dayList[2].number = _this.searchList[number + 1].number;
+         }else if(number >= _this.searchList.length - 1){
+           _this.dayList[0].number = _this.searchList[number - 1].number;
+           _this.dayList[1].number = _this.searchList[number].number;
+           _this.dayList[2].number = 0;
+         }else{
+           _this.dayList[0].number = _this.searchList[number - 1].number;
+           _this.dayList[1].number = _this.searchList[number].number;
+           _this.dayList[2].number = _this.searchList[number + 1].number;
+         }
+      },
       dayLook:function (index) {
         var _this = this;
          if(index == 1){
@@ -144,6 +168,7 @@
             if((new Date(lastTime.replace(/-/g,'/'))).getTime() >= (new Date(_this.zuizaoDay.replace(/-/g,'/'))).getTime()){
               _this.dayList[1].name = lastTime;
               sessionStorage.setItem("orderTime",_this.dayList[1].name);
+              _this.jiaobiao();
               _this.tabColor();
               _this.mescrollArr[0].resetUpScroll();
             }
@@ -153,6 +178,7 @@
            if((new Date(nextTime.replace(/-/g,'/'))).getTime() <= (new Date(_this.zuiwanDay.replace(/-/g,'/'))).getTime()){
              _this.dayList[1].name = nextTime;
              sessionStorage.setItem("orderTime",_this.dayList[1].name);
+             _this.jiaobiao();
              _this.tabColor();
              _this.mescrollArr[0].resetUpScroll();
            }
@@ -166,6 +192,7 @@
           }
         }
         _this.searchDateBox = false;
+        _this.jiaobiao();
         _this.tabColor();
         _this.mescrollArr[0].resetUpScroll();
         sessionStorage.setItem("orderTime",_this.dayList[1].name);
@@ -182,11 +209,10 @@
         var date = new Date();
         var xingqi = date.getDay();
         var searchList = [];
-        var number = 3;
+        var number = 0;
         for(var i = xingqi - number ; i < 7 + xingqi ; i++){
           if(i == xingqi - number){
              _this.zuizaoDay = _this.getTime(date.getTime() - (xingqi - i)*24*60*60*1000);
-             console.log( _this.zuizaoDay)
           }
           if(i ==  6 + xingqi ){
             _this.zuiwanDay = _this.getTime(date.getTime() - (xingqi - i)*24*60*60*1000);
@@ -194,11 +220,51 @@
             searchList.push({
               name:_this.getTime(date.getTime() - (xingqi - i)*24*60*60*1000),
               value:_this.getTime(date.getTime() - (xingqi - i)*24*60*60*1000),
+              number:0,
               check:false,
             })
         }
         _this.searchList = searchList;
+        _this.jiaobiao();
         _this.tabColor();
+      },
+      jiaobiao:function () {
+        var _this = this;
+        $.ajax({
+          type: "POST",
+          url: androidIos.ajaxHttp() + "/order/findOrderCountGroupbyDate",
+          data:JSON.stringify({
+            userCode:sessionStorage.getItem("token"),
+            source:sessionStorage.getItem("source"),
+            startTime: _this.searchList[0].value,
+            endTime: _this.searchList[_this.searchList.length - 1].value,
+          }),
+          contentType: "application/json;charset=utf-8",
+          dataType: "json",
+          timeout: 30000,
+          success: function (findOrderCountGroupbyDate) {
+            if (findOrderCountGroupbyDate.success == "1") {
+              for(var i = 0 ; i < _this.searchList.length ; i++){
+                 for(var x = 0 ; x < findOrderCountGroupbyDate.list.length ; x++){
+                    if(_this.searchList[i].value == findOrderCountGroupbyDate.list[x].date){
+                      _this.searchList[i].number = findOrderCountGroupbyDate.list[x].count;
+                      break;
+                    }
+                 }
+              }
+              _this.tabNumber();
+            }else{
+              androidIos.second(findOrderCountGroupbyDate.message);
+            }
+          },
+          complete: function (XMLHttpRequest, status) { //请求完成后最终执行参数
+            if (status == 'timeout') { //超时,status还有success,error等值的情况
+              androidIos.second("当前状况下网络状态差，请检查网络！");
+            } else if (status == "error") {
+              androidIos.errorwife();
+            }
+          }
+        });
       },
       getTime:function (time) {
          var date = new Date(time);
@@ -425,6 +491,10 @@
     height: 1.2rem;
     text-align: center;
   }
+  #DayTime .li span{
+    font-size: 0.35rem;
+    color:#ff5b5b;
+  }
   #top{
     position: relative;
     width:100%;
@@ -648,22 +718,23 @@
     width:0.667rem;
   }
   #searchDateBox{
-    position: fixed;
+    position: absolute;
     left:0;
     right:0;
     top:0;
     bottom:0;
     width:auto;
     height: auto;
-    background-color: rgba(0,0,0,0.2);
+    z-index:19;
+    background-color: rgba(0,0,0,0);
   }
   #searchDate{
     position: absolute;
-    width:7.1rem;
-    left:50%;
-    margin-left: -3.55rem;
+    width:10rem;
+    left:0;
     background: white;
-    top:15%;
+    top:2.5rem;
+    box-shadow:0px 4px 4px 0px rgba(0,0,0,0.19);
   }
   #searchDate p {
     color:#373737;
@@ -673,15 +744,34 @@
     border-bottom: 1px solid #E9EFF3;
   }
   #searchDate li{
-    width:100%;
+    width:25%;
+    float: left;
     border-bottom: 1px solid #E9EFF3;
+    box-sizing: border-box;
+    border-right: 1px solid #E9EFF3;
+    padding: 0.2rem 0 ;
   }
   #searchDate li h1{
-    float: left;
-    line-height: 1.17rem;
-    color:#373737;
-    font-size: 0.4rem;
-    margin-left: 0.6rem;
+ /*   float: left;*/
+    color:#1D68A8;
+    font-size: 0.35rem;
+    text-align: center;
+   /* margin-left: 0.6rem;*/
+  }
+  #searchDate li h2{
+    color:#ff5b5b;
+    font-size: 0.35rem;
+    text-align: center;
+  }
+  .timeCheck{
+     background: #1D68A8!important;
+    color:white!important;
+  }
+  .timeCheck h1{
+     color:white!important;
+  }
+  .timeCheck h2{
+    color:white!important;
   }
   #searchDate li .circle{
     float: right;

@@ -40,28 +40,28 @@
         <p>订阅路线</p>
         <div class="screenAddre">
           <div class="startAddre">
-            <div class="addresscheck" @touchend="checkAddress(0)" v-html="searchList.startAdd == '' ? '全国' : searchList.startAdd "></div>
+            <div class="addresscheck" @click="checkAddress(0)" v-html="searchList.startAdd == '' ? '全国' : searchList.startAdd "></div>
           </div>
           <div class="hengxian"></div>
           <div class="startAddre">
-            <div class="addresscheck" @touchend="checkAddress(1)" v-html="searchList.endAdd == '' ? '全国' : searchList.endAdd "></div>
+            <div class="addresscheck" @click="checkAddress(1)" v-html="searchList.endAdd == '' ? '全国' : searchList.endAdd "></div>
           </div>
-          <button class="addAddress" @touchend="addAddress()">添加</button>
+          <button class="addAddress" @click="addAddress()">添加</button>
           <div class="clearBoth"></div>
         </div>
         <h1>选择路线</h1>
         <div class="addressList" v-for="(item,index) in addressList">
           <h2><span v-html="item.start == '' ? '全国' : item.start"></span> - <span  v-html="item.end == '' ? '全国' : item.end"></span></h2>
-          <button @touchend="removeAdd(index)">取消</button>
+          <button @click="removeAdd(index)">取消</button>
           <div class="clearBoth"></div>
         </div>
       </div>
       <transition name="slide-fade">
         <div id="screenAddressBox" v-if="screenAddressTrue">
           <div id="screenAddressBody">
-            <img src="../../images/closed2.png"  @touchend="hotAddressListno()">
+            <img src="../../images/closed2.png"  @click="hotAddressListno()">
             <p>选择地址</p>
-            <h6 v-if="normalCityList.length > 0" @touchend="normalCityGoback()">返回</h6>
+            <h6 v-if="normalCityList.length > 0" @click="normalCityGoback()">返回</h6>
             <div class="checkedAddress" v-if="normalCityList.length > 0">
               <h1>已选择</h1>
               <ul>
@@ -74,36 +74,36 @@
             <div class="hotAddress" v-if="normalCityList.length == 0">
               <h1>热门城市</h1>
               <ul>
-                <li v-for="(item ,index) in hotAddressList"  :class="item.checked ? 'addCheckTrue' : ''" @touchend="hotAddressListChoose(item,0)">{{item.name}}</li>
+                <li v-for="(item ,index) in hotAddressList"  :class="item.checked ? 'addCheckTrue' : ''" @click="hotAddressListChoose(item,0)">{{item.name}}</li>
                 <div class="clearBoth"></div>
               </ul>
             </div>
             <div class="selectAddress" v-if="normalCityList.length == 0">
               <h1>选择省份/地区</h1>
               <ul>
-                <li v-for="(item ,index) in normalAddressList" @touchend="chooseProvince(item,index)"><div class="shouzimu">{{item.PinyinFirst}}</div>{{item.region}}<div class="clearBoth"></div></li>
+                <li v-for="(item ,index) in normalAddressList" @click="chooseProvince(item,index)"><div class="shouzimu">{{item.PinyinFirst}}</div>{{item.region}}<div class="clearBoth"></div></li>
                 <div class="clearBoth"></div>
               </ul>
             </div>
             <div class="selectcity" v-if="normalCityList.length > 0 && normalAreaList.length == 0">
               <h1>选择城市</h1>
               <ul id="selectcityUl">
-                <li @touchend="hotAddressListChoose(addtype == 0 ?  searchList.searchStartPro : searchList.searchEndPro,2)"><div class="shouzimu"></div><h3 v-html="addtype == 0 ? '全' + searchList.searchStartPro : '全' + searchList.searchEndPro"></h3></li>
-                <li v-for="(item ,index) in normalCityList" :class="item.checked ? 'addCheckTrue' : ''" @touchend="chooseCity(item,index)"><div class="shouzimu">{{item.PinyinFirst}}</div>{{item.region}}</li>
+                <li @click="hotAddressListChoose(addtype == 0 ?  searchList.searchStartPro : searchList.searchEndPro,2)"><div class="shouzimu"></div><h3 v-html="addtype == 0 ? '全' + searchList.searchStartPro : '全' + searchList.searchEndPro"></h3></li>
+                <li v-for="(item ,index) in normalCityList" :class="item.checked ? 'addCheckTrue' : ''" @click="chooseCity(item,index)"><div class="shouzimu">{{item.PinyinFirst}}</div>{{item.region}}</li>
                 <div class="clearBoth"></div>
               </ul>
             </div>
             <div class="selectarea" v-if="normalAreaList.length > 0">
               <h1>选择区/县</h1>
               <ul id="selectareaUl">
-                <li @touchend="hotAddressListChoose(addtype == 0 ?  searchList.searchStartCity : searchList.searchEndCity,2)"><div class="shouzimu"></div><h3 v-html="addtype == 0 ? '全' + searchList.searchStartCity : '全' + searchList.searchEndCity"></h3></li>
-                <li v-for="(item ,index) in normalAreaList" :class="item.checked ? 'addCheckTrue' : ''" @touchend="hotAddressListChoose(item,1)"><div class="shouzimu">{{item.PinyinFirst}}</div>{{item.region}}</li>
+                <li @click="hotAddressListChoose(addtype == 0 ?  searchList.searchStartCity : searchList.searchEndCity,2)"><div class="shouzimu"></div><h3 v-html="addtype == 0 ? '全' + searchList.searchStartCity : '全' + searchList.searchEndCity"></h3></li>
+                <li v-for="(item ,index) in normalAreaList" :class="item.checked ? 'addCheckTrue' : ''" @click="hotAddressListChoose(item,1)"><div class="shouzimu">{{item.PinyinFirst}}</div>{{item.region}}</li>
                 <div class="clearBoth"></div>
               </ul>
             </div>
             <div class="scrollAZ" v-if="normalCityList.length  ==  0 && normalAreaList.length == 0">
               <ul>
-                <li @touchend="scrollAddress(index)" v-for="(item,index) in PinyinFirstList"> {{item.PinyinFirst}}</li>
+                <li @click="scrollAddress(index)" v-for="(item,index) in PinyinFirstList"> {{item.PinyinFirst}}</li>
               </ul>
             </div>
           </div>
