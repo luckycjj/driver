@@ -1103,6 +1103,7 @@
     bottom:0;
     background: white;
     width:100%;
+    padding-bottom: 0.5rem;
   }
   #errorabnormalTitle p,#errorpriceTitle p,#cancelReasonTitle p,#driverResultTitle p{
     width:100%;

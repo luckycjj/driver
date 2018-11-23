@@ -5,7 +5,7 @@
       任务
     </div>
     <div id="DayTime">
-        <div class="li" v-for="(item,index) in dayList" :style="{width:10/ dayList.length + 'rem'}" @touchend="dayLook(index)">
+        <div class="li" v-for="(item,index) in dayList" :style="{width:10/ dayList.length + 'rem',color:item.clas ? '#666' : '#cccccc'}" @touchend="dayLook(index)">
           {{item.name}}
         </div>
       <div class="clearBoth"></div>
@@ -68,13 +68,16 @@
         }],
         dayList:[{
           name:"前一天",
-          number:0
+          number:0,
+          clas:true,
         },{
           name:"",
-          number:0
+          number:0,
+          clas:true,
         },{
           name:"后一天",
-          number:0
+          number:0,
+          clas:true,
         }],
         searchList:[],
         zuizaoDay:"",
@@ -82,6 +85,7 @@
         searchDateBox:false,
         tabShow:0,
         driverType:0,
+        mescrollArr:null
       }
     },
     mounted:function () {
@@ -111,6 +115,19 @@
       androidIos.bridge(_this);
     },
     methods:{
+      tabColor:function () {
+        var _this = this;
+        if(_this.dayList[1].name == _this.searchList[0].value ){
+            _this.dayList[0].clas = false;
+        }else{
+          _this.dayList[0].clas = true;
+        }
+        if(_this.dayList[1].name == _this.searchList[_this.searchList.length - 1].value ){
+          _this.dayList[2].clas = false;
+        }else{
+          _this.dayList[2].clas = true;
+        }
+      },
       dayLook:function (index) {
         var _this = this;
          if(index == 1){
@@ -127,6 +144,8 @@
             if((new Date(lastTime.replace(/-/g,'/'))).getTime() >= (new Date(_this.zuizaoDay.replace(/-/g,'/'))).getTime()){
               _this.dayList[1].name = lastTime;
               sessionStorage.setItem("orderTime",_this.dayList[1].name);
+              _this.tabColor();
+              _this.mescrollArr[0].resetUpScroll();
             }
          }else if(index == 2){
            var date = new Date(_this.dayList[1].name.replace(/-/g,'/'));
@@ -134,6 +153,8 @@
            if((new Date(nextTime.replace(/-/g,'/'))).getTime() <= (new Date(_this.zuiwanDay.replace(/-/g,'/'))).getTime()){
              _this.dayList[1].name = nextTime;
              sessionStorage.setItem("orderTime",_this.dayList[1].name);
+             _this.tabColor();
+             _this.mescrollArr[0].resetUpScroll();
            }
          }
       },
@@ -145,6 +166,8 @@
           }
         }
         _this.searchDateBox = false;
+        _this.tabColor();
+        _this.mescrollArr[0].resetUpScroll();
         sessionStorage.setItem("orderTime",_this.dayList[1].name);
       },
       circleChooese:function (index) {
@@ -159,9 +182,11 @@
         var date = new Date();
         var xingqi = date.getDay();
         var searchList = [];
-        for(var i = xingqi ; i < 7 + xingqi ; i++){
-          if(i == xingqi){
+        var number = 3;
+        for(var i = xingqi - number ; i < 7 + xingqi ; i++){
+          if(i == xingqi - number){
              _this.zuizaoDay = _this.getTime(date.getTime() - (xingqi - i)*24*60*60*1000);
+             console.log( _this.zuizaoDay)
           }
           if(i ==  6 + xingqi ){
             _this.zuiwanDay = _this.getTime(date.getTime() - (xingqi - i)*24*60*60*1000);
@@ -173,6 +198,7 @@
             })
         }
         _this.searchList = searchList;
+        _this.tabColor();
       },
       getTime:function (time) {
          var date = new Date(time);
@@ -185,11 +211,10 @@
         if(trackTap != undefined){
           _this.tabShow = trackTap*1;
         }
-        /*  $('.wrapper').navbarscroll({defaultSelect:_this.tabShow});*/
         var curNavIndex = _this.tabShow;
-        var mescrollArr=new Array(_this.list.length);//4个菜单所对应的4个mescroll对象
+        _this.mescrollArr=new Array(_this.list.length);//4个菜单所对应的4个mescroll对象
         //初始化首页
-        mescrollArr[_this.tabShow]=initMescroll("mescroll" + _this.tabShow, "dataList" + _this.tabShow);
+        _this.mescrollArr[_this.tabShow]=initMescroll("mescroll" + _this.tabShow, "dataList" + _this.tabShow);
 
         /*初始化菜单*/
         $("#trackTab li").click(function(){
@@ -199,15 +224,15 @@
             //更改列表条件
             //隐藏当前列表和回到顶部按钮
             $("#mescroll"+curNavIndex).hide();
-            mescrollArr[curNavIndex].hideTopBtn();
+            _this.mescrollArr[curNavIndex].hideTopBtn();
             //显示对应的列表
             $("#mescroll"+i).show();
             //取出菜单所对应的mescroll对象,如果未初始化则初始化
-            if(mescrollArr[i]==null){
-              mescrollArr[i]=initMescroll("mescroll"+i, "dataList"+i);
+            if(_this.mescrollArr[i]==null){
+              _this.mescrollArr[i]=initMescroll("mescroll"+i, "dataList"+i);
             }else{
               //检查是否需要显示回到到顶按钮
-              var curMescroll=mescrollArr[i];
+              var curMescroll=_this.mescrollArr[i];
               var curScrollTop=curMescroll.getScrollTop();
               if(curScrollTop>=curMescroll.optUp.toTop.offset){
                 curMescroll.showTopBtn();
@@ -231,7 +256,7 @@
               noMoreSize: 4, //如果列表已无数据,可设置列表的总数量要大于半页才显示无更多数据;避免列表数据过少(比如只有一条数据),显示无更多数据会不好看; 默认5
               empty: {
                 icon: require("../images/nojilu.png"),
-                tip: "暂无订单", //提示
+                tip: "暂无任务", //提示
               },
               clearEmptyId: clearEmptyId, //相当于同时设置了clearId和empty.warpId; 简化写法;默认null; 注意vue中不能配置此项
               toTop:{ //配置回到顶部按钮
@@ -251,11 +276,11 @@
           //联网加载数据
           var dataIndex=curNavIndex; //记录当前联网的nav下标,防止快速切换时,联网回来curNavIndex已经改变的情况;
           getListDataFromNet(dataIndex, page.num, page.size, function(pageData){
-            mescrollArr[dataIndex].endSuccess(pageData.length);
+            _this.mescrollArr[dataIndex].endSuccess(pageData.length);
             setListData(pageData,dataIndex);
           }, function(){
             //联网失败的回调,隐藏下拉刷新和上拉加载的状态;
-            mescrollArr[dataIndex].endErr();
+            _this.mescrollArr[dataIndex].endErr();
           });
         }
         function setListData(pageData,dataIndex){
@@ -278,7 +303,8 @@
                   page:pageNum,
                   size:pageSize,
                   type:1,
-                  state:curNavIndex == 0 ? '' : curNavIndex == 1 ? '5' :curNavIndex == 2 ? '6' :curNavIndex == 3 ? '7' :'',
+                  state:10,
+                  date:_this.dayList[1].name,
                   userCode:sessionStorage.getItem("token"),
                   source:sessionStorage.getItem("source")
                 }),

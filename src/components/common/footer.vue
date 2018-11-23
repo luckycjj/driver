@@ -2,7 +2,7 @@
   <div id="footer">
     <ul>
       <li :style="{width:100 /  (items.length) + '%'}" v-for='(item,index) of items' :class='[{on:index === idx} ]' @touchend="$router.push(item.push)">
-        <div class="imgBox"  :class='[ item.cls , {imgSure:index === idx} ]'><div :style="{marginRight:item.marginRight}" class="corner" v-show="index == 0&& item.number > 0">{{item.number}}</div></div>
+        <div class="imgBox"  :class='[ item.cls , {imgSure:index === idx} ]'><div :style="{marginRight:item.marginRight}" class="corner" v-show="item.number > 0">{{item.number}}</div></div>
         <div id="footerUserTX" v-if="index == items.length - 1" :style="{display: item.show ? 'block' : 'none'}"></div>
         {{item.name}}
       </li>
@@ -96,7 +96,7 @@
               if(_this.type == 1){
                 _this.items[2].show = false;
               }else{
-                _this.items[2].show = false;
+                _this.items[3].show = false;
               }
               $.ajax({
                 type: "POST",
@@ -110,6 +110,14 @@
                 timeout: 30000,
                 success: function (driverBottomIcon) {
                   if (driverBottomIcon.success == "1") {
+                    if(JSON.parse(sessionStorage.getItem("driverMessage")).driverType == 2){
+                      _this.items[3].show = driverBottomIcon.myFlag == 1 ? true : false;
+                      _this.items[0].number = driverBottomIcon.taskCount *1;
+                      _this.items[1].number = driverBottomIcon.executingCount *1;
+                    }else{
+                      _this.items[0].number = driverBottomIcon.executingCount *1;
+                      _this.items[2].show = driverBottomIcon.myFlag == 1 ? true : false;
+                    }
                     _this.$nextTick(function () {
                       _this.marginWidth();
                       sessionStorage.setItem("driverBottomIcon",JSON.stringify(_this.items));
@@ -131,7 +139,7 @@
                 _this.items[2].show = true;
                 _this.items[0].number = 0;
               }else{
-                _this.items[2].show = true;
+                _this.items[3].show = true;
                 _this.items[0].number = 0;
               }
               _this.$nextTick(function () {

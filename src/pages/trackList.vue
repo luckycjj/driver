@@ -178,7 +178,7 @@
                        page:pageNum,
                        size:pageSize,
                        type:1,
-                       state:curNavIndex == 0 ? '' : curNavIndex == 1 ? '5' :curNavIndex == 2 ? '6' :curNavIndex == 3 ? '7' :'',
+                       state:11,
                        userCode:sessionStorage.getItem("token"),
                        source:sessionStorage.getItem("source")
                      }),

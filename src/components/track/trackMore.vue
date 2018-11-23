@@ -59,7 +59,7 @@
               </div>
             </div>
           </div>
-          <!--<div class="error" v-if="type > 1 && type < 8 && peopleType == 1">
+          <div class="error" v-if="type > 1 && type < 8 && showMap">
             <div class="errorFirst" @touchend="errorFirst()">
                异常反馈
             </div>
@@ -67,7 +67,7 @@
                费用反馈
             </div>
             <div class="clearBoth"></div>
-          </div>-->
+          </div>
           <div class="number">
             运单编号：{{item.number}}<br>
             下单时间：{{item.time}}
@@ -88,7 +88,7 @@
               <button v-if="type==8 && endtype == '0' && actFlag == 'Y'" @touchend="qianshou(endtype)">交接</button>
               <button v-if="type==8 && endtype == '1'" @touchend="qianshou(endtype)">签收</button>
               <button v-if="type==9 && pdlist[0].exp_sign == 1" @touchend="uploadbill(1)">确认异常签收</button>
-              <button v-if="type==9 && pdlist[0].exp_sign == 0" @touchend="uploadbill(0)">上传单据</button>
+              <!--<button v-if="type==9 && pdlist[0].exp_sign == 0" @touchend="uploadbill(0)">上传单据</button>-->
               <div class="clearBoth"></div>
             </div>
             <div class="go"  v-else>
@@ -1233,6 +1233,7 @@
     bottom:0;
     background: white;
     width:100%;
+    padding-bottom: 0.5rem;
   }
   #errorabnormalTitle p,#errorpriceTitle p,#cancelReasonTitle p,#driverResultTitle p{
     width:100%;

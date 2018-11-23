@@ -136,7 +136,11 @@
                 }),80);
                 _this.$cjj("登录成功");
                 setTimeout(function () {
-                  _this.$router.push({ path: '/taskMoreHomePage'});
+                  if(JSON.parse(sessionStorage.getItem("driverMessage")).driverType == 2){
+                    _this.$router.push({ path: '/searchDayOrder'});
+                  }else{
+                    _this.$router.push({ path: '/taskMoreHomePage'});
+                  }
                 },500)
               }else{
                 androidIos.second(login.message);
