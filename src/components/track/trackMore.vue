@@ -738,7 +738,8 @@
               if(driverOut.success=="1" ||driverOut.success == ""){
                 _this.$cjj("出发成功");
                 setTimeout(function () {
-                  _this.mescroll.resetUpScroll();
+                  sessionStorage.removeItem("addPageList");
+                  _this.$router.push({path:"/trackList"});
                 },500)
               }else{
                 androidIos.second(driverOut.message);
