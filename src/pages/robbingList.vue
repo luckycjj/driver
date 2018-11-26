@@ -10,7 +10,7 @@
       </div>
       <div id="setHis">
         <ul>
-          <li :style="{backgroundImage:'url('+item.icon+')'}" v-for="(item,index) in setHis" @touchend="findProHis(item)">{{item.name}}</li>
+          <li :style="{backgroundImage:'url('+item.icon+')'}" v-for="(item,index) in setHis" @click="findProHis(item)">{{item.name}}</li>
           <div clas="clearBoth"></div>
         </ul>
       </div>

@@ -11,28 +11,28 @@
       <div class="chooseTap">
         <p>用车类型</p>
         <ul>
-          <li v-for="(item,index) in proList" :class="item.check ? 'choose' : ''" @touchend="tabClick(index,proList,1)">{{item.displayName}}</li>
+          <li v-for="(item,index) in proList" :class="item.check ? 'choose' : ''" @click="tabClick(index,proList,1)">{{item.displayName}}</li>
           <div class="clearBoth"></div>
         </ul>
       </div>
       <div class="chooseTap">
         <p>装货时间</p>
         <ul>
-          <li v-for="(item,index) in timeType" :class="item.check ? 'choose' : ''" @touchend="tabClick(index,timeType)">{{item.displayName}}</li>
+          <li v-for="(item,index) in timeType" :class="item.check ? 'choose' : ''" @click="tabClick(index,timeType)">{{item.displayName}}</li>
           <div class="clearBoth"></div>
         </ul>
       </div>
       <div class="chooseTap" v-if="show">
         <p>车长<span>(米,可多选)</span></p>
         <ul>
-          <li class="carlengthLi" v-for="(item,index) in carLength" :class="item.check ? 'choose' : ''" @touchend="tabClicks(index,carLength,2)">{{item.displayName}}</li>
+          <li class="carlengthLi" v-for="(item,index) in carLength" :class="item.check ? 'choose' : ''" @click="tabClicks(index,carLength,2)">{{item.displayName}}</li>
           <div class="clearBoth"></div>
         </ul>
       </div>
       <div class="chooseTap"  v-if="show">
         <p>车型<span>(可多选)</span></p>
         <ul>
-          <li v-for="(item,index) in carModel" :class="item.check ? 'choose' : ''" @touchend="tabClicks(index,carModel)">{{item.displayName}}</li>
+          <li v-for="(item,index) in carModel" :class="item.check ? 'choose' : ''" @click="tabClicks(index,carModel)">{{item.displayName}}</li>
           <div class="clearBoth"></div>
         </ul>
       </div>
@@ -486,7 +486,7 @@
              if(GETORDERSETUSER.proList.length > 0){
                for(var x = 0 ; x < GETORDERSETUSER.proList.length;x++){
                  for(var i = 0 ; i < _this.proList.length ; i++){
-                   if(GETORDERSETUSER.proList[x].value ==  _this.proList[i].value){
+                   if(GETORDERSETUSER.proList[x].value ===  _this.proList[i].value){
                      _this.proList[i].check = true;
                      if(_this.proList[i].value != "e5e602a22c5a4689b8d151c76a4d1179"){
                        _this.show = true;
@@ -500,7 +500,7 @@
              }
              for(var x = 0 ; x < GETORDERSETUSER.timeType.length;x++){
                for(var i = 0 ; i < _this.timeType.length ; i++){
-                 if(GETORDERSETUSER.timeType[x].value ==  _this.timeType[i].value){
+                 if(GETORDERSETUSER.timeType[x].value ===  _this.timeType[i].value){
                    _this.timeType[i].check = true;
                    break;
                  }
@@ -508,7 +508,7 @@
              }
              for(var x = 0 ; x < GETORDERSETUSER.carLength.length;x++){
                for(var i = 0 ; i < _this.carLength.length ; i++){
-                 if(GETORDERSETUSER.carLength[x].value ==  _this.carLength[i].value){
+                 if(GETORDERSETUSER.carLength[x].value ===  _this.carLength[i].value){
                    _this.carLength[i].check = true;
                    break;
                  }
