@@ -58,7 +58,7 @@
             },{
               number:0,
               marginRight:0,
-              cls: "message",
+              cls: "order",
               name: "已执行",
               push: "/trackList"
             },{
@@ -210,6 +210,9 @@
      }
      .user{
        background-image: url("../../images/user.png");
+     }
+     .order{
+        background-image: url("../../images/orderBottom.png");
      }
      .imgSure{
        background-position: 0 100%!important;
