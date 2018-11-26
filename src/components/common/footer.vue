@@ -193,7 +193,7 @@
        position: absolute;
        top:0;
        right:0rem;
-       padding: 0.01rem 0.2rem;
+       padding: 0.02rem 0.2rem;
        border-radius: 0.3rem;
      }
      .robbing{
