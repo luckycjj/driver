@@ -180,7 +180,7 @@
      .imgBox{
        width:0.67rem;
        height: 0.67rem;
-       margin: 0.12rem  auto 0 auto;
+       margin: 0.24rem  auto 0 auto;
        background-position: 0 0;
        background-size: 0.67rem 1.34rem;
        background-repeat: no-repeat;
@@ -225,7 +225,8 @@
       text-align: center;
       height: 1.3rem;
       color:#666;
-      font-size: 0.3125rem;
+      font-size: 0.24rem;
+      line-height: 0.35rem;
       background: white;
       position: relative;
     }
