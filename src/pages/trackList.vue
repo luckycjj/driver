@@ -1,8 +1,8 @@
 <template>
   <div id="trackList" style="top:0rem">
-    <div id="title" v-title data-title="已执行"></div>
+    <div id="title" v-title data-title="执行中"></div>
     <div id="top">
-      已执行
+      执行中
       <div class="messageLDbox" @touchend="orderScreen()">
         <img src="../images/orderScreen.png">
       </div>

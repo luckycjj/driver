@@ -59,7 +59,7 @@
               number:0,
               marginRight:0,
               cls: "order",
-              name: "已执行",
+              name: "执行中",
               push: "/trackList"
             },{
               number:0,
