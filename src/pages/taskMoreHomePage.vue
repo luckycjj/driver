@@ -642,28 +642,28 @@
 
         go:function () {
           var self = this;
-          var map = new AMap.Map("container", {
-            resizeEnable: true,
-            center: [self.peopleJ, self.peopleW],//地图中心点
-            zoom: 13 //地图显示的缩放级别
-          });
+          var map = new AMap.Map("container", {});
           map.on("click",function () {
             self.boxShow = false;
           })
-          AMap.plugin(['AMap.Scale'],
-            function(){
-              map.addControl(new AMap.Scale());
-            });
-          //构造路线导航类
-          var driving = new AMap.Driving({
+          var truckOptions = {
             map: map,
-            panel: "panel",
-            ferry:1,
-          });
+            policy:0,
+            size:1,
+            city:'beijing',
+            panel:'panel',
+            province:"",
+            number:""
+          };
+          //构造路线导航类
+          var driving = new AMap.TruckDriving(truckOptions);
           var  ordertype =  self.listBox.status;
           if(self.listBox.deliAddrPoint!= "" && self.listBox.deliAddrPoint != undefined  && self.listBox.arriAddrPoint!= ""  && self.listBox.arriAddrPoint != undefined ){
             if(ordertype ==  "31"   ||ordertype ==  "32"   || ordertype ==  "33"){
-              driving.search([self.peopleJ ,self.peopleW],[self.listBox.arriAddrPoint.split(",")[0] , self.listBox.arriAddrPoint.split(",")[1]], function(status, result) {
+              var path = [];
+              path.push({lnglat:[self.peopleJ, self.peopleW]});//起点
+              path.push({lnglat:[self.listBox.arriAddrPoint.split(",")[0],self.listBox.arriAddrPoint.split(",")[1]]});//途径
+              driving.search(path, function(status, result) {
                 var sss = setInterval(function () {
                   if($(".amap-lib-marker-to").length>0){
                     clearInterval(sss);
@@ -673,7 +673,10 @@
                 },100)
               });
             }else if(ordertype*1 > 10 && ordertype*1 < 31){
-              driving.search([self.peopleJ ,self.peopleW],[self.listBox.deliAddrPoint.split(",")[0] , self.listBox.deliAddrPoint.split(",")[1]], function(status, result) {
+              var path = [];
+              path.push({lnglat:[self.peopleJ, self.peopleW]});//起点
+              path.push({lnglat:[self.listBox.deliAddrPoint.split(",")[0],self.listBox.deliAddrPoint.split(",")[1]]});//途径
+              driving.search(path, function(status, result) {
                 var sss = setInterval(function () {
                   if($(".amap-lib-marker-to").length>0){
                     clearInterval(sss);
@@ -683,7 +686,10 @@
                 },100)
               });
             }else{
-              driving.search([self.listBox.deliAddrPoint.split(",")[0] , self.listBox.deliAddrPoint.split(",")[1]],[self.listBox.arriAddrPoint.split(",")[0] , self.listBox.arriAddrPoint.split(",")[1]], function(status, result) {
+              var path = [];
+              path.push({lnglat:[self.listBox.deliAddrPoint.split(",")[0], self.listBox.deliAddrPoint.split(",")[1]]});//起点
+              path.push({lnglat:[self.listBox.arriAddrPoint.split(",")[0],self.listBox.arriAddrPoint.split(",")[1]]});//途径
+              driving.search(path, function(status, result) {
                 var sss = setInterval(function () {
                   if($(".amap-lib-marker-to").length>0){
                     clearInterval(sss);
