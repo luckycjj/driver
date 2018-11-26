@@ -50,7 +50,7 @@
              passwordSure:"",
              invitation :"",
              verification:"",
-             checked:true,
+             checked:false,
              lookPassWord:false,
              lookPassWord1:false,
              name:"获取验证码",
