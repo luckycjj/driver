@@ -184,6 +184,9 @@
            }
          }
       },
+      ten:function (number) {
+        return number * 1 < 10 ? '0' + number : number;
+      },
       searchDateGo:function () {
         var _this = this;
         for(var i = 0 ; i < _this.searchList.length ; i++){
@@ -267,8 +270,9 @@
         });
       },
       getTime:function (time) {
+        var _this = this;
          var date = new Date(time);
-         return  date.getFullYear() + "-" + ( date.getMonth() + 1 ) + "-" + date.getDate();
+         return  date.getFullYear() + "-" + _this.ten(( date.getMonth() + 1 )) + "-" + _this.ten(date.getDate());
       },
       go:function () {
         var _this = this;
