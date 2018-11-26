@@ -54,8 +54,8 @@
                 <div class="clearBoth"></div>
               </ul>
               <div class="address" style="border:none;">
-                <h1>提货地址：{{item.pickMessage.address}}</h1>
-                <h1>发货地址：{{item.endMessage.address}}</h1>
+                <h1><h6 >提货地址：</h6><h6 style="width:7rem;">{{item.pickMessage.address}}</h6><div class="clearBoth"></div></h1>
+                <h1><h6>发货地址：</h6><h6 style="width:7rem;">{{item.endMessage.address}}</h6><div class="clearBoth"></div></h1>
               </div>
             </div>
           </div>
@@ -1437,6 +1437,11 @@
     padding-bottom: 0.5rem;
   }
   .topStatus  .address h1{
+    color:#666;
+    font-size: 0.33rem;
+  }
+  .topStatus  .address h1 h6{
+    float: left;
     color:#666;
     font-size: 0.33rem;
   }
