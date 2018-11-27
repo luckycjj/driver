@@ -99,7 +99,7 @@
       background-image:none;
     }
   }
-  #track .amap-lib-marker-from {
+  /*#track .amap-lib-marker-from {
     background-image:none;
   }
   #track .amap-lib-marker-to{
@@ -120,6 +120,6 @@
   #track .amaplibmarkerfroms{
     background-image: url("../images/start1.png")!important;
     background-size:cover!important;
-  }
+  }*/
 
 </style>

@@ -71,6 +71,7 @@
         });
         if(ordertype ==  "0" || ordertype ==  "10"  || ordertype ==  "20" || ordertype == "31" || ordertype =="32" || ordertype=="33" || ordertype == '41'|| ordertype == '42'|| ordertype == '43' || ordertype == '50' || ordertype == '60'){
           var map = new AMap.Map("container", {});
+          map.clearMap();
           //构造路线导航类
           var ordertyper = _this.carList.ordertype;
           var truckOptions = {
@@ -88,41 +89,54 @@
             path.push({lnglat:[_this.carList.peopleJ, _this.carList.peopleW]});//起点
             path.push({lnglat:[_this.carList.endJ,_this.carList.endW]});//途径
             driving.search(path, function(status, result) {
-              var sss = setInterval(function () {
-                if($(".amap-lib-marker-to").length>0){
-                  clearInterval(sss);
-                  $("#container").find(".amap-lib-marker-to").addClass("amaplibmarkerto");
-                  $("#container").find(".amap-lib-marker-from").addClass("amaplibmarkerfroms");
-                }
-              },100)
+              var marker;
+              marker = new AMap.Marker({
+                icon:require('../../images/start1.png'),
+                position: [_this.carList.peopleJ, _this.carList.peopleW],
+              });
+              marker.setMap(map);
+              var marker1;
+              marker1 = new AMap.Marker({
+                icon:require('../../images/end.png'),
+                position: [_this.carList.endJ,_this.carList.endW],
+              });
+              marker1.setMap(map);
             });
           }else if(ordertyper ==  "20"){
             var path = [];
             path.push({lnglat:[_this.carList.peopleJ, _this.carList.peopleW]});//起点
             path.push({lnglat:[_this.carList.startJ,_this.carList.startW]});//途径
             driving.search(path ,function(status, result) {
-              var sss = setInterval(function () {
-                if($(".amap-lib-marker-to").length>0){
-                  clearInterval(sss);
-                  $("#container").find(".amap-lib-marker-to").addClass("amaplibmarkertos");
-                  $("#container").find(".amap-lib-marker-from").addClass("amaplibmarkerfroms");
-                }
-              },100)
-
+              var marker;
+              marker = new AMap.Marker({
+                icon:require('../../images/start1.png'),
+                position: [_this.carList.peopleJ, _this.carList.peopleW],
+              });
+              marker.setMap(map);
+              var marker1;
+              marker1 = new AMap.Marker({
+                icon:require('../../images/end1.png'),
+                position: [_this.carList.startJ,_this.carList.startW],
+              });
+              marker1.setMap(map);
             });
           }else{
             var path = [];
             path.push({lnglat:[_this.carList.startJ, _this.carList.startW]});//起点
             path.push({lnglat:[_this.carList.endJ,_this.carList.endW]});//途径
             driving.search(path, function(status, result) {
-              var sss = setInterval(function () {
-                if($(".amap-lib-marker-to").length>0){
-                  clearInterval(sss);
-                  $("#container").find(".amap-lib-marker-to").addClass("amaplibmarkerto");
-                  $("#container").find(".amap-lib-marker-from").addClass("amaplibmarkertos");
-                }
-              },100)
-
+              var marker;
+              marker = new AMap.Marker({
+                icon:require('../../images/end1.png'),
+                position: [_this.carList.startJ, _this.carList.startW],
+              });
+              marker.setMap(map);
+              var marker1;
+              marker1 = new AMap.Marker({
+                icon:require('../../images/end.png'),
+                position: [_this.carList.endJ,_this.carList.endW],
+              });
+              marker1.setMap(map);
             });
           }
           _this.setTime = setInterval(function () {
@@ -151,31 +165,42 @@
                 }
               }
             });
+            map.clearMap();
             if(ordertyper ==  "31"   ||ordertyper ==  "32"   || ordertyper ==  "33" ){
               var path = [];
               path.push({lnglat:[_this.carList.peopleJ, _this.carList.peopleW]});//起点
               path.push({lnglat:[_this.carList.endJ,_this.carList.endW]});//途径
               driving.search(path, function(status, result) {
-                var sss = setInterval(function () {
-                  if($(".amap-lib-marker-to").length>0){
-                    clearInterval(sss);
-                    $("#container").find(".amap-lib-marker-to").addClass("amaplibmarkerto");
-                    $("#container").find(".amap-lib-marker-from").addClass("amaplibmarkerfroms");
-                  }
-                },100)
+                var marker;
+                marker = new AMap.Marker({
+                  icon:require('../../images/start1.png'),
+                  position: [_this.carList.peopleJ, _this.carList.peopleW],
+                });
+                marker.setMap(map);
+                var marker1;
+                marker1 = new AMap.Marker({
+                  icon:require('../../images/end.png'),
+                  position: [_this.carList.endJ,_this.carList.endW],
+                });
+                marker1.setMap(map);
               });
             }else if(ordertyper ==  "20"){
               var path = [];
               path.push({lnglat:[_this.carList.peopleJ, _this.carList.peopleW]});//起点
               path.push({lnglat:[_this.carList.startJ,_this.carList.startW]});//途径
               driving.search(path, function(status, result) {
-                var sss = setInterval(function () {
-                  if($(".amap-lib-marker-to").length>0){
-                    clearInterval(sss);
-                    $("#container").find(".amap-lib-marker-to").addClass("amaplibmarkertos");
-                    $("#container").find(".amap-lib-marker-from").addClass("amaplibmarkerfroms");
-                  }
-                },100)
+                var marker;
+                marker = new AMap.Marker({
+                  icon:require('../../images/start1.png'),
+                  position: [_this.carList.peopleJ, _this.carList.peopleW],
+                });
+                marker.setMap(map);
+                var marker1;
+                marker1 = new AMap.Marker({
+                  icon:require('../../images/end1.png'),
+                  position: [_this.carList.startJ,_this.carList.startW],
+                });
+                marker1.setMap(map);
 
               });
             }else{
@@ -183,13 +208,18 @@
               path.push({lnglat:[_this.carList.startJ, _this.carList.startW]});//起点
               path.push({lnglat:[_this.carList.endJ,_this.carList.endW]});//途径
               driving.search(path, function(status, result) {
-                var sss = setInterval(function () {
-                  if($(".amap-lib-marker-to").length>0){
-                    clearInterval(sss);
-                    $("#container").find(".amap-lib-marker-to").addClass("amaplibmarkerto");
-                    $("#container").find(".amap-lib-marker-from").addClass("amaplibmarkertos");
-                  }
-                },100)
+                var marker;
+                marker = new AMap.Marker({
+                  icon:require('../../images/end1.png'),
+                  position: [_this.carList.startJ, _this.carList.startW],
+                });
+                marker.setMap(map);
+                var marker1;
+                marker1 = new AMap.Marker({
+                  icon:require('../../images/end.png'),
+                  position: [_this.carList.endJ,_this.carList.endW],
+                });
+                marker1.setMap(map);
 
               });
             }

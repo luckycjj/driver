@@ -658,45 +658,61 @@
           //构造路线导航类
           var driving = new AMap.TruckDriving(truckOptions);
           var  ordertype =  self.listBox.status;
+          map.clearMap();
           if(self.listBox.deliAddrPoint!= "" && self.listBox.deliAddrPoint != undefined  && self.listBox.arriAddrPoint!= ""  && self.listBox.arriAddrPoint != undefined ){
             if(ordertype ==  "31"   ||ordertype ==  "32"   || ordertype ==  "33"){
               var path = [];
               path.push({lnglat:[self.peopleJ, self.peopleW]});//起点
               path.push({lnglat:[self.listBox.arriAddrPoint.split(",")[0],self.listBox.arriAddrPoint.split(",")[1]]});//途径
               driving.search(path, function(status, result) {
-                var sss = setInterval(function () {
-                  if($(".amap-lib-marker-to").length>0){
-                    clearInterval(sss);
-                    $("#container").find(".amap-lib-marker-to").addClass("amaplibmarkerto");
-                    $("#container").find(".amap-lib-marker-from").addClass("amaplibmarkerfroms");
-                  }
-                },100)
+                var marker;
+                marker = new AMap.Marker({
+                  icon:require('../images/start1.png'),
+                  position: [self.peopleJ,self.peopleW],
+                });
+                marker.setMap(map);
+                var marker1;
+                marker1 = new AMap.Marker({
+                  icon:require('../images/end.png'),
+                  position: [self.listBox.arriAddrPoint.split(",")[0],self.listBox.arriAddrPoint.split(",")[1]],
+                });
+                marker1.setMap(map);
               });
             }else if(ordertype*1 > 10 && ordertype*1 < 31){
               var path = [];
               path.push({lnglat:[self.peopleJ, self.peopleW]});//起点
               path.push({lnglat:[self.listBox.deliAddrPoint.split(",")[0],self.listBox.deliAddrPoint.split(",")[1]]});//途径
               driving.search(path, function(status, result) {
-                var sss = setInterval(function () {
-                  if($(".amap-lib-marker-to").length>0){
-                    clearInterval(sss);
-                    $("#container").find(".amap-lib-marker-to").addClass("amaplibmarkertos");
-                    $("#container").find(".amap-lib-marker-from").addClass("amaplibmarkerfroms");
-                  }
-                },100)
+                var marker;
+                marker = new AMap.Marker({
+                  icon:require('../images/start1.png'),
+                  position: [self.peopleJ, self.peopleW],
+                });
+                marker.setMap(map);
+                var marker1;
+                marker1 = new AMap.Marker({
+                  icon:require('../images/end1.png'),
+                  position: [self.listBox.deliAddrPoint.split(",")[0],self.listBox.deliAddrPoint.split(",")[1]],
+                });
+                marker1.setMap(map);
               });
             }else{
               var path = [];
               path.push({lnglat:[self.listBox.deliAddrPoint.split(",")[0], self.listBox.deliAddrPoint.split(",")[1]]});//起点
               path.push({lnglat:[self.listBox.arriAddrPoint.split(",")[0],self.listBox.arriAddrPoint.split(",")[1]]});//途径
               driving.search(path, function(status, result) {
-                var sss = setInterval(function () {
-                  if($(".amap-lib-marker-to").length>0){
-                    clearInterval(sss);
-                    $("#container").find(".amap-lib-marker-to").addClass("amaplibmarkerto");
-                    $("#container").find(".amap-lib-marker-from").addClass("amaplibmarkertos");
-                  }
-                },100)
+                var marker;
+                marker = new AMap.Marker({
+                  icon:require('../images/end1.png'),
+                  position: [self.listBox.deliAddrPoint.split(",")[0], self.listBox.deliAddrPoint.split(",")[1]],
+                });
+                marker.setMap(map);
+                var marker1;
+                marker1 = new AMap.Marker({
+                  icon:require('../images/end.png'),
+                  position: [self.listBox.arriAddrPoint.split(",")[0],self.listBox.arriAddrPoint.split(",")[1]],
+                });
+                marker1.setMap(map);
               });
             }
           }
@@ -858,7 +874,7 @@
     #orderLogistics  .amap-lib-marker-to{
       background-image: none;
     }
-  #taskMoreHomePage .amaplibmarkerto{
+ /* #taskMoreHomePage .amaplibmarkerto{
     background-image: url("../images/end.png")!important;
     background-size:cover!important;
   }
@@ -873,7 +889,7 @@
   #taskMoreHomePage .amaplibmarkerfroms{
     background-image: url("../images/start1.png")!important;
     background-size:cover!important;
-  }
+  }*/
   #panel{
     display: none!important;
   }
