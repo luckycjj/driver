@@ -305,6 +305,9 @@
            }else if(index == 3){
              androidIos.addPageList();
              _this.$router.push({ path: '/track/qrcode',query:{ty:1}});
+           }else if(index == 4){
+               androidIos.addPageList();
+               _this.$router.push({path:"/lookImg",query:{vbillno:_this.listBox.vbillno}});
            }
         },
         errorAbnormalChange:function () {
@@ -559,6 +562,10 @@
                         icon:require("../images/lishi-4.png"),
                         name:"历史任务",
                         value:0,
+                      },{
+                        icon:require("../images/lookImgTrackMore.png"),
+                        name:"查看图片",
+                        value:4,
                       }]
                     }else if(_this.listBox.type >= 2 && _this.listBox.type < 8){
                       _this.tabList = [{
@@ -573,6 +580,10 @@
                         icon:require("../images/feiyong-3.png"),
                         name:"费用反馈",
                         value:2,
+                      },{
+                        icon:require("../images/lookImgTrackMore.png"),
+                        name:"查看图片",
+                        value:4,
                       }]
                     }else if(_this.listBox.type == 8){
                       _this.tabList = [{
@@ -583,12 +594,20 @@
                         icon:require("../images/erweima-2.png"),
                         name:"签收码",
                         value:3,
+                      },{
+                        icon:require("../images/lookImgTrackMore.png"),
+                        name:"查看图片",
+                        value:4,
                       }]
                     }else{
                       _this.tabList = [{
                         icon:require("../images/lishi-4.png"),
                         name:"历史任务",
                         value:0,
+                      },{
+                        icon:require("../images/lookImgTrackMore.png"),
+                        name:"查看图片",
+                        value:4,
                       }]
                     }
                   }
@@ -796,7 +815,7 @@
         upImg:function (type) {
           var _this = this;
           androidIos.addPageList();
-          _this.$router.push({path:'/upProductImg',query:{pk:_this.listBox.pkInvoice,type:type}});
+          _this.$router.push({path:'/upProductImg',query:{pk:_this.listBox.vbillno,type:type}});
         },
         addClass:function(obj,cls){//增加class
           var idJson = obj.className.split(" ");

@@ -18,6 +18,9 @@ import  trackS from '@/components/track/map'
 import  trackT from '@/components/track/qrcode'
 import  trackFo from  '@/components/track/uploadBill'
 import  trackSi from '@/components/track/uploadImg'
+import  electronicReceipt from '@/components/track/electronicReceipt'
+import  drawname from '@/components/track/drawname'
+import  lookImg from '@/components/track/lookImg'
 import  upProductImg from '@/components/track/upProductImg'
 import  histroyTrack from '@/components/track/histroyTrack'
 import  paddingTrack from '@/components/track/paddingTrack'
@@ -144,6 +147,11 @@ Vue.filter('orderTypeName', function(value) {
 export default new Router(
   {
   routes: [
+    {
+      path:'/lookImg',
+      name:'lookImg',
+      component:lookImg,
+    },
     {
       path:'/searchDayOrder',
       name:'searchDayOrder',
@@ -286,6 +294,8 @@ export default new Router(
       children: [
         {path: 'trackMore', component: trackF},
         {path: 'trackMore2', component: trackMore2},
+        {path: 'electronicReceipt', component: electronicReceipt},
+        {path: 'drawname', component: drawname},
         {path: 'map', component: trackS},
         {path: 'qrcode', component: trackT},
         {path:'uploadBill',component:trackFo},

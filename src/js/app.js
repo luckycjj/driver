@@ -521,30 +521,34 @@ var androidIos = {
       this[i] = obj[i];
     };
     this.canvas = document.createElement("canvas");
+    this.that.canvas =  this.canvas;
     this.el.appendChild(this.canvas);
     this.cxt = this.canvas.getContext("2d");
     this.canvas.width = this.el.clientWidth;
     this.canvas.height = this.el.clientHeight;
     this.cxt.fillStyle = this.background;
-    this.cxt.fillRect(0, 0, this.canvas.width, this.canvas.width);
+    this.cxt.fillRect(0, -20, this.canvas.width, this.canvas.height);
     this.cxt.strokeStyle = this.color;
     this.cxt.lineWidth = this.linewidth;
     this.cxt.lineCap = "round";
+    this.that.cxt = this.cxt;
     //开始绘制
     this.canvas.addEventListener("touchstart", function(e) {
       this.cxt.beginPath();
-      this.cxt.moveTo(e.changedTouches[0].pageX, e.changedTouches[0].pageY);
+      var height1 = document.getElementById("track").style.top.replace("rem","") * document.getElementsByTagName("html")[0].style.fontSize.replace("px","");
+      this.cxt.moveTo(e.changedTouches[0].pageX, e.changedTouches[0].pageY-height1);
     }.bind(this), false);
     //绘制中
     this.canvas.addEventListener("touchmove", function(e) {
-      this.cxt.lineTo(e.changedTouches[0].pageX, e.changedTouches[0].pageY);
+      var height1 = document.getElementById("track").style.top.replace("rem","")  * document.getElementsByTagName("html")[0].style.fontSize.replace("px","");
+      this.cxt.lineTo(e.changedTouches[0].pageX, e.changedTouches[0].pageY-height1);
       this.cxt.stroke();
     }.bind(this), false);
     //结束绘制
     this.canvas.addEventListener("touchend", function() {
       this.cxt.closePath();
     }.bind(this), false);
-    //清除画布
+   /* //清除画布
     this.clearEl.addEventListener("click", function() {
       this.cxt.clearRect(0, 0, this.canvas.width, this.canvas.height);
     }.bind(this), false);
@@ -552,7 +556,7 @@ var androidIos = {
     this.saveEl.addEventListener("click", function() {
       var imgBase64 = this.canvas.toDataURL();
       console.log(imgBase64);
-    }.bind(this), false);
+    }.bind(this), false);*/
   },
   checkText:function (text) {
     return text.replace(/[^\a-\z\A-\Z0-9\u4E00-\u9FA5\,\，\.\。\;\!\[\]\【\】\-]/g,'')

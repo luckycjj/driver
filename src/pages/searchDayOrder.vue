@@ -32,7 +32,7 @@
         <ul :id="'dataList' + index" class="data-list">
           <li v-for="(items,indexs) in item.prolist" @click="lookTrackMore(items.pkInvoice)">
             <h3 :class="'trackList' + items.status" v-html="items.status == 0 ? '待确认' : items.status == 10 ? '已确认': items.status == 20 ? '司机出发': items.status == 31 ? '提货到达': items.status == 32 ? '开始装货': items.status == 33 ? '开始运输': items.status == 41 ? '运输到达': items.status == 42 ? '开始卸货': items.status == 43 ? '卸货完毕': items.status == 50 ? '已签收': items.status == 60 ? '已拒绝': ''"></h3>
-            <h1>订单编号：{{items.vbillno}}</h1>
+            <h1>运单编号：{{items.vbillno}}</h1>
             <div class="proBox">
               <img v-if="items.ifUrgent == 'Y'" class="jinjiOrder" src="../images/jiaji.png">
               <img v-if="items.expFlag == 'Y'" class="yichangOrder" src="../images/yichang.png">

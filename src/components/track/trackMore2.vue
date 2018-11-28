@@ -3,6 +3,14 @@
     <div id="title" v-title data-title="任务详情"></div>
     <div id="container"></div>
     <div id="panel"></div>
+    <div id="tabList" style="top:2.5rem;">
+      <ul>
+        <li @click="tabClick(item.value)" v-for="(item,index) in tabList" :style="{backgroundImage:'url('+item.icon+')'}">
+          {{item.name}}
+          <div v-if="index != tabList.length - 1" class="hengxian"></div>
+        </li>
+      </ul>
+    </div>
     <div id="carrierDriver" v-if="showMap">
       <div class="carrierDriver"  v-for="car in carList">
         <div class="carrierDriverBox">
@@ -41,21 +49,22 @@
               <p :style="{backgroundImage: 'url(' + require('../../images/trackMoreIcon'+ type +'.png') + ')' }">{{item.orderValue}}</p>
               <div id="sure">
                 <div class="go gogogo" id="gogogo" v-if="peopleType==1">
-                  <button v-if="type==0" @touchend="tongyi()">同意</button>
-                  <button v-if="type==0"  class="upImg2" @touchend="jvjue()">拒绝</button>
-                  <button v-if="type==1" @touchend="chufa()">出发</button>
-                  <button v-if="type==2" @touchend="daoda(31)">提货到达</button>
-                  <button v-if="type==3" @touchend="daoda(32)">开始装货</button>
-                  <button v-if="type==4" @touchend="daoda(33)">装货完毕</button>
-                  <button v-if="type==4"  class="upImg" @touchend="upImg(0)">&nbsp;&nbsp;&nbsp;&nbsp;上传货品</button>
-                  <button v-if="type==5" @touchend="daoda(41)">运输到达</button>
-                  <button v-if="type==6" @touchend="daoda(42)">开始卸货</button>
-                  <button v-if="type==7"  @touchend="daoda(43)">卸货完毕</button>
-                  <button v-if="type==7"  class="upImg" @touchend="upImg(1)">&nbsp;&nbsp;&nbsp;&nbsp;上传货品</button>
-                  <button v-if="type==8 && endtype == '0' && actFlag == 'Y'" @touchend="qianshou(endtype)">交接</button>
-                  <button v-if="type==8 && endtype == '1'" @touchend="qianshou(endtype)">签收</button>
-                  <button v-if="type==9 && pdlist[0].exp_sign == 1" @touchend="uploadbill(1)">确认异常签收</button>
-                  <!--<button v-if="type==9 && pdlist[0].exp_sign == 0" @touchend="uploadbill(0)">上传单据</button>-->
+                  <button v-if="type==0" @click="tongyi()">同意</button>
+                  <button v-if="type==0"  class="upImg2" @click="jvjue()">拒绝</button>
+                  <button v-if="type==1" @click="chufa()">出发</button>
+                  <button v-if="type==2" @click="daoda(31)">提货到达</button>
+                  <button v-if="type==3" @click="daoda(32)">开始装货</button>
+                  <button v-if="type==4" @click="daoda(33)">装货完毕</button>
+                  <button v-if="type==4"  class="upImg" @click="upImg(0)">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;上传货品</button>
+                  <button v-if="type==5" @click="daoda(41)">运输到达</button>
+                  <button v-if="type==6" @click="daoda(42)">开始卸货</button>
+                  <button v-if="type==7"  @click="daoda(43)">卸货完毕</button>
+                  <button v-if="type==7"  class="upImg" @click="upImg(1)">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;上传货品</button>
+                  <button v-if="type==8 && endtype == '0' && actFlag == 'Y'" @click="qianshou(endtype)">交接</button>
+                  <button v-if="type==8 && endtype == '1'" @click="qianshou(endtype)">签收</button>
+                  <button v-if="type==9 && pdlist[0].exp_sign == 1" @click="uploadbill(1)">确认异常签收</button>
+                  <button v-if="type==9 && pdlist[0].exp_sign == 0" @touchend="uploadbill(0)">上传单据</button>
+                  <button v-if="type==9"  class="upImg" style="background-image: none;" @click="uploadbill(2)">电子回单</button>
                   <div class="clearBoth"></div>
                 </div>
                 <div class="go"  v-else>
@@ -214,6 +223,15 @@
         map:null,
         Ultop:0,
         boxShow:true,
+        tabList:[{
+          icon:require("../../images/kefuicon.png"),
+          name:"联系客服",
+          value:0,
+        },{
+          icon:require("../../images/lookImgTrackMore.png"),
+          name:"查看图片",
+          value:1,
+        }],
       }
     },
     watch:{
@@ -231,6 +249,16 @@
       androidIos.bridge(_this);
     },
     methods:{
+      tabClick:function (index) {
+        var _this = this;
+            if(index == 0){
+              androidIos.telCall("021-50929122");
+            }else if(index == 1){
+              androidIos.addPageList();
+              _this.$router.push({path:"/lookImg",query:{vbillno:_this.pdlist[0].number}});
+
+            }
+      },
       liTouchstart:function (event) {
         var _this = this;
         var touch = event.targetTouches[0];
@@ -654,6 +682,8 @@
           _this.$router.push({ path: '/track/uploadImg',query:{pk:_this.$route.query.pk,expSign:_this.pdlist[0].exp_sign}});
         }else if(type == 0){
           _this.$router.push({ path: '/track/uploadBill',query:{pk:_this.$route.query.pk,expSign:_this.pdlist[0].exp_sign}});
+        }else if(type == 2){
+          _this.$router.push({ path: '/track/electronicReceipt',query:{pk:_this.$route.query.pk}});
         }
       },
       dayVsDay:function () {
@@ -879,7 +909,7 @@
       upImg:function (type) {
         var _this = this;
         androidIos.addPageList();
-        _this.$router.push({path:'/upProductImg',query:{pk:_this.$route.query.pk,type:type}});
+        _this.$router.push({path:'/upProductImg',query:{pk:_this.pdlist[0].number,type:type}});
       },
       addClass:function(obj,cls){//增加class
         var idJson = obj.className.split(" ");
@@ -1749,5 +1779,25 @@
     text-align: center;
     line-height: 0.375rem;
     margin-bottom: 0.3rem;
+  }
+  #tabList{
+    position: absolute;
+    top:2.5rem;
+    right:0.24rem;
+    z-index: 11;
+    width:1.5rem;
+    background: white;
+    box-shadow:0px 4px 4px 0px rgba(0,0,0,0.19);
+    border-radius:0.08rem ;
+  }
+  #tabList li{
+    padding-top: 0.78rem;
+    background-repeat: no-repeat;
+    background-size:0.5rem ;
+    background-position:50% 0.24rem ;
+    text-align: center;
+    font-size: 0.3125rem;
+    line-height: 0.8rem;
+    color:#666;
   }
 </style>
