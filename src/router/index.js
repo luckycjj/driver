@@ -13,6 +13,7 @@ import taskMoreHomePage from '../pages/taskMoreHomePage'
 import Vue from 'vue'
 import Router from 'vue-router'
 import  trackF from '@/components/track/trackMore'
+import  trackMore2 from '@/components/track/trackMore2'
 import  trackS from '@/components/track/map'
 import  trackT from '@/components/track/qrcode'
 import  trackFo from  '@/components/track/uploadBill'
@@ -284,6 +285,7 @@ export default new Router(
       component: track,
       children: [
         {path: 'trackMore', component: trackF},
+        {path: 'trackMore2', component: trackMore2},
         {path: 'map', component: trackS},
         {path: 'qrcode', component: trackT},
         {path:'uploadBill',component:trackFo},

@@ -213,7 +213,7 @@
          lookTrackMore:function (pk) {
             var _this = this;
            androidIos.addPageList();
-           _this.$router.push({ path: '/track/trackMore',query:{pk:pk,pt:1}});
+           _this.$router.push({ path: '/track/trackMore2',query:{pk:pk,pt:1}});
          },
          corner:function () {
            var _this = this;
