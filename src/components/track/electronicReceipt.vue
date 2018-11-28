@@ -1,7 +1,7 @@
 <template>
     <div id="electronicReceipt">
       <div id="title" v-title data-title="电子回单"></div>
-      <div id="proMore">
+      <div id="proMore" ref="proMore">
         <p>签收单</p>
         <h1 class="bianhao">运单编号：{{message.number}}</h1>
         <div class="clearBoth"></div>
@@ -47,7 +47,7 @@
       </div>
       <div class="qianming" v-if="qianming">
       </div>
-      <button>确认上传</button>
+      <button @click="shangchuan()">确认上传</button>
     </div>
 </template>
 
@@ -129,6 +129,78 @@
           var _this = this;
           androidIos.addPageList();
           _this.$router.push({path:"/track/drawname"});
+        },
+        shangchuan:function () {
+          var _this = this;
+          if(_this.message.peopleImg == ""){
+            bomb.first("签收人请签名");
+            return
+          }
+          html2canvas(_this.$refs.proMore,{
+            backgroundColor: null
+          }).then((canvas) => {
+            let dataURL = canvas.toDataURL("image/png");
+            androidIos.loading("正在上传");
+            $.ajax({
+              type: "POST",
+              url: androidIos.ajaxHttp() + "/uploadFile",
+              data:JSON.stringify({
+                type: "DZHD" ,
+                file: dataURL.substr(23),
+                userCode:sessionStorage.getItem("token"),
+                source:sessionStorage.getItem("source")
+              }),
+              contentType: "application/json;charset=utf-8",
+              dataType: "json",
+              timeout: 30000,
+              success: function (json) {
+                if (json.success == "1") {
+                  var photoUrl = json.path;
+                  $.ajax({
+                    type: "POST",
+                    url: androidIos.ajaxHttp() + "/order/signReceipt ",
+                    data:JSON.stringify({
+                      memo:photoUrl,
+                      pk:_this.$route.query.pk,
+                      userCode:sessionStorage.getItem("token"),
+                      source:sessionStorage.getItem("source")
+                    }),
+                    contentType: "application/json;charset=utf-8",
+                    dataType: "json",
+                    timeout: 30000,
+                    success: function (uploadAvatar) {
+                      if (uploadAvatar.success == "1") {
+                        _this.$cjj("上传成功");
+                        setTimeout(function () {
+                          androidIos.gobackFrom(_this);
+                        },500)
+                      } else{
+                        androidIos.second(uploadAvatar.message);
+                      }
+                    },
+                    complete: function (XMLHttpRequest, status) { //请求完成后最终执行参数
+                      $("#common-blackBox").remove();
+                      if (status == 'timeout') { //超时,status还有success,error等值的情况
+                        androidIos.second("当前状况下网络状态差，请检查网络！")
+                      } else if (status == "error") {
+                        androidIos.errorwife();
+                      }
+                    }
+                  });
+                } else{
+                  androidIos.second(json.message);
+                }
+              },
+              complete: function (XMLHttpRequest, status) { //请求完成后最终执行参数
+                $("#common-blackBox").remove();
+                if (status == 'timeout') { //超时,status还有success,error等值的情况
+                  androidIos.second("当前状况下网络状态差，请检查网络！")
+                } else if (status == "error") {
+                  androidIos.errorwife();
+                }
+              }
+            });
+          });
         }
       }
     }

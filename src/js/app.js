@@ -527,7 +527,7 @@ var androidIos = {
     this.canvas.width = this.el.clientWidth;
     this.canvas.height = this.el.clientHeight;
     this.cxt.fillStyle = this.background;
-    this.cxt.fillRect(0, -20, this.canvas.width, this.canvas.height);
+    this.cxt.fillRect(0, 0, this.canvas.width, this.canvas.height);
     this.cxt.strokeStyle = this.color;
     this.cxt.lineWidth = this.linewidth;
     this.cxt.lineCap = "round";

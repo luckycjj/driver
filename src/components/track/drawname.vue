@@ -50,6 +50,22 @@
           },
           baocun:function () {
             var _this = this;
+            var blank = document.createElement('canvas');
+            blank.width = _this.canvas.width;
+            blank.height = _this.canvas.height;
+            var cxt =blank.getContext("2d");
+            cxt.fillStyle = "#fff";
+            cxt.fillRect(0, 0, blank.width, blank.height);
+            var peopleName = sessionStorage.getItem("peopleName");
+            if(peopleName != null){
+                var img=document.getElementById("scream");
+                cxt.drawImage(img,0,0);
+                cxt.clearRect(0, 0, blank.width, blank.height);
+            }
+            if(_this.canvas.toDataURL() == blank.toDataURL()){
+               bomb.first("请签名");
+               return false;
+            }
             var imgBase64 = _this.canvas.toDataURL();
             sessionStorage.setItem("peopleName",imgBase64);
             androidIos.gobackFrom(_this);

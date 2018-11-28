@@ -11,7 +11,8 @@
         </li>
       </ul>
     </div>
-    <div id="carrierDriver" v-if="showMap">
+    <div id="carrierDriver" v-if="showMap" style="top:0.64rem">
+      <div id="titleGoback"  @touchend="goback()" ></div>
       <div class="carrierDriver"  v-for="car in carList">
         <div class="carrierDriverBox">
           <h2 v-html="car.length < 1 ? car.length * 1000 + '米' : car.length + '公里'"></h2>
@@ -47,6 +48,17 @@
           <div class="message">
             <div class="proStatus">
               <p :style="{backgroundImage: 'url(' + require('../../images/trackMoreIcon'+ type +'.png') + ')' }">{{item.orderValue}}</p>
+              <!--<div class="startEnd"><span class="startEndSpan">{{item.goodsmessage.startAddress}}<img src="../../images/addressImg.png">{{item.goodsmessage.endAddress}}</span><div class="clearBoth"></div></div>-->
+              <ul>
+                <li v-for="pro in item.goodsmessage.productList">{{item.goodsmessage.tranType}}/{{pro.goods}}&nbsp;&nbsp;&nbsp;{{pro.number}}件<span v-if="pro.weight.replace(/[^0-9]/g,'')*1 > 0 ">/{{pro.weight}}</span><span  v-if="pro.volume.replace(/[^0-9]/g,'')*1 > 0">/{{pro.volume}}</span></li>
+                <li :style="{backgroundImage:'url('+require('../../images/trackListbeizhu.png')+')'}">{{item.pickPay.remark}}</li>
+                <li style="background-image: none;" v-for="abnormalaEventVo in item.abnormalaEventVo">{{abnormalaEventVo.createTime}} {{abnormalaEventVo.memo}}</li>
+              </ul>
+              <div class="price">
+                <h1>提货时间: {{item.goodsmessage.startTime}}</h1>
+                <h1 style="margin-right: auto">到货时间: {{item.goodsmessage.endTime}}</h1>
+                <div class="clearBoth"></div>
+              </div>
               <div id="sure">
                 <div class="go gogogo" id="gogogo" v-if="peopleType==1">
                   <button v-if="type==0" @click="tongyi()">同意</button>
@@ -72,12 +84,8 @@
                 </div>
               </div>
             </div>
-            <div class="topStatus">
-              <!--              <p>联系人信息</p>-->
-              <div class="address">
-                <h1><h6 >提货地址：</h6><h6 style="width:7rem;">{{item.pickMessage.address}}</h6><div class="clearBoth"></div></h1>
-                <h1><h6>发货地址：</h6><h6 style="width:7rem;">{{item.endMessage.address}}</h6><div class="clearBoth"></div></h1>
-              </div>
+            <div class="topStatus" style="margin-top: 0.27rem;">
+              <p>联系人信息</p>
               <ul>
                 <li>
                   <img  @click="telphone('021-50929122')" src="../../images/robbingTel2.png">
@@ -89,19 +97,12 @@
                 </li>
                 <div class="clearBoth"></div>
               </ul>
+              <div class="address">
+                <h1><h6 >提货地址：</h6><h6 style="width:7rem;">{{item.pickMessage.address}}</h6><div class="clearBoth"></div></h1>
+                <h1><h6>发货地址：</h6><h6 style="width:7rem;">{{item.endMessage.address}}</h6><div class="clearBoth"></div></h1>
+              </div>
             </div>
             <div class="proStatus">
-              <div class="price">
-                <h1>提货时间: {{item.goodsmessage.startTime}}</h1>
-                <h1 style="margin-right: auto">到货时间: {{item.goodsmessage.endTime}}</h1>
-                <div class="clearBoth"></div>
-              </div>
-              <!--<div class="startEnd"><span class="startEndSpan">{{item.goodsmessage.startAddress}}<img src="../../images/addressImg.png">{{item.goodsmessage.endAddress}}</span><div class="clearBoth"></div></div>-->
-              <ul>
-                <li v-for="pro in item.goodsmessage.productList">{{item.goodsmessage.tranType}}/{{pro.goods}}&nbsp;&nbsp;&nbsp;{{pro.number}}件<span v-if="pro.weight.replace(/[^0-9]/g,'')*1 > 0 ">/{{pro.weight}}</span><span  v-if="pro.volume.replace(/[^0-9]/g,'')*1 > 0">/{{pro.volume}}</span></li>
-                <li :style="{backgroundImage:'url('+require('../../images/trackListbeizhu.png')+')'}">{{item.pickPay.remark}}</li>
-                <li style="background-image: none;" v-for="abnormalaEventVo in item.abnormalaEventVo">{{abnormalaEventVo.createTime}} {{abnormalaEventVo.memo}}</li>
-              </ul>
             </div>
           </div>
           <div class="errorBox" v-if="type > 1 && type < 8 && showMap">
@@ -245,7 +246,9 @@
     },
     mounted:function () {
       var _this = this;
+      sessionStorage.removeItem("peopleName");
       _this.showMap = JSON.parse(sessionStorage.getItem("driverMessage")).driverType == 2 ? true : false;
+
       androidIos.bridge(_this);
     },
     methods:{
@@ -278,14 +281,14 @@
         _this.endY = touch.pageY;
         _this.Ultop = _this.Ultop +(_this.endY -  _this.startY) / document.getElementsByTagName("html")[0].style.fontSize.replace("px","");
         var height = document.getElementById("mescroll").offsetHeight;
-        var height1 = document.getElementById("track").offsetHeight;
-        var height2 =  2.7;
+        var height1 = document.getElementById("trackMore").offsetHeight;
+        var height2 =  document.getElementsByClassName("proStatus")[0].offsetHeight;
         var top =  (height1 - height) / document.getElementsByTagName("html")[0].style.fontSize.replace("px","");
         if(top > _this.Ultop){
           _this.Ultop = top;
         }
-        if(_this.Ultop > height1 / document.getElementsByTagName("html")[0].style.fontSize.replace("px","") - height2){
-          _this.Ultop = height1 / document.getElementsByTagName("html")[0].style.fontSize.replace("px","") - height2;
+        if(_this.Ultop > (height1 - height2) / document.getElementsByTagName("html")[0].style.fontSize.replace("px","")){
+          _this.Ultop = (height1 - height2) / document.getElementsByTagName("html")[0].style.fontSize.replace("px","");
         }
       },
       liTouchend:function (event) {
@@ -293,11 +296,9 @@
       },
       go:function () {
         var self = this;
-        var height1 = document.getElementById("track").offsetHeight;
-        var height2 =  2.7;
-        var height = (height1) / document.getElementsByTagName("html")[0].style.fontSize.replace("px","");
-        self.Ultop = height - height2;
         thisThat = self;
+        androidIos.judgeIphoneX("carrierDriver",2);
+        androidIos.judgeIphoneX("tabList",2);
         self.map = new AMap.Map("container", {});
         self.map.on("click",function () {
           self.boxShow = false;
@@ -931,6 +932,10 @@
         }
         return false;
       },
+      goback:function () {
+        var _this = this;
+        androidIos.gobackFrom(_this);
+      },
       ajaxProMore:function () {
         var _this = this;
         if(_this.setTimeGoF){
@@ -1078,6 +1083,10 @@
                       }
                     }
                     _this.mapDriver();
+                    var height1 = document.getElementById("trackMore").offsetHeight;
+                    var height2 =  document.getElementsByClassName("proStatus")[0].offsetHeight;
+                    var height = (height1 - height2) / document.getElementsByTagName("html")[0].style.fontSize.replace("px","");
+                    _this.Ultop = height;
                   });
                 }else{
                   androidIos.second(loadSegmentDetail.message);
@@ -1175,7 +1184,7 @@
 </script>
 <style scoped>
   #trackMore{
-    position: absolute;
+    position: fixed;
     top:0;
     bottom:0;
     width:100%;
@@ -1194,7 +1203,7 @@
   }
   .message{
     width:100%;
-    margin: 0.2rem auto 0 auto;
+    margin: 0rem auto 0.2rem auto;
   }
   .goodsmessage{
     width:92%;
@@ -1208,6 +1217,7 @@
     position: absolute;
     top:0rem;
     height: auto;
+    background: #F5F5F5;
   }
   .goodsmessage p{
     width:100%;
@@ -1329,7 +1339,6 @@
     font-size: 0.34rem;
     color:#666;
     line-height: 0.71rem;
-    background: white;
   }
   #sure .go{
     margin-left: 0.44rem;
@@ -1338,14 +1347,14 @@
     border-bottom: 1px solid #F5F5F5;
   }
   #sure button{
-    width:2.5rem;
-    background-color: #1869A9;
-    color:white;
-    font-size: 0.35rem;
-    line-height: 0.8rem;
+    width:1.87rem;
+    background-color: transparent;
+    color:#999;
+    font-size: 0.32rem;
+    line-height: 0.74rem;
     float: right;
     border-radius: 0.1rem;
-    border: 1px solid #1869A9;
+    border: 1px solid #E0E0E0;
     margin:0.1rem 0.45rem 0.1rem 0 ;
   }
   #sure button span{
@@ -1525,6 +1534,9 @@
     width:100%;
     background: white;
   }
+  .top{
+    margin-top: 0.27rem;
+  }
   .top p{
     width:8.4rem;
     margin-left:0.44rem ;
@@ -1583,6 +1595,7 @@
     line-height: 1.17rem;
     color:#373737;
     font-size:0.427rem ;
+    border-bottom: 1px solid #F5F5F5;
   }
   .topStatus ul{
     width:9.56rem;
@@ -1637,6 +1650,7 @@
     margin-left:0.44rem ;
     padding-bottom: 0.3rem;
     border-bottom: 1px solid #F5F5F5;
+    margin-top: 0.4rem;
   }
   .proStatus ul li{
     color:#666;
@@ -1658,6 +1672,7 @@
     width: 9.56rem;
     margin-left: 0.44rem;
     padding-top: 0.2rem;
+    border-bottom: 1px solid #F5F5F5;
   }
   .proStatus  .price h1{
     color:#666;
@@ -1722,13 +1737,13 @@
     line-height: 0.56rem;
   }
   .upImg{
-    border-color:#666666!important;
+    /*border-color:#666666!important;
     color:#666666!important;
     background-color: transparent!important;
     background-image: url("../../images/icon-canmore.png");
     background-size:0.48rem;
     background-repeat: no-repeat;
-    background-position:0.2rem 50% ;
+    background-position:0.2rem 50% ;*/
   }
   .upImg2{
     width:3.4rem!important;
@@ -1755,8 +1770,9 @@
   #carrierDriver{
     position: absolute;
     background: white;
-    top:0.2rem;
-    width:90%;
+    top:0.64rem;
+    width:85%;
+    padding-left: 5%;
     left:5%;
     border-radius: 0.2rem;
     box-shadow:0px 4px 6px 0px rgba(0,0,0,0.11);
@@ -1799,5 +1815,17 @@
     font-size: 0.3125rem;
     line-height: 0.8rem;
     color:#666;
+  }
+  #titleGoback{
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    height: auto;
+    width: 1.5rem;
+    background-image: url("../../images/titlejian.png");
+    background-position: 35% 50%;
+    background-repeat: no-repeat;
+    background-size: 0.2rem 0.3714rem;
   }
 </style>
