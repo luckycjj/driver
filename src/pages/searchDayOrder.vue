@@ -92,15 +92,6 @@
     mounted:function () {
       var _this = this;
       _this.driverType = JSON.parse(sessionStorage.getItem("driverMessage")).driverType == 1 ? 1 : 1;
-      var orderTime = sessionStorage.getItem("orderTime");
-      if(orderTime != undefined){
-        _this.dayList[1].name = orderTime;
-      }else{
-        var date = new Date();
-        _this.dayList[1].name = date.getFullYear() + "-" + ( date.getMonth() + 1 ) + "-" + date.getDate();
-        sessionStorage.setItem("orderTime",_this.dayList[1].name);
-      }
-      _this.timeList();
       sessionStorage.removeItem("weh");
       sessionStorage.removeItem("nowOrderCartype");
       sessionStorage.removeItem("dataStart");
@@ -363,6 +354,15 @@
           setTimeout(function () {
             if(pageNum == 1){
               _this.$refs.footcomponent.go();
+              var orderTime = sessionStorage.getItem("orderTime");
+              if(orderTime != undefined){
+                _this.dayList[1].name = orderTime;
+              }else{
+                var date = new Date();
+                _this.dayList[1].name = date.getFullYear() + "-" + ( date.getMonth() + 1 ) + "-" + date.getDate();
+                sessionStorage.setItem("orderTime",_this.dayList[1].name);
+              }
+              _this.timeList();
             }
             var status = JSON.parse(sessionStorage.getItem("driverMessage")).status;
             if(status == 2){
