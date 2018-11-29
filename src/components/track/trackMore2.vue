@@ -222,6 +222,7 @@
         timeShowF:"",
         showMap:false,
         map:null,
+        setTime:null,
         Ultop:0,
         boxShow:true,
         tabList:[{
@@ -336,6 +337,9 @@
         self.peopleType = self.$route.query.pt == undefined ? 0 :self.$route.query.pt;
 
         self.ajaxProMore();
+        self.setTime = setInterval(function () {
+          self.ajaxProMore();
+        },20000)
       },
       filterInput:function () {
         var _this = this;
@@ -1179,6 +1183,10 @@
           }
         }
       },
+    },
+    destroyed:function () {
+      var _this = this;
+      clearInterval(_this.setTime);
     }
   }
 </script>
