@@ -873,8 +873,8 @@
                 for(var i =0;i<loadSegmentDetail.invPackDao.length;i++){
                   var weight = loadSegmentDetail.invPackDao[i].weigthUnit==3?loadSegmentDetail.invPackDao[i].weight*1000:loadSegmentDetail.invPackDao[i].weight*1;
                   var listJson = {
-                    goodsCode:loadSegmentDetail.invPackDao[i].goodsCode+"-"+loadSegmentDetail.invPackDao[i].goodsType,
-                    goods:loadSegmentDetail.invPackDao[i].goodsName+"-"+loadSegmentDetail.invPackDao[i].goodsTypeName,
+                    goodsCode:loadSegmentDetail.invPackDao[i].goodsCode/*+"-"+loadSegmentDetail.invPackDao[i].goodsType*/,
+                    goods:loadSegmentDetail.invPackDao[i].goodsName/*+"-"+loadSegmentDetail.invPackDao[i].goodsTypeName*/,
                     number:loadSegmentDetail.invPackDao[i].num,
                     weight: weight/1000 - 1 <0 ? weight + "千克" : weight/1000 + "吨",
                     volume:loadSegmentDetail.invPackDao[i].volume*1 - 1 < 0 ? loadSegmentDetail.invPackDao[i].volume*1000 + "升" : loadSegmentDetail.invPackDao[i].volume*1 + "立方米",

@@ -62,16 +62,16 @@
               <div id="sure">
                 <div class="go gogogo" id="gogogo" v-if="peopleType==1">
                   <button v-if="type==0" @click="tongyi()">同意</button>
-                  <button v-if="type==0"  class="upImg2" @click="jvjue()">拒绝</button>
+                  <button v-if="type==0"  class="upImg" @click="jvjue()">拒绝</button>
                   <button v-if="type==1" @click="chufa()">出发</button>
                   <button v-if="type==2" @click="daoda(31)">提货到达</button>
                   <button v-if="type==3" @click="daoda(32)">开始装货</button>
                   <button v-if="type==4" @click="daoda(33)">装货完毕</button>
-                  <button v-if="type==4"  class="upImg" @click="upImg(0)">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;上传货品</button>
+                  <button v-if="type==4"  class="upImg" @click="upImg(0)">上传货品</button>
                   <button v-if="type==5" @click="daoda(41)">运输到达</button>
                   <button v-if="type==6" @click="daoda(42)">开始卸货</button>
                   <button v-if="type==7"  @click="daoda(43)">卸货完毕</button>
-                  <button v-if="type==7"  class="upImg" @click="upImg(1)">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;上传货品</button>
+                  <button v-if="type==7"  class="upImg" @click="upImg(1)">上传货品</button>
                   <button v-if="type==8 && endtype == '0' && actFlag == 'Y'" @click="qianshou(endtype)">交接</button>
                   <button v-if="type==8 && endtype == '1'" @click="qianshou(endtype)">签收</button>
                   <button v-if="type==9 && pdlist[0].exp_sign == 1" @click="uploadbill(1)">确认异常签收</button>
@@ -959,8 +959,8 @@
                   for(var i =0;i<loadSegmentDetail.invPackDao.length;i++){
                     var weight = loadSegmentDetail.invPackDao[i].weigthUnit==3?loadSegmentDetail.invPackDao[i].weight*1000:loadSegmentDetail.invPackDao[i].weight*1;
                     var listJson = {
-                      goodsCode:loadSegmentDetail.invPackDao[i].goodsCode+"-"+loadSegmentDetail.invPackDao[i].goodsType,
-                      goods:loadSegmentDetail.invPackDao[i].goodsName+"-"+loadSegmentDetail.invPackDao[i].goodsTypeName,
+                      goodsCode:loadSegmentDetail.invPackDao[i].goodsCode/*+"-"+loadSegmentDetail.invPackDao[i].goodsType*/,
+                      goods:loadSegmentDetail.invPackDao[i].goodsName/*+"-"+loadSegmentDetail.invPackDao[i].goodsTypeName*/,
                       number:loadSegmentDetail.invPackDao[i].num,
                       weight: weight/1000 - 1 <0 ? weight + "千克" : weight/1000 + "吨",
                       volume:loadSegmentDetail.invPackDao[i].volume*1 - 1 < 0 ? loadSegmentDetail.invPackDao[i].volume*1000 + "升" : loadSegmentDetail.invPackDao[i].volume*1 + "立方米",
