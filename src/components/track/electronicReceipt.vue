@@ -1,7 +1,7 @@
 <template>
     <div id="electronicReceipt">
       <div id="title" v-title data-title="电子回单"></div>
-      <div id="proMore" ref="proMore">
+      <div id="proMore" v-if="loadSegmentDetail == ''" ref="proMore">
         <p>签收单</p>
         <h1 class="bianhao">运单编号：{{message.number}}</h1>
         <div class="clearBoth"></div>
@@ -14,40 +14,39 @@
                <div class="clearBoth"></div>
              </div>
           <div class="endPeople">
-            <h1 style="border:none">收货人名字 {{message.people}}</h1>
-            <h1>电话 {{message.tel}}</h1>
+            <h1 style="border:none">收货人: {{message.people}}</h1>
+            <h1>电话: {{message.tel}}</h1>
             <div class="clearBoth"></div>
           </div>
           <div class="carrier">
-            <h1>承运商名称 {{message.carrier}}</h1>
+            <h1>承运商: {{message.carrier}}</h1>
           </div>
           <div class="time">
-            <h1 style="border:none">提货日期 {{message.startTime}}</h1>
-            <h1>卸货日期 {{message.endTime}}</h1>
+            <h1 style="border:none">提货日期:{{message.startTime}}</h1>
+            <h1>卸货日期:{{message.endTime}}</h1>
+            <div class="clearBoth"></div>
+            <h2><h4>提货地址:</h4> <h3>{{message.startAddress}}</h3><div class="clearBoth"></div></h2>
+            <h2><h4>卸货地址:</h4> <h3>{{message.endAddress}}</h3><div class="clearBoth"></div></h2>
             <div class="clearBoth"></div>
           </div>
-          <div class="address">
-            <h2><h4>提货地址</h4> <h3>{{message.startAddress}}</h3><div class="clearBoth"></div></h2>
-            <h2><h4>卸货地址</h4> <h3>{{message.endAddress}}</h3><div class="clearBoth"></div></h2>
-            <div class="clearBoth"></div>
-          </div>
-          <div class="carrier">
-            <h1>货品备注 {{message.memo}}</h1>
-          </div>
-          <div class="qianming" style="border:none">
-            <h4>签收人签名:</h4>
-            <div class="qianmingban" @click="drawname()" v-if="message.peopleImg == ''">
-               点击签名
-            </div>
-            <img :src="message.peopleImg" @click="drawname()" v-if="message.peopleImg != ''">
-            <h6>签收时请字迹工整，谢谢！</h6>
-            <div class="clearBoth"></div>
+          <div class="carrier" style="border:none">
+            <h1 style="line-height: 0.8rem;">货品备注: {{message.memo}}</h1>
           </div>
         </div>
+        <div class="qianming" style="border:none">
+          <h4>签收人签名:</h4>
+          <div class="qianmingban" @click="drawname()" v-if="message.peopleImg == ''">
+            点击签名
+          </div>
+          <img :src="message.peopleImg" @click="drawname()" v-if="message.peopleImg != ''">
+          <h6>签收时请字迹工整，谢谢！</h6>
+          <div class="clearBoth"></div>
+        </div>
       </div>
-      <div class="qianming" v-if="qianming">
+      <div class="qianmingImg" v-if="loadSegmentDetail != ''">
+         <img :src="loadSegmentDetail">
       </div>
-      <button @click="shangchuan()">确认上传</button>
+      <button @click="shangchuan()"  v-if="loadSegmentDetail == ''">确认上传</button>
     </div>
 </template>
 
@@ -71,58 +70,65 @@
                 memo:"",
                 peopleImg:"",
               },
-             qianming:false
+             qianming:false,
+             loadSegmentDetail:"",
            }
         },
         mounted:function () {
           var _this = this;
-          $.ajax({
-            type: "POST",
-            url: androidIos.ajaxHttp()+"/order/loadEntrustDetail",
-            data:JSON.stringify({pk:_this.$route.query.pk,userCode:sessionStorage.getItem("token"),source:sessionStorage.getItem("source")}),
-            contentType: "application/json;charset=utf-8",
-            dataType: "json",
-            timeout: 20000,
-            success: function (loadSegmentDetail) {
-              if (loadSegmentDetail.success == "1") {
-                var proList = [];
-                for(var i = 0 ; i<loadSegmentDetail.invPackDao.length;i++){
-                   var json = {
-                     name:loadSegmentDetail.invPackDao[i].goodsName + "-" + loadSegmentDetail.invPackDao[i].goodsTypeName,
-                     num:loadSegmentDetail.invPackDao[i].num,
-                     weight:loadSegmentDetail.invPackDao[i].weight*1/1000,
-                     volume:loadSegmentDetail.invPackDao[i].volume*1,
-                   }
-                  proList.push(json);
+          _this.loadSegmentDetail = _this.$route.query.imgUrl;
+          if(_this.loadSegmentDetail == ""){
+            $.ajax({
+              type: "POST",
+              url: androidIos.ajaxHttp()+"/order/loadEntrustDetail",
+              data:JSON.stringify({pk:_this.$route.query.pk,userCode:sessionStorage.getItem("token"),source:sessionStorage.getItem("source")}),
+              contentType: "application/json;charset=utf-8",
+              dataType: "json",
+              timeout: 20000,
+              success: function (loadSegmentDetail) {
+                if (loadSegmentDetail.success == "1") {
+                  var proList = [];
+                  for(var i = 0 ; i<loadSegmentDetail.invPackDao.length;i++){
+                    var json = {
+                      name:loadSegmentDetail.invPackDao[i].goodsName + "-" + loadSegmentDetail.invPackDao[i].goodsTypeName,
+                      num:loadSegmentDetail.invPackDao[i].num,
+                      weight:loadSegmentDetail.invPackDao[i].weight*1/1000,
+                      volume:loadSegmentDetail.invPackDao[i].volume*1,
+                    }
+                    proList.push(json);
+                  }
+                  var peopleName = sessionStorage.getItem("peopleName");
+                  var endTime = loadSegmentDetail.arriDate.split(":");
+                  endTime.splice(endTime.length -1 ,1);
+                  _this.message = {
+                    number : loadSegmentDetail.entrustNo,
+                    product:proList,
+                    people:loadSegmentDetail.arrival.contact,
+                    tel:loadSegmentDetail.arrival.mobile,
+                    carrier:loadSegmentDetail.customerDto.customerName,
+                    startTime:loadSegmentDetail.deliDate.split(" ")[0],
+                    endTime:endTime.join(":"),
+                    startAddress:loadSegmentDetail.delivery.detailAddr,
+                    endAddress:loadSegmentDetail.arrival.detailAddr,
+                    memo:loadSegmentDetail.memo == "" || loadSegmentDetail.memo == null ? "暂无备注" : loadSegmentDetail.memo,
+                    peopleImg:peopleName == null ? "" :peopleName,
+                  }
+
+                }else{
+                  androidIos.second(loadSegmentDetail.message);
                 }
-                var peopleName = sessionStorage.getItem("peopleName");
-                   _this.message = {
-                      number : loadSegmentDetail.entrustNo,
-                      product:proList,
-                     people:loadSegmentDetail.arrival.contact,
-                     tel:loadSegmentDetail.arrival.mobile,
-                     carrier:loadSegmentDetail.customerDto.customerName,
-                     startTime:loadSegmentDetail.deliDate,
-                     endTime:loadSegmentDetail.arriDate,
-                     startAddress:loadSegmentDetail.delivery.detailAddr,
-                     endAddress:loadSegmentDetail.arrival.detailAddr,
-                     memo:loadSegmentDetail.remark == "" || loadSegmentDetail.remark == null ? "暂无备注" : loadSegmentDetail.remark,
-                     peopleImg:peopleName == null ? "" :peopleName,
-                   }
 
-              }else{
-                androidIos.second(loadSegmentDetail.message);
+              },
+              complete : function(XMLHttpRequest,status){ //请求完成后最终执行参数
+                if(status=='timeout'){//超时,status还有success,error等值的情况
+                  androidIos.second("网络请求超时");
+                }else if(status=='error'){
+                  androidIos.errorwife();
+                }
               }
+            })
+          }
 
-            },
-            complete : function(XMLHttpRequest,status){ //请求完成后最终执行参数
-              if(status=='timeout'){//超时,status还有success,error等值的情况
-                androidIos.second("网络请求超时");
-              }else if(status=='error'){
-                androidIos.errorwife();
-              }
-            }
-          })
         },
       methods:{
         drawname:function () {
@@ -139,7 +145,7 @@
           html2canvas(_this.$refs.proMore,{
             backgroundColor: null
           }).then((canvas) => {
-            let dataURL = canvas.toDataURL("image/png");
+            let dataURL = canvas.toDataURL("image/jpeg");
             androidIos.loading("正在上传");
             $.ajax({
               type: "POST",
@@ -208,99 +214,110 @@
 
 <style scoped>
  #proMore{
-    width:92%;
+    width:100%;
    background: white;
-   border: 1px solid #e4e4e4;
    margin:0.3rem auto;
  }
   #proMore p{
-     font-size: 0.5rem;
+     font-size: 0.48rem;
     text-align: center;
-    line-height: 1.2rem;
+    line-height: 0.9rem;
   }
   .bianhao{
-    width:96%;
-    padding: 0 2% 0.2rem 2%;
-    font-size: 0.3125rem;
-    text-align: right;
+    width:87%;
+    padding: 0 6.5% 0.2rem 6.5%;
+    font-size: 0.32rem;
     color:#373737;
   }
   #Morebox{
-    width:96%;
+    width:87%;
     margin: 0rem auto 0.5rem auto;
-    border: 1px solid #e6e6e6;
-    border-radius: 0.1rem;
+    border: 1px solid #D8D8D8;
   }
-  .proBox, .endPeople,.carrier,.time,.address,.qianming{
+  .qianming{
+    width:7.8rem;
+    margin: 0 auto;
+  }
+  .proBox, .endPeople,.carrier,.time,.address{
      border-bottom: 1px solid #e6e6e6;
      padding: 0.2rem 0.2rem;
   }
  .proBox h2{
-    font-size: 0.35rem;
-   color:#373737;
-   font-weight: bold;
+    font-size: 0.375rem;
+    color:#373737;
+   line-height: 1rem;
  }
  .carrier h1{
-   font-size: 0.35rem;
+   font-size: 0.32rem;
    color:#373737;
  }
  .proBox h3{
-   font-size: 0.35rem;
+   font-size: 0.375rem;
    color:#373737;
-   font-weight: bold;
    float: left;
    margin-right: 0.5rem;
-   margin-top: 0.2rem;
  }
  .endPeople h1,.time h1{
-   font-size: 0.35rem;
+   font-size: 0.32rem;
    color:#373737;
    width:50%;
    float: left;
-   text-align: center;
+   text-align: left;
    box-sizing: border-box;
-   border-left: 1px solid #e6e6e6;
  }
-  .address h4{
+ .time h1{
+   line-height: 0.8rem;
+ }
+  .time h4{
      float: left;
-    font-size: 0.35rem;
+    font-size: 0.32rem;
     color:#373737;
+    line-height: 0.8rem;
   }
- .address h3{
+ .time h3{
    float: left;
-   font-size: 0.35rem;
+   font-size: 0.32rem;
    color:#373737;
    margin-left: 0.2rem;
    width:6.5rem;
+   line-height: 0.8rem;
  }
  .qianming h4{
-   font-size: 0.4rem;
+   font-size: 0.375rem;
    color:#373737;
  }
   .qianmingban{
-       width:90%;
-    height:1.5rem;
-    background:#e6e6e6 ;
+       width:100%;
+    height:2.09rem;
     border-radius: 0.1rem;
     margin: 0.2rem auto;
-    line-height: 1.5rem;
+    line-height: 2.09rem;
     text-align: center;
     color:#999;
     font-size: 0.45rem;
+    border: 1px solid #D8D8D8;
+    box-sizing: border-box;
   }
  .qianming h6{
    font-size: 0.32rem;
-   color:#373737;
+   color:#999999;
    float: right;
+   line-height: 0.8rem;
  }
   button{
     width:90%;
     background: #1869A9;
     display: block;
     color:white;
-    border-radius: 0.2rem;
-    font-size: 0.4rem;
-    line-height: 1.3rem;
+    border-radius: 0.1rem;
+    font-size: 0.375rem;
+    line-height: 1.06rem;
+    margin: 0.5rem auto;
+  }
+  .qianmingImg{
     margin: 0.3rem auto;
+  }
+  .qianmingImg img{
+    width:100%;
   }
 </style>

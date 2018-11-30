@@ -939,7 +939,7 @@
                   },
                   pickPay:{
                     people:"发货方",
-                    remark:loadSegmentDetail.remark == "" || loadSegmentDetail.remark == null ? "暂无备注" : loadSegmentDetail.remark
+                    remark:loadSegmentDetail.memo == "" || loadSegmentDetail.memo == null ? "暂无备注" : loadSegmentDetail.memo
                   },
                   owner:{
                     logo:loadSegmentDetail.customerDto!=null?loadSegmentDetail.customerDto.customerImg:"",

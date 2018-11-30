@@ -226,7 +226,7 @@
         Ultop:0,
         boxShow:true,
         tabList:[{
-          icon:require("../../images/kefuicon.png"),
+          icon:require("../../images/telTrackMore.png"),
           name:"联系客服",
           value:0,
         },{
@@ -688,7 +688,7 @@
         }else if(type == 0){
           _this.$router.push({ path: '/track/uploadBill',query:{pk:_this.$route.query.pk,expSign:_this.pdlist[0].exp_sign}});
         }else if(type == 2){
-          _this.$router.push({ path: '/track/electronicReceipt',query:{pk:_this.$route.query.pk}});
+          _this.$router.push({ path: '/track/electronicReceipt',query:{pk:_this.$route.query.pk,imgUrl:_this.pdlist[0].documentImage}});
         }
       },
       dayVsDay:function () {
@@ -1029,7 +1029,7 @@
                     },
                     pickPay:{
                       people:"发货方",
-                      remark:loadSegmentDetail.remark == "" || loadSegmentDetail.remark == null ? "暂无备注" : loadSegmentDetail.remark
+                      remark:loadSegmentDetail.memo == "" || loadSegmentDetail.memo == null ? "暂无备注" : loadSegmentDetail.memo
                     },
                     owner:{
                       logo:loadSegmentDetail.customerDto!=null?loadSegmentDetail.customerDto.customerImg:"",
@@ -1045,6 +1045,7 @@
                     pkCarHang:loadSegmentDetail.pkCarHang,
                     pkTransType:loadSegmentDetail.pkTransType,
                     exp_sign:loadSegmentDetail.expSign == "Y" ? "1" : "0",
+                    documentImage:loadSegmentDetail.documentImage,
                   }]
                   _this.carList= [];
                   _this.actFlag = loadSegmentDetail.actFlag;
@@ -1779,9 +1780,9 @@
     position: absolute;
     background: white;
     top:0.64rem;
-    width:85%;
+    width:90%;
     padding-left: 5%;
-    left:5%;
+    left:2.5%;
     border-radius: 0.2rem;
     box-shadow:0px 4px 6px 0px rgba(0,0,0,0.11);
     z-index: 10;
@@ -1820,7 +1821,7 @@
     background-size:0.5rem ;
     background-position:50% 0.24rem ;
     text-align: center;
-    font-size: 0.3125rem;
+    font-size: 0.187rem;
     line-height: 0.8rem;
     color:#666;
   }
@@ -1835,5 +1836,11 @@
     background-position: 35% 50%;
     background-repeat: no-repeat;
     background-size: 0.2rem 0.3714rem;
+  }
+  .hengxian{
+    width:70%;
+    height: 1px;
+    background: #dbdbdb;
+    margin: 0 auto;
   }
 </style>

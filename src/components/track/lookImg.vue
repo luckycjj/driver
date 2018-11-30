@@ -19,6 +19,10 @@
         </li>
         <div class="clearBoth"></div>
       </ul>
+      <div class="noImg"  v-if="imgList1.list.length == 0 && imgList2.list.length == 0">
+        <img src="../../images/tupian-2.png">
+        <p>暂无图片</p>
+      </div>
     </div>
 </template>
 
@@ -207,5 +211,21 @@
   ul li img{
      width:100%;
     height:2.72rem;
+  }
+  .noImg{
+    position: absolute;
+    width:2.46rem;
+    left:50%;
+    margin-left: -1.23rem;
+    top:33%;
+  }
+  .noImg img{
+    width:2.46rem;
+  }
+  .noImg p {
+    font-size:0.43rem;
+    margin-top:0.7rem ;
+    text-align: center;
+    color:#C8C8C8;
   }
 </style>
