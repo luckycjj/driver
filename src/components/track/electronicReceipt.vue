@@ -3,7 +3,7 @@
       <div id="title" v-title data-title="电子回单"></div>
       <div id="proMore" v-if="loadSegmentDetail == ''" ref="proMore">
         <p>签收单</p>
-        <h1 class="bianhao">运单编号：{{message.number}}</h1>
+        <h1 class="bianhao">订单编号：{{message.number}}</h1>
         <div class="clearBoth"></div>
         <div id="Morebox">
              <div class="proBox" v-for="item in message.product">
@@ -41,12 +41,14 @@
           <img :src="message.peopleImg" @click="drawname()" v-if="message.peopleImg != ''">
           <h6>签收时请字迹工整，谢谢！</h6>
           <div class="clearBoth"></div>
+          <h4>签收人建议:</h4>
+          <textarea   @input="jianyiInput()" placeholder="请填写签收人建议（选填）" maxlength="100" v-model="jianyi"></textarea>
         </div>
       </div>
       <div class="qianmingImg" v-if="loadSegmentDetail != ''">
          <img :src="loadSegmentDetail">
       </div>
-      <button @click="shangchuan()"  v-if="loadSegmentDetail == ''">确认上传</button>
+      <button @click="shangchuan()" v-if="loadSegmentDetail == ''">确认上传</button>
     </div>
 </template>
 
@@ -72,15 +74,17 @@
               },
              qianming:false,
              loadSegmentDetail:"",
+             jianyi:"",
            }
         },
         mounted:function () {
           var _this = this;
           _this.loadSegmentDetail = _this.$route.query.imgUrl;
+
           if(_this.loadSegmentDetail == ""){
             $.ajax({
               type: "POST",
-              url: androidIos.ajaxHttp()+"/order/loadEntrustDetail",
+              url: androidIos.ajaxHttp()+"/order/v2/getGoodsDetail",
               data:JSON.stringify({pk:_this.$route.query.pk,userCode:sessionStorage.getItem("token"),source:sessionStorage.getItem("source")}),
               contentType: "application/json;charset=utf-8",
               dataType: "json",
@@ -88,12 +92,12 @@
               success: function (loadSegmentDetail) {
                 if (loadSegmentDetail.success == "1") {
                   var proList = [];
-                  for(var i = 0 ; i<loadSegmentDetail.invPackDao.length;i++){
+                  for(var i = 0 ; i<loadSegmentDetail.list.length;i++){
                     var json = {
-                      name:loadSegmentDetail.invPackDao[i].goodsName + "-" + loadSegmentDetail.invPackDao[i].goodsTypeName,
-                      num:loadSegmentDetail.invPackDao[i].num,
-                      weight:loadSegmentDetail.invPackDao[i].weight*1/1000,
-                      volume:loadSegmentDetail.invPackDao[i].volume*1,
+                      name:loadSegmentDetail.list[i].goodsName,
+                      num:loadSegmentDetail.list[i].num,
+                      weight:loadSegmentDetail.list[i].weight*1/1000,
+                      volume:loadSegmentDetail.list[i].volume*1,
                     }
                     proList.push(json);
                   }
@@ -101,15 +105,15 @@
                   var endTime = loadSegmentDetail.arriDate.split(":");
                   endTime.splice(endTime.length -1 ,1);
                   _this.message = {
-                    number : loadSegmentDetail.entrustNo,
+                    number : loadSegmentDetail.invNo,
                     product:proList,
-                    people:loadSegmentDetail.arrival.contact,
-                    tel:loadSegmentDetail.arrival.mobile,
-                    carrier:loadSegmentDetail.customerDto.customerName,
+                    people:loadSegmentDetail.userName,
+                    tel:loadSegmentDetail.mobile,
+                    carrier:loadSegmentDetail.carrier,
                     startTime:loadSegmentDetail.deliDate.split(" ")[0],
                     endTime:endTime.join(":"),
-                    startAddress:loadSegmentDetail.delivery.detailAddr,
-                    endAddress:loadSegmentDetail.arrival.detailAddr,
+                    startAddress:loadSegmentDetail.deliAddr,
+                    endAddress:loadSegmentDetail.arriAddr,
                     memo:loadSegmentDetail.memo == "" || loadSegmentDetail.memo == null ? "暂无备注" : loadSegmentDetail.memo,
                     peopleImg:peopleName == null ? "" :peopleName,
                   }
@@ -126,7 +130,12 @@
                   androidIos.errorwife();
                 }
               }
-            })
+            });
+            if(sessionStorage.getItem("jianyi")!= undefined){
+              _this.jianyi = sessionStorage.getItem("jianyi");
+              sessionStorage.removeItem("jianyi");
+            }
+
           }
 
         },
@@ -134,7 +143,12 @@
         drawname:function () {
           var _this = this;
           androidIos.addPageList();
+          sessionStorage.setItem("jianyi",_this.jianyi);
           _this.$router.push({path:"/track/drawname"});
+        },
+        jianyiInput:function () {
+          var _this = this;
+          _this.jianyi = androidIos.checkText(_this.jianyi);
         },
         shangchuan:function () {
           var _this = this;
@@ -317,7 +331,21 @@
   .qianmingImg{
     margin: 0.3rem auto;
   }
+  .qianming img{
+    width:40%;
+  }
   .qianmingImg img{
     width:100%;
   }
+ textarea{
+    width:100%;
+   height:2.09rem;
+   padding:2%;
+   border-radius: 0.1rem;
+   margin: 0.2rem auto;
+   color:#999;
+   font-size: 0.35rem;
+   border: 1px solid #D8D8D8;
+   box-sizing: border-box;
+ }
 </style>

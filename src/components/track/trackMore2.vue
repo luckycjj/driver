@@ -74,9 +74,9 @@
                   <button v-if="type==7"  class="upImg" @click="upImg(1)">上传货品</button>
                   <button v-if="type==8 && endtype == '0' && actFlag == 'Y'" @click="qianshou(endtype)">交接</button>
                   <button v-if="type==8 && endtype == '1'" @click="qianshou(endtype)">签收</button>
-                  <button v-if="type==9 && pdlist[0].exp_sign == 1" @click="uploadbill(1)">确认异常签收</button>
+                  <button v-if="type==9 && pdlist[0].exp_sign == 1" @click="uploadbill(1)">确认异常</button>
                   <button v-if="type==9 && pdlist[0].exp_sign == 0" @touchend="uploadbill(0)">上传单据</button>
-                  <button v-if="type==9"  class="upImg" style="background-image: none;" @click="uploadbill(2)">电子回单</button>
+                  <button v-if="type==9 && pdlist[0].exp_sign == 0"  class="upImg" style="background-image: none;" @click="uploadbill(2)">电子回单</button>
                   <div class="clearBoth"></div>
                 </div>
                 <div class="go"  v-else>
@@ -688,7 +688,7 @@
         }else if(type == 0){
           _this.$router.push({ path: '/track/uploadBill',query:{pk:_this.$route.query.pk,expSign:_this.pdlist[0].exp_sign}});
         }else if(type == 2){
-          _this.$router.push({ path: '/track/electronicReceipt',query:{pk:_this.$route.query.pk,imgUrl:_this.pdlist[0].documentImage}});
+          _this.$router.push({ path: '/track/electronicReceipt',query:{pk:_this.$route.query.pk,imgUrl:_this.pdlist[0].documentImage == undefined ? "" : _this.pdlist[0].documentImage}});
         }
       },
       dayVsDay:function () {
@@ -851,15 +851,6 @@
         if(bomb.hasClass("gogogo","gogogo")){
           /*if(type == 31 || type == 32 || type == 42 || type == 41){
             for(var i = 0 ; i < _this.carList.length; i++){
-              if(_this.carList[i].length == ""){
-                androidIos.first("请提醒" + _this.carList[i].name +"("+_this.carList[i].tel+")打开定位系统");
-                $(".tanBox-yes").html("联系");
-                $(".tanBox-yes").unbind('click').click(function(){
-                  $(".tanBox-bigBox").remove();
-                  bridge.invoke("callTelephone",_this.carList[i].tel);
-                });
-                return false;
-              }
               if(_this.carList[i].length - 0.5 >= 0 ){
                 if(type == 31 || type == 32){
                   androidIos.second(_this.carList[i].name +"("+_this.carList[i].tel+")还未到达" + _this.pdlist[0].pickMessage.address+ "附近,请稍后再试");

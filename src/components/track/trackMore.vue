@@ -762,7 +762,7 @@
         if(bomb.hasClass("gogogo","gogogo")){
           /*if(type == 31 || type == 32 || type == 42 || type == 41){
             for(var i = 0 ; i < _this.carList.length; i++){
-              if(_this.carList[i].length == ""){
+              /!*if(_this.carList[i].length == ""){
                 androidIos.first("请提醒" + _this.carList[i].name +"("+_this.carList[i].tel+")打开定位系统");
                 $(".tanBox-yes").html("联系");
                 $(".tanBox-yes").unbind('click').click(function(){
@@ -770,7 +770,7 @@
                   bridge.invoke("callTelephone",_this.carList[i].tel);
                 });
                 return false;
-              }
+              }*!/
               if(_this.carList[i].length - 0.5 >= 0 ){
                 if(type == 31 || type == 32){
                   androidIos.second(_this.carList[i].name +"("+_this.carList[i].tel+")还未到达" + _this.pdlist[0].pickMessage.address+ "附近,请稍后再试");
