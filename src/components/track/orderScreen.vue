@@ -47,10 +47,12 @@
         manage:false,
         addressType:"",
         total:100,
+        ajax1:null
       }
     },
     mounted:function () {
       var _this = this;
+      thisthatsecond = _this;
       androidIos.judgeIphoneX("orderScreen",2);
       androidIos.judgeIphoneX("mescroll",2);
       _this.addressType = _this.$route.query.type;
@@ -59,7 +61,6 @@
     methods:{
       go:function () {
         var self = this;
-        thisthatsecond = self;
         var ORDERSCREEN = sessionStorage.getItem("ORDERSCREEN");
         if( ORDERSCREEN != null){
           self.address = ORDERSCREEN;
@@ -134,12 +135,20 @@
         androidIos.addPageList();
         _this.$router.push({ path: '/track/trackMore2',query:{pk:pk,pt:1}});
       },
+    },
+    beforeDestroy:function () {
+      var _this = this;
+      _this.ajax1.abort();
+    },
+    destroy:function () {
+      var _this = this;
+      _this.ajax1.abort();
     }
   }
   function getListDataFromNet(pageNum,pageSize,successCallback,errorCallback) {
     //延时一秒,模拟联网
     setTimeout(function () {
-      $.ajax({
+      thisthatsecond.ajax1 = $.ajax({
         type: "POST",
         url: androidIos.ajaxHttp() + "/order/loadEntrust",
         data:JSON.stringify({

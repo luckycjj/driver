@@ -58,6 +58,7 @@
               check:false
             }],
             tabShow:0,
+            ajax1:null,
           }
       },
       mounted:function () {
@@ -160,7 +161,7 @@
             function getListDataFromNet(curNavIndex,pageNum,pageSize,successCallback,errorCallback) {
               //延时一秒,模拟联网
               setTimeout(function () {
-                $.ajax({
+                _this.ajax1 = $.ajax({
                   type: "POST",
                   url: androidIos.ajaxHttp() + "/order/getGrabResult",
                   data:JSON.stringify({
@@ -205,6 +206,14 @@
           androidIos.addPageList();
           _this.$router.push({ path: '/robbingYesNo',query:{pk:item.pkSegment,type:item.resultType}});
         },
+      },
+      beforeDestroy:function () {
+        var _this = this;
+        _this.ajax1.abort();
+      },
+      destroy:function () {
+        var _this = this;
+        _this.ajax1.abort();
       }
     }
 </script>

@@ -63,6 +63,7 @@
             tabShow:0,
             Messageshow:false,
             driverType:0,
+            ajax1:null,
           }
       },
       mounted:function () {
@@ -225,7 +226,7 @@
                     lootLines.push(json);
                   }
                 }
-                $.ajax({
+                _this.ajax1 = $.ajax({
                   type: "POST",
                   url: androidIos.ajaxHttp() + "/order/loadDriverSegment",
                   data:JSON.stringify({
@@ -295,6 +296,14 @@
             }
           }
         },
+      },
+      beforeDestroy:function () {
+        var _this = this;
+        _this.ajax1.abort();
+      },
+      destroy:function () {
+        var _this = this;
+        _this.ajax1.abort();
       }
     }
 </script>

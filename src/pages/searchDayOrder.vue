@@ -86,7 +86,8 @@
         searchDateBox:false,
         tabShow:0,
         driverType:0,
-        mescrollArr:null
+        mescrollArr:null,
+        ajax1:null,
       }
     },
     mounted:function () {
@@ -359,14 +360,14 @@
                 _this.dayList[1].name = orderTime;
               }else{
                 var date = new Date();
-                _this.dayList[1].name = date.getFullYear() + "-" + ( date.getMonth() + 1 ) + "-" + date.getDate();
+                _this.dayList[1].name = date.getFullYear() + "-" + _this.ten(( date.getMonth() + 1 )) + "-" + _this.ten(date.getDate());
                 sessionStorage.setItem("orderTime",_this.dayList[1].name);
               }
               _this.timeList();
             }
             var status = JSON.parse(sessionStorage.getItem("driverMessage")).status;
             if(status == 2){
-              $.ajax({
+              _this.ajax1 = $.ajax({
                 type: "POST",
                 url: androidIos.ajaxHttp() + "/order/loadEntrust",
                 data:JSON.stringify({
@@ -463,6 +464,7 @@
       if(listDom != null){
         body.removeChild(listDom);
       }
+      _this.ajax1.abort();
     },
     destroy:function () {
       var _this = this;
@@ -471,6 +473,7 @@
       if(listDom != null){
         body.removeChild(listDom);
       }
+      _this.ajax1.abort();
     }
   }
 </script>

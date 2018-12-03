@@ -57,6 +57,7 @@
              }],
             tabShow:0,
             driverType:0,
+            ajax1:null,
           }
        },
        mounted:function () {
@@ -171,7 +172,7 @@
                  }
                  var status = JSON.parse(sessionStorage.getItem("driverMessage")).status;
                  if(status == 2){
-                   $.ajax({
+                   _this.ajax1 = $.ajax({
                      type: "POST",
                      url: androidIos.ajaxHttp() + "/order/loadEntrust",
                      data:JSON.stringify({
@@ -267,6 +268,7 @@
         if(listDom != null){
           body.removeChild(listDom);
         }
+        _this.ajax1.abort()
       },
       destroy:function () {
         var _this = this;
@@ -275,6 +277,7 @@
         if(listDom != null){
           body.removeChild(listDom);
         }
+        _this.ajax1.abort()
       }
     }
 </script>
