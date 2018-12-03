@@ -226,39 +226,44 @@
   function getListDataFromNet(pageNum,pageSize,successCallback,errorCallback) {
     //延时一秒,模拟联网
     thisthatsecond.settime = setTimeout(function () {
-      thisthatsecond.ajax1 = $.ajax({
-        type: "POST",
-        url: androidIos.ajaxHttp() + "/order/loadEntrust",
-        data:JSON.stringify({
-          page:pageNum,
-          size:pageSize,
-          type:0,
-          state:8,
-          userCode:sessionStorage.getItem("token"),
-          source:sessionStorage.getItem("source"),
-          keyword:thisthatsecond.address == "" ? "HDSDDD" : thisthatsecond.address,
-        }),
-        contentType: "application/json;charset=utf-8",
-        dataType: "json",
-        timeout: 30000,
-        success: function (loadEntrust) {
-          if (loadEntrust.success == "1") {
-            successCallback(loadEntrust.list);
-          }else{
-            androidIos.second(loadEntrust.message);
-            successCallback([]);
+      if( thisthatsecond.address != ""){
+        thisthatsecond.ajax1 = $.ajax({
+          type: "POST",
+          url: androidIos.ajaxHttp() + "/order/loadEntrust",
+          data:JSON.stringify({
+            page:pageNum,
+            size:pageSize,
+            type:0,
+            state:8,
+            userCode:sessionStorage.getItem("token"),
+            source:sessionStorage.getItem("source"),
+            keyword:thisthatsecond.address == "" ? "HDSDDD" : thisthatsecond.address,
+          }),
+          contentType: "application/json;charset=utf-8",
+          dataType: "json",
+          timeout: 30000,
+          success: function (loadEntrust) {
+            if (loadEntrust.success == "1") {
+              successCallback(loadEntrust.list);
+            }else{
+              androidIos.second(loadEntrust.message);
+              successCallback([]);
+            }
+          },
+          complete: function (XMLHttpRequest, status) { //请求完成后最终执行参数
+            if (status == 'timeout') { //超时,status还有success,error等值的情况
+              androidIos.second("当前状况下网络状态差，请检查网络！");
+              successCallback([]);
+            } else if (status == "error") {
+              androidIos.errorwife();
+              successCallback([]);
+            }
           }
-        },
-        complete: function (XMLHttpRequest, status) { //请求完成后最终执行参数
-          if (status == 'timeout') { //超时,status还有success,error等值的情况
-            androidIos.second("当前状况下网络状态差，请检查网络！");
-            successCallback([]);
-          } else if (status == "error") {
-            androidIos.errorwife();
-            successCallback([]);
-          }
-        }
-      });
+        });
+      }else{
+        successCallback([]);
+      }
+
     },500)
   }
 </script>
