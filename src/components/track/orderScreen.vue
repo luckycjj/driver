@@ -4,7 +4,11 @@
     <div id="carTitleBox"   @touchend="event($event)">
       <div class="carTitleBox">
         <div class="carTitleback" @touchend="goback()"></div>
-        <input type="text" placeholder="请输入订单号/货物名称"  id="carNumber" v-model="address"  @focus="aaa()">
+        <div class="InputDiv">
+          <input type="text" placeholder="请输入订单号/货物名称"  id="carNumber" v-model="address"  @focus="aaa()">
+          <div class="yuyinhuatong"></div>
+          <!--<img src="../../images/huatong-3.png">-->
+        </div>
         <p @touchend="sousuo()" id="sousuo">搜索</p>
       </div>
     </div>
@@ -213,7 +217,7 @@
     left:0;
     bottom:0;
     right:0;
-    background: rgba(0,0,0,0.2);
+    background: rgba(0,0,0,0);
     width:auto;
     height: auto;
     z-index:0;
@@ -227,19 +231,37 @@
     margin-right: 2%;
     font-size: 0.35rem;
   }
-  #orderScreen .carTitleBox input{
+  .InputDiv{
     display: block;
-    width:50%;
+    width:60%;
     background-color: #f2f2f2;
     border:1px solid #eaeaea;
-    color:#333;
     padding: 0.15rem 0;
     margin-top:0.225rem;
     margin-left:2rem;
-    font-size: 0.36rem;
     border-radius: 0.45rem;
+    position: relative;
+  }
+  .InputDiv .yuyinhuatong{
+    position: absolute;
+    width:15%;
+    right:0;
+    top:0;
+    bottom:0;
+    height: 100%;
+    background-image: url("../../images/huatong-3.png");
+    background-size: 0.3rem;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+  }
+  #orderScreen .carTitleBox input{
+    display: block;
+    width:70%;
+    color:#333;
+    background-color: transparent;
+    font-size: 0.36rem;
     text-align: left;
-    padding-left: 10%;
+    padding-left: 15%;
     background-image: url("../../images/sousuo.png");
     background-position: 6% 50%;
     background-repeat: no-repeat;
