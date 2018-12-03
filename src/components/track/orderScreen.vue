@@ -106,6 +106,7 @@
             }
           });
         }else{
+          _this.yuyin = false;
            androidIos.second("暂不支持语音搜索")
         }
       },
@@ -113,6 +114,7 @@
         var _this = this;
         if(_this.iflyRecognition != null){
         }else{
+          _this.yuyin = false;
           androidIos.second("暂不支持语音搜索")
         }
       },
@@ -122,6 +124,7 @@
           _this.iflyRecognition.stopRecord();
           _this.yuyin = false;
         }else{
+          _this.yuyin = false;
           androidIos.second("暂不支持语音搜索")
         }
       },
