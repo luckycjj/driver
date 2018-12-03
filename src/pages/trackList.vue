@@ -58,6 +58,7 @@
             tabShow:0,
             driverType:0,
             ajax1:null,
+            settime:null,
           }
        },
        mounted:function () {
@@ -166,7 +167,7 @@
              }
              function getListDataFromNet(curNavIndex,pageNum,pageSize,successCallback,errorCallback) {
                //延时一秒,模拟联网
-               setTimeout(function () {
+               _this.settime =setTimeout(function () {
                  if(pageNum == 1){
                    _this.$refs.footcomponent.go();
                  }
@@ -268,7 +269,10 @@
         if(listDom != null){
           body.removeChild(listDom);
         }
-        _this.ajax1.abort()
+        clearTimeout(_this.settime);
+        if(_this.ajax1 != null){
+          _this.ajax1.abort();
+        }
       },
       destroy:function () {
         var _this = this;
@@ -277,7 +281,10 @@
         if(listDom != null){
           body.removeChild(listDom);
         }
-        _this.ajax1.abort()
+        clearTimeout(_this.settime);
+        if(_this.ajax1 != null){
+          _this.ajax1.abort();
+        }
       }
     }
 </script>

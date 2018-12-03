@@ -52,6 +52,8 @@
           prolist:[]
         }],
         tabShow:0,
+        settime:null,
+        ajax1:null,
       }
     },
     mounted:function () {
@@ -158,10 +160,10 @@
         }
         function getListDataFromNet(curNavIndex,pageNum,pageSize,successCallback,errorCallback) {
           //延时一秒,模拟联网
-          setTimeout(function () {
+          _this.settime = setTimeout(function () {
             var status = JSON.parse(sessionStorage.getItem("driverMessage")).status;
             if(status == 2){
-              $.ajax({
+              _this.ajax1 = $.ajax({
                 type: "POST",
                 url: androidIos.ajaxHttp() + "/order/loadEntrust",
                 data:JSON.stringify({
@@ -250,6 +252,10 @@
       if(listDom != null){
         body.removeChild(listDom);
       }
+      clearTimeout(_this.settime);
+      if(_this.ajax1 != null){
+        _this.ajax1.abort();
+      }
     },
     destroy:function () {
       var _this = this;
@@ -257,6 +263,10 @@
       var listDom=document.getElementsByClassName("mescroll-totop")[0];
       if(listDom != null){
         body.removeChild(listDom);
+      }
+      clearTimeout(_this.settime);
+      if(_this.ajax1 != null){
+        _this.ajax1.abort();
       }
     }
   }
