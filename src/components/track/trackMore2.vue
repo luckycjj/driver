@@ -34,9 +34,9 @@
             <div class="carNumber" v-for="car in carList" @click="mapGo(car)">
               <h1 class="carFloatLeft">{{car.carno}}<br>{{car.carHangNo}}</h1>
               <div class="carFloatRight">
-                <h3 v-html="type == 1 || type == 2 ? '距离提货点' : '距离目的地'"></h3> <h2 v-html="car.length < 1 ? car.length * 1000 + '米' : car.length + '公里'"></h2>
+                <h3 v-html="type == 0 || type == 1 || type == 2 ? '距离提货点' : '距离目的地'"></h3> <h2 v-html="car.length < 1 ? car.length * 1000 + '米' : car.length + '公里'"></h2>
                 <div class="clearBoth"></div>
-                <h3 v-html="type == 1 || type == 2 ? '预计提货时间' : '预计到货时间'"></h3> <h2>明日到达</h2>
+                <h3 v-html="type == 0 || type == 1 || type == 2 ? '预计到货时间' : '预计到货时间'"></h3> <h2>明日到达</h2>
                 <div class="clearBoth"></div>
               </div>
               <div class="clearBoth"></div>
@@ -361,6 +361,19 @@
           self.pick = true;
           self.logisticsOk = false;
           self.type = curPageData[0].orderType == '0'? 0 :curPageData[0].orderType == '10'?1:curPageData[0].orderType == '20'?2:curPageData[0].orderType == '31'?3:curPageData[0].orderType == '32'?4:curPageData[0].orderType == '33'?5:curPageData[0].orderType == '41'?6:curPageData[0].orderType == '42'?7:curPageData[0].orderType == '43'?8:curPageData[0].orderType == '50'?9:10;
+          self.tabList = self.type ==  0  || self.type == 1 ? [{
+            icon:require("../../images/telTrackMore.png"),
+            name:"联系客服",
+            value:0,
+          }] : [{
+            icon:require("../../images/telTrackMore.png"),
+            name:"联系客服",
+            value:0,
+          },{
+            icon:require("../../images/lookImgTrackMore.png"),
+            name:"查看图片",
+            value:1,
+          }];
           self.mescroll.endSuccess(curPageData.length);
           sessionStorage.setItem("orderPk",self.$route.query.pk);
           sessionStorage.setItem("dispatchPK",self.$route.query.pk);
