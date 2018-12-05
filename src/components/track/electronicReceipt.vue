@@ -7,10 +7,10 @@
         <div class="clearBoth"></div>
         <div id="Morebox">
              <div class="proBox" v-for="item in message.product">
-               <h2>货品名称 {{item.name}}</h2>
-               <h3>货品件数 {{item.num}}件</h3>
-               <h3 v-if="item.weight > 0">货品重量 {{item.weight}}吨</h3>
-               <h3 v-if="item.volume > 0">货品体积 {{item.volume}}立方米</h3>
+               <h2>货品名称: {{item.name}}</h2>
+               <h3>货品件数: {{item.num}}件</h3>
+               <h3 v-if="item.weight > 0">货品重量: {{item.weight}}吨</h3>
+               <h3 v-if="item.volume > 0">货品体积: {{item.volume}}立方米</h3>
                <div class="clearBoth"></div>
              </div>
           <div class="endPeople">
