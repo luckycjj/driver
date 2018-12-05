@@ -20,7 +20,7 @@
         </div>
         <div class="carrierDriverBox">
           <h2>明日到达</h2>
-          <h3 v-html="type == 0 || type == 1 || type == 2 ? '预计到货时间' : '预计到货时间'"></h3>
+          <h3 v-html="type == 0 || type == 1 || type == 2 ? '预计提货时间' : '预计到货时间'"></h3>
         </div>
         <div class="clearBoth"></div>
       </div>
@@ -36,7 +36,7 @@
               <div class="carFloatRight">
                 <h3 v-html="type == 0 || type == 1 || type == 2 ? '距离提货点' : '距离目的地'"></h3> <h2 v-html="car.length < 1 ? car.length * 1000 + '米' : car.length + '公里'"></h2>
                 <div class="clearBoth"></div>
-                <h3 v-html="type == 0 || type == 1 || type == 2 ? '预计到货时间' : '预计到货时间'"></h3> <h2>明日到达</h2>
+                <h3 v-html="type == 0 || type == 1 || type == 2 ? '预计提货时间' : '预计到货时间'"></h3> <h2>明日到达</h2>
                 <div class="clearBoth"></div>
               </div>
               <div class="clearBoth"></div>
