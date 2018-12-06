@@ -469,14 +469,14 @@
               list.push(_this.errorAbnormal[i])
             }
           }
-          if((list.length == 0  || list[0].value == 0 )&& _this.errorabnormal == ''){
+          if((list.length == 0  || list[0].value == 7 )&& _this.errorabnormal == ''){
             bomb.first("请选择或填写异常");
             return false;
           }
           var json = {
             userCode : sessionStorage.getItem("token"),
             source : sessionStorage.getItem("source"),
-            expType : list[0] == undefined || (list[0] != undefined && list[0].displayName == "其他") ? "" : androidIos.checkText(list[0].value),
+            expType : androidIos.checkText(list[0].value),
             trackingMemo : androidIos.checkText(_this.errorabnormal),
             entrustVbillno : _this.pdlist[0].number == undefined ? "" : androidIos.checkText(_this.pdlist[0].number)
           }
@@ -533,6 +533,10 @@
             bomb.first("请选择费用类型");
             return false;
           }
+          /*if(list[0] == 11 &&_this.errorPricetype == ""){
+            bomb.first("请填写原因");
+            return false;
+          }*/
           if( _this.errorPrice == ''){
             bomb.first("请填写费用");
             return false;
@@ -652,7 +656,8 @@
                 $("#driverResultBox .errorUl li").removeClass("errorPriceBoxLi");
                 _this.$cjj("拒绝成功");
                 setTimeout(function () {
-                  _this.ajaxProMore();
+                  /*_this.ajaxProMore();*/
+                  androidIos.gobackFrom(_this);
                 },500)
               }else{
                 androidIos.second(abnormalFeedback.message);
