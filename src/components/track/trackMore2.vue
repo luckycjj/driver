@@ -75,7 +75,7 @@
                   <button v-if="type==8 && endtype == '0' && actFlag == 'Y'" @click="qianshou(endtype)">交接</button>
                   <button v-if="type==8 && endtype == '1'" @click="qianshou(endtype)">签收</button>
                   <button v-if="type==9 && pdlist[0].exp_sign == 1" @click="uploadbill(1)">确认异常</button>
-                  <button v-if="type==9 && pdlist[0].exp_sign == 0" @touchend="uploadbill(0)">上传单据</button>
+                  <button v-if="type==9 && pdlist[0].exp_sign == 0"  @click="upImg(3)">上传单据</button>
                   <button v-if="type==9 && pdlist[0].exp_sign == 0"  class="upImg" style="background-image: none;" @click="uploadbill(2)">电子回单</button>
                   <div class="clearBoth"></div>
                 </div>
@@ -1676,6 +1676,7 @@
     background-size: 0.375rem;
     margin-bottom: 0.3rem;
     line-height: 0.4rem;
+    word-wrap:break-word;
   }
   .proStatus ul li span{
     color:#666;

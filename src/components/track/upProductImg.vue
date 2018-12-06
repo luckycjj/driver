@@ -1,6 +1,7 @@
 <template>
     <div id="upProductImg" style="top:1.3rem;">
-      <div id="title" v-title data-title="上传货品信息"></div>
+      <div id="title" v-if="fileType == 0 || fileType == 1" v-title data-title="上传货品信息"></div>
+      <div id="title" v-else v-title data-title="上传单据"></div>
       <div id="imgFileBox">
         <h2>上传货品名称</h2>
         <h1 >请拍摄/上传清晰的照片，以便核实货品数量，可传{{imgListLength}}张货品信息</h1>
@@ -30,9 +31,14 @@
           return{
             imgList:[],
             imgListLength:6,
+            fileType:0,
             errorlogo: 'this.src="' + require('../../images/timg.jpg') + '"'
           }
         },
+      beforeMount:function () {
+        var _this = this;
+        _this.fileType = _this.$route.query.type;
+      },
       mounted:function () {
         var _this = this;
         androidIos.judgeIphoneX("upProductImg",2);

@@ -12,14 +12,23 @@
       </ul>
       <ul v-if="imgList2.list.length > 0">
         <p>{{imgList2.name}}</p>
-        <h1>{{imgList1.time}}</h1>
+        <h1>{{imgList2.time}}</h1>
         <div class="clearBoth"></div>
         <li v-for="(item,index) in imgList2.list" :style="{marginRight:index % 3 != 2 ? '0.22rem': '0rem'}">
           <img :src="item.img"  :onerror="errorlogo"    @touchend="lookImg($event,item.img)">
         </li>
         <div class="clearBoth"></div>
       </ul>
-      <div class="noImg"  v-if="imgList1.list.length == 0 && imgList2.list.length == 0">
+      <ul v-if="imgList3.list.length > 0">
+        <p>{{imgList3.name}}</p>
+        <h1>{{imgList3.time}}</h1>
+        <div class="clearBoth"></div>
+        <li v-for="(item,index) in imgList3.list" :style="{marginRight:index % 3 != 2 ? '0.22rem': '0rem'}">
+          <img :src="item.img"  :onerror="errorlogo"    @touchend="lookImg($event,item.img)">
+        </li>
+        <div class="clearBoth"></div>
+      </ul>
+      <div class="noImg"  v-if="imgList1.list.length == 0 && imgList2.list.length == 0 &&  imgList3.list.length == 0">
         <img src="../../images/tupian-2.png">
         <p>暂无图片</p>
       </div>
@@ -43,6 +52,11 @@
              imgList2:{
                list:[],
                name:"卸货图片",
+               time:""
+             },
+             imgList3:{
+               list:[],
+               name:"单据图片",
                time:""
              },
              errorlogo: 'this.src="' + require('../../images/timg.jpg') + '"',
@@ -100,6 +114,38 @@
                     }
                     _this.imgList2.time = findMyUpload.list[i].createTime.split(" ")[0];
                     _this.imgList2.list.push(json);
+                  }
+                }
+              }else{
+                androidIos.second(findMyUpload.message);
+              }
+
+            },
+            complete : function(XMLHttpRequest,status){ //请求完成后最终执行参数
+              if(status=='timeout'){//超时,status还有success,error等值的情况
+                androidIos.second("网络请求超时");
+              }else if(status=='error'){
+                androidIos.errorwife();
+              }
+            }
+          })
+          $.ajax({
+            type: "POST",
+            url: androidIos.ajaxHttp()+"/order/findMyUpload",
+            data:JSON.stringify({vbillno:_this.$route.query.vbillno,originType:3,userCode:sessionStorage.getItem("token"),source:sessionStorage.getItem("source")}),
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            timeout: 20000,
+            success: function (findMyUpload) {
+              if (findMyUpload.success == "1") {
+                for(var i = 0 ; i < findMyUpload.list.length;i++){
+                  var list = findMyUpload.list[i].url.split(",");
+                  for(var x = 0; x < list.length ; x++){
+                    var json = {
+                      img:findMyUpload.list[i].def1 + list[x]
+                    }
+                    _this.imgList3.time = findMyUpload.list[i].createTime.split(" ")[0];
+                    _this.imgList3.list.push(json);
                   }
                 }
               }else{
