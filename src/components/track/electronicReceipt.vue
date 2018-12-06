@@ -18,7 +18,7 @@
             <h1>电话: {{message.tel}}</h1>
             <div class="clearBoth"></div>
           </div>
-          <div class="carrier">
+          <div class="carrier" v-if="message.carrier != ''">
             <h1>承运商: {{message.carrier}}</h1>
           </div>
           <div class="time">
