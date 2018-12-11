@@ -142,7 +142,7 @@
                 success: function (findDriverConfirmedReceiptInfo) {
                   if(findDriverConfirmedReceiptInfo.success == "1"){
                       _this.errorSignRemark = findDriverConfirmedReceiptInfo.driverRemark;
-                      var imgL = findDriverConfirmedReceiptInfo.abnormalPicture == null ? [] : findDriverConfirmedReceiptInfo.abnormalPicture.split(",");
+                      var imgL = findDriverConfirmedReceiptInfo.abnormalPicture == "" ? [] : findDriverConfirmedReceiptInfo.abnormalPicture.split(",");
                       if( imgL.length > 0 && findDriverConfirmedReceiptInfo.driverRemark != "" &&  findDriverConfirmedReceiptInfo.driverRemark != null){
                         _this.modify = false;
                       }else{
@@ -492,8 +492,8 @@
   }
   .chooseTrue{
     color:white!important;
-    background: #2C9CFF!important;
-    border: 1px solid #2c9cff!important;
+    background: #1869A9!important;
+    border: 1px solid #1869A9!important;
   }
   #star_grade{
     margin-top: 0.5rem;
@@ -601,10 +601,7 @@
     margin: 0.2rem auto;
     width:90%;
     color:white;
-    background: -webkit-linear-gradient(left, #00C4FF , #0074FF); /* Safari 5.1 - 6.0 */
-    background: -o-linear-gradient(right, #00C4FF, #0074FF); /* Opera 11.1 - 12.0 */
-    background: -moz-linear-gradient(right, #00C4FF, #0074FF); /* Firefox 3.6 - 15 */
-    background: linear-gradient(to right, #00C4FF , #0074FF); /* 标准的语法 */
+    background:#1869A9;
     font-size: 0.4rem;
     letter-spacing: 2px;
     border-radius: 0.1rem;

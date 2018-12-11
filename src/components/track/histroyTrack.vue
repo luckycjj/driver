@@ -68,6 +68,11 @@
       sessionStorage.removeItem("driverPk");
       sessionStorage.removeItem("ORDERSCREEN");
       androidIos.judgeIphoneX("histroyTrack",2);
+      var histroyTrackTap = sessionStorage.getItem("histroyTrackTap");
+      if(histroyTrackTap != undefined){
+        _this.tabShow = histroyTrackTap*1;
+        sessionStorage.removeItem("histroyTrackTap");
+      }
       androidIos.bridge(_this);
     },
 
@@ -75,11 +80,6 @@
       go:function () {
         var _this = this;
         _this.corner();
-        var histroyTrackTap = sessionStorage.getItem("histroyTrackTap");
-        if(histroyTrackTap != undefined){
-          _this.tabShow = histroyTrackTap*1;
-          sessionStorage.removeItem("histroyTrackTap");
-        }
         $('.wrapper').navbarscroll({defaultSelect:_this.tabShow});
         var curNavIndex = _this.tabShow;//首页0; 奶粉1; 面膜2; 图书3;
         var mescrollArr=new Array(_this.list.length);//4个菜单所对应的4个mescroll对象

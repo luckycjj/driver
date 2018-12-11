@@ -12,7 +12,7 @@
       </ul>
     </div>
     <div id="carrierDriver" v-if="showMap" style="top:0.64rem">
-      <div id="titleGoback"  @touchend="goback()" ></div>
+      <div id="titleGoback"  @click="goback()" ></div>
       <div class="carrierDriver"  v-for="car in carList">
         <div class="carrierDriverBox">
           <h2 v-html="car.length < 1 ? car.length * 1000 + '米' : car.length + '公里'"></h2>
