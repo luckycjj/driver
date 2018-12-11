@@ -6,7 +6,7 @@
         <h1>{{imgList1.time}}</h1>
         <div class="clearBoth"></div>
         <li v-for="(item,index) in imgList1.list" :style="{marginRight:index % 3 != 2 ? '0.22rem': '0rem'}">
-            <img :src="item.img"  :onerror="errorlogo "    @touchend="lookImg($event,item.img)">
+            <img :src="item.img"  :onerror="errorlogo "    @click="lookImg($event,item.img)">
         </li>
         <div class="clearBoth"></div>
       </ul>
@@ -15,7 +15,7 @@
         <h1>{{imgList2.time}}</h1>
         <div class="clearBoth"></div>
         <li v-for="(item,index) in imgList2.list" :style="{marginRight:index % 3 != 2 ? '0.22rem': '0rem'}">
-          <img :src="item.img"  :onerror="errorlogo"    @touchend="lookImg($event,item.img)">
+          <img :src="item.img"  :onerror="errorlogo"    @click="lookImg($event,item.img)">
         </li>
         <div class="clearBoth"></div>
       </ul>
@@ -24,7 +24,7 @@
         <h1>{{imgList3.time}}</h1>
         <div class="clearBoth"></div>
         <li v-for="(item,index) in imgList3.list" :style="{marginRight:index % 3 != 2 ? '0.22rem': '0rem'}">
-          <img :src="item.img"  :onerror="errorlogo"    @touchend="lookImg($event,item.img)">
+          <img :src="item.img"  :onerror="errorlogo"    @click="lookImg($event,item.img)">
         </li>
         <div class="clearBoth"></div>
       </ul>
