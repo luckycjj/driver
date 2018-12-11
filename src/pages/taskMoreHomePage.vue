@@ -89,8 +89,8 @@
                 </ul>
               </div>
               <div class="price">
-                <h1>提货时间: {{listBox.deliDate}}</h1>
-                <h1 style="margin-right: auto">到货时间: {{listBox.arriDate}}</h1>
+                <h1>发货时间: {{listBox.deliDate}}</h1>
+                <h1 style="margin-right: auto">收货时间: {{listBox.arriDate}}</h1>
                 <div class="clearBoth"></div>
               </div>
               <ul id="proUl">

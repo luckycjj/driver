@@ -17,19 +17,19 @@
                </li>
               <li>
                 <img src="../../images/robbingTel1.png" @touchend="telphone(item.endMessage.tel)">
-                发货人{{item.endMessage.name | nameCheck}}
+                收货人{{item.endMessage.name | nameCheck}}
               </li>
               <div class="clearBoth"></div>
             </ul>
             <div class="address">
            <!--   <h1>提货地址：{{item.pickMessage.address}}</h1>
               <h1>发货地址：{{item.endMessage.address}}</h1>-->
-              <h1><h6 >提货地址：</h6><h6 style="width:7rem;">{{item.pickMessage.address}}</h6><div class="clearBoth"></div></h1>
-              <h1><h6>发货地址：</h6><h6 style="width:7rem;">{{item.endMessage.address}}</h6><div class="clearBoth"></div></h1>
+              <h1><h6 >发货地址：</h6><h6 style="width:7rem;">{{item.pickMessage.address}}</h6><div class="clearBoth"></div></h1>
+              <h1><h6>收货地址：</h6><h6 style="width:7rem;">{{item.endMessage.address}}</h6><div class="clearBoth"></div></h1>
             </div>
             <div class="time">
-              <h1>提货时间：{{item.goodsmessage.startTime}}</h1>
-              <h1>发货时间：{{item.goodsmessage.endTime}}</h1>
+              <h1>发货时间：{{item.goodsmessage.startTime}}</h1>
+              <h1>收货时间：{{item.goodsmessage.endTime}}</h1>
               <div class="clearBoth"></div>
             </div>
           </div>
@@ -41,7 +41,6 @@
             </ul>
             <div class="price">
               <h1>运输费用：￥{{item.goodsmessage.money}}</h1>
-              <h1 style="margin-right: auto">付款方式：现结</h1>
               <div class="clearBoth"></div>
             </div>
           </div>

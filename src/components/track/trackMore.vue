@@ -16,7 +16,7 @@
               <div class="carFloatRight">
                 <h3 v-html="type == 1 || type == 2 ? '距离提货点' : '距离目的地'"></h3> <h2 v-html="car.length < 1 ? car.length * 1000 + '米' : car.length + '公里'"></h2>
                 <div class="clearBoth"></div>
-                <h3 v-html="type == 1 || type == 2 ? '预计提货时间' : '预计到货时间'"></h3> <h2>明日到达</h2>
+                <h3 v-html="type == 1 || type == 2 ? '预计发货时间' : '预计收货时间'"></h3> <h2>明日到达</h2>
                 <div class="clearBoth"></div>
               </div>
               <div class="clearBoth"></div>
@@ -34,8 +34,8 @@
                 <li :style="{backgroundImage:'url('+require('../../images/trackListbeizhu.png')+')'}">{{item.pickPay.remark}}</li>
                 <li style="background-image: none;" v-for="abnormalaEventVo in item.abnormalaEventVo">{{abnormalaEventVo.createTime}} {{abnormalaEventVo.memo}}</li>
                 <div class="price">
-                  <h1>提货时间: {{item.goodsmessage.startTime}}</h1>
-                  <h1 style="margin-right: auto">到货时间: {{item.goodsmessage.endTime}}</h1>
+                  <h1>发货时间: {{item.goodsmessage.startTime}}</h1>
+                  <h1 style="margin-right: auto">收货时间: {{item.goodsmessage.endTime}}</h1>
                   <div class="clearBoth"></div>
                 </div>
               </ul>
@@ -54,8 +54,8 @@
                 <div class="clearBoth"></div>
               </ul>
               <div class="address" style="border:none;">
-                <h1><h6 >提货地址：</h6><h6 style="width:7rem;">{{item.pickMessage.address}}</h6><div class="clearBoth"></div></h1>
-                <h1><h6>发货地址：</h6><h6 style="width:7rem;">{{item.endMessage.address}}</h6><div class="clearBoth"></div></h1>
+                <h1><h6 >发货地址：</h6><h6 style="width:7rem;">{{item.pickMessage.address}}</h6><div class="clearBoth"></div></h1>
+                <h1><h6>收货地址：</h6><h6 style="width:7rem;">{{item.endMessage.address}}</h6><div class="clearBoth"></div></h1>
               </div>
             </div>
           </div>
