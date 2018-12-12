@@ -1120,8 +1120,8 @@
     background-size:0.5rem ;
     background-position:50% 0.24rem ;
     text-align: center;
-    font-size: 0.3125rem;
-    line-height: 0.8rem;
+    font-size: 0.187rem;
+    line-height: 0.57rem;
     color:#666;
   }
   .hengxian{

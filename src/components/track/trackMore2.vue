@@ -1833,7 +1833,7 @@
     background-position:50% 0.24rem ;
     text-align: center;
     font-size: 0.187rem;
-    line-height: 0.8rem;
+    line-height: 0.57rem;
     color:#666;
   }
   #titleGoback{
