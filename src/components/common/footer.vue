@@ -178,22 +178,22 @@
        width:100%;
      }
      .imgBox{
-       width:0.67rem;
-       height: 0.67rem;
-       margin: 0.24rem  auto 0 auto;
+       width:0.58rem;
+       height: 0.58rem;
+       margin: 0.28rem  auto 0.03rem auto;
        background-position: 0 0;
-       background-size: 0.67rem 1.34rem;
+       background-size: 0.58rem 1.16rem;
        background-repeat: no-repeat;
        position: relative;
      }
      .corner{
        background: #fc4243;
-       font-size: 0.3125rem;
+       font-size: 0.24rem;
        color:white;
        position: absolute;
-       top:0;
+       top:-0.15rem;
        right:0rem;
-       padding: 0.02rem 0.2rem;
+       padding: 0.05rem 0.14rem;
        border-radius: 0.3rem;
      }
      .robbing{
@@ -224,10 +224,10 @@
       float: left;
       text-align: center;
       height: 1.3rem;
-      color:#666;
-      font-size: 0.24rem;
-      line-height: 0.35rem;
+      color:#999;
+      font-size:  0.2667rem;
       background: white;
+      line-height: 0.35rem;
       position: relative;
     }
      #footerUserTX{

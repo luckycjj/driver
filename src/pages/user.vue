@@ -25,7 +25,7 @@
         </div>
       </div>
        <ul id="labelBox">
-         <li @touchend="lookMore(item)" v-for="(item,index) in tabList" :class="index % 2 == 0 ? (tabList.length -1 == index ? 'marTop' : 'marTop borderShow') : ''">
+         <li @click="lookMore(item)" v-for="(item,index) in tabList" :class="index % 2 == 0 ? (tabList.length -1 == index ? 'marTop' : 'marTop borderShow') : ''">
            <div class="tableIcon" :style="{backgroundImage:'url(' + item.icon + ')'}"></div>
            <p>{{item.name}}</p>
            <div class="lookMore"></div>
@@ -236,6 +236,9 @@
           }else{
             if(item.name.indexOf("扫") == -1){
               _this.shareListTrue = true;
+              _this.$nextTick(function () {
+                androidIos.judgeIphoneX("shareBody",1);
+              })
             }
           }
         },
