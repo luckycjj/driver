@@ -56,7 +56,7 @@
              },
              imgList3:{
                list:[],
-               name:"单据图片",
+               name:"签收",
                time:""
              },
              errorlogo: 'this.src="' + require('../../images/timg.jpg') + '"',
