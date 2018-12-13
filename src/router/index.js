@@ -137,8 +137,11 @@ Vue.filter('orderTypeName', function(value) {
     case 50:
       valueTypeName = "已签收";
       break;
+    case 55:
+      valueTypeName = "已回单";
+      break;
     case 60:
-      valueTypeName = "退单";
+      valueTypeName = "已拒绝";
       break;
   }
   return valueTypeName

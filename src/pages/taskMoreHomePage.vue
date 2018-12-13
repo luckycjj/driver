@@ -555,7 +555,7 @@
                     arriDate.splice(2,1);
                     _this.listBox.arriDate = arriDate.join(":");
                     _this.listBox.type = _this.listBox.status == '0'? 0 : _this.listBox.status == '10'?1: _this.listBox.status == '20'?2: _this.listBox.status == '31'?3: _this.listBox.status == '32'?4: _this.listBox.status== '33'?5: _this.listBox.status== '41'?6: _this.listBox.status== '42'?7: _this.listBox.status== '43'?8: _this.listBox.status== '50'?9:10;
-                    _this.listBox.statusName = _this.listBox.status == '0'? "待确认" : _this.listBox.status == '10' ? "已确认" : _this.listBox.status == '20' ? "司机出发" : _this.listBox.status == '31' ? "提货到达" : _this.listBox.status == '32' ? "开始装货" : _this.listBox.status== '33' ? "开始运输" : _this.listBox.status== '41' ? "运输到达" : _this.listBox.status== '42' ? "开始卸货" : _this.listBox.status== '43' ? "卸货完毕" : _this.listBox.status== '50' ? "已签收" : 10;
+                    _this.listBox.statusName = _this.listBox.status == '0'? "待确认" : _this.listBox.status == '10' ? "已确认" : _this.listBox.status == '20' ? "司机出发" : _this.listBox.status == '31' ? "提货到达" : _this.listBox.status == '32' ? "开始装货" : _this.listBox.status== '33' ? "开始运输" : _this.listBox.status== '41' ? "运输到达" : _this.listBox.status== '42' ? "开始卸货" : _this.listBox.status== '43' ? "卸货完毕" : _this.listBox.status== '50' ? "已签收" : _this.listBox.status== '55' ? "已回单": _this.listBox.status== '60' ? "已拒绝": "";
                     sessionStorage.setItem("orderPk",_this.listBox.pkInvoice);
                     if( _this.listBox.type < 2){
                       _this.tabList = [{
