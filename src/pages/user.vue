@@ -13,7 +13,7 @@
           <div style="float: left;width:50%;">
             <p>{{message.name}} <span v-html="message.status == '0' ? '未认证' :message.status == '1' ? '待审核' : message.status == '2' ? '已审核' : message.status == '3' ? '已驳回' : message.status == '4' ? '已禁用' : ''"></span></p>
           </div>
-          <div class="lookMore"  style="height: 2.16rem" @touchend="renzhen(message.status)"><span v-if="message.status == 0">去认证</span></div>
+          <div class="lookMore"  style="height: 2.16rem" @click="renzhen(message.status)"><span v-if="message.status == 0">去认证</span></div>
           <div class="clearBoth"></div>
           <ul id="fuwuList">
             <li v-for="(item,index) in fuwuList" :style="{width:100/fuwuList.length + '%'}">
