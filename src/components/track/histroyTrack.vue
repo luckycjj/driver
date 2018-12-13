@@ -5,7 +5,9 @@
       <div class="wrapper" id="trackTab">
         <div class="scroller">
           <ul class="clearfix">
-            <li :style="{width:10/(list.length) + 'rem'}" tapmode=""  v-for="(item,index) in list" :i="index"><a tapmode="">{{item.name}}<span v-if="item.number*1 > 0">({{item.number}})</span></a></li>
+            <li :style="{width:10/(list.length) + 'rem'}" tapmode=""  v-for="(item,index) in list" :i="index">
+              <p tapmode="">{{item.name}}<span v-if="item.number*1 > 0">({{item.number}})</span></p>
+            </li>
           </ul>
         </div>
       </div>
@@ -20,7 +22,7 @@
               <p class="startEnd"><span class="startEndSpan">{{items.deliAddr}}<img src="../../images/addressImg.png">{{items.arriAddr}}</span><div class="clearBoth"></div></p>
               <div class="proBoxList" v-for="(pro,proIndex) in items.itemDaos">{{items.transType}}/{{pro.goodsCode}}/{{pro.num}}件<span v-if="pro.weight*1 > 0">/{{pro.weight*1}}吨</span><span v-if="pro.volume*1 > 0">/{{pro.volume*1}}立方米</span></div>
             </div>
-            <h6 class="meno" style="width:8rem;max-width:8rem;">{{items.memo}}</h6>
+            <h6 class="meno" style="width:8rem;max-width:8rem;" v-html="items.memo == '' ? '暂无备注' : items.memo"></h6>
             <h6 class="deliDateTime">{{items.deliDate | carrierTime}}</h6>
             <h6 class="callTel" @click.stop="tel(items.arriMobile)">{{items.arriMobile}}</h6>
             <div class="clearBoth"></div>
@@ -327,21 +329,25 @@
     text-align: center;
     width:2rem;
   }
-  .wrapper .scroller li a{
+  .wrapper .scroller li p{
     color:#999;
     display:block;
     font-size: 0.375rem;
-    margin:0 0.1rem;
+    margin:0 auto;
+    width: fit-content;
+    text-align: center;
+    white-space: pre;
+    padding: 0 0.2rem;
   }
-  .wrapper .scroller li a span{
+  .wrapper .scroller li p span{
     color:#999;
     font-size: 0.3125rem;
   }
-  .wrapper .scroller li.cur a{
+  .wrapper .scroller li.cur p{
     color:#1D68A8;
     border-bottom: 1px solid #1D68A8;
   }
-  .wrapper .scroller li.cur a span{
+  .wrapper .scroller li.cur p span{
     color:#1D68A8;
   }
   .data-list{
