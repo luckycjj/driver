@@ -3,6 +3,7 @@ import robbingList from '../pages/robbingList'
 import trackList from '../pages/trackList'
 import login from '../pages/login'
 import message from '../pages/message'
+import secondmessage from '../pages/message2'
 import searchDayOrder from '../pages/searchDayOrder'
 import settlementCenter from '../pages/settlementCenter'
 import Secondmessage from '../pages/Secondmessage'
@@ -274,6 +275,11 @@ export default new Router(
       path:'/message',
       name:'message',
       component:message,
+    },
+    {
+      path:'/secondmessage',
+      name:'secondmessage',
+      component:secondmessage,
     },
     {
       path:'/Secondmessage',

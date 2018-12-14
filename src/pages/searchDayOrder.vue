@@ -3,6 +3,9 @@
     <div id="title" v-title data-title="任务"></div>
     <div id="top">
       任务
+      <div class="topImg" @click="messageGo()">
+        <div class="redCor" v-if="messageLength > 0"></div>
+      </div>
     </div>
     <div id="DayTime">
         <div class="li" v-for="(item,index) in dayList" :style="{width:10/ dayList.length + 'rem',color:item.clas ? '#666' : '#cccccc'}" @touchend="dayLook(index)">
@@ -89,6 +92,7 @@
         mescrollArr:null,
         ajax1:null,
         settime:null,
+        messageLength:0,
       }
     },
     mounted:function () {
@@ -121,6 +125,11 @@
         }else{
           _this.dayList[2].clas = true;
         }
+      },
+      messageGo:function () {
+        var _this = this;
+        androidIos.addPageList();
+        _this.$router.push({path:"/secondmessage"});
       },
       tabNumber:function () {
          var _this = this;
@@ -261,6 +270,33 @@
             }
           }
         });
+        $.ajax({
+          type: "POST",
+          url: androidIos.ajaxHttp() + "/order/driverMessage",
+          data:JSON.stringify({
+            page:1,
+            size:1,
+            userCode: sessionStorage.getItem("token"),
+            source:sessionStorage.getItem("source")
+          }),
+          contentType: "application/json;charset=utf-8",
+          dataType: "json",
+          timeout: 30000,
+          success: function (loadInvoice) {
+            if (loadInvoice.success == "1") {
+              _this.messageLength = loadInvoice.total;
+            }else{
+              androidIos.second(loadInvoice.message);
+            }
+          },
+          complete: function (XMLHttpRequest, status) { //请求完成后最终执行参数
+            if (status == 'timeout') { //超时,status还有success,error等值的情况
+              androidIos.second("当前状况下网络状态差，请检查网络！");
+            } else if (status == "error") {
+              androidIos.errorwife();
+            }
+          }
+        });
       },
       getTime:function (time) {
         var _this = this;
@@ -270,10 +306,10 @@
       go:function () {
         var _this = this;
         /*  _this.corner();*/
-        var trackTap = sessionStorage.getItem("trackTap");
+        /*var trackTap = sessionStorage.getItem("trackTap");
         if(trackTap != undefined){
           _this.tabShow = trackTap*1;
-        }
+        }*/
         var curNavIndex = _this.tabShow;
         _this.mescrollArr=new Array(_this.list.length);//4个菜单所对应的4个mescroll对象
         //初始化首页
@@ -834,5 +870,25 @@
     /* .slide-fade-leave-active for below version 2.1.8 */ {
     transform: translateY(0.13rem);
     opacity: 0;
+  }
+  .topImg{
+    position: absolute;
+    width: 0.6rem;
+    height:1.3rem;
+    right: 0.72rem;
+    top:0;
+    background-image: url("../images/lingdang.png");
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+    background-size: 0.6rem;
+  }
+  .redCor{
+    width:0.18rem;
+    height: 0.18rem;
+    background:#fc4243 ;
+    position: absolute;
+    border-radius: 50%;
+    top:0.4rem;
+    right:0.1rem;
   }
 </style>
