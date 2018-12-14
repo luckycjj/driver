@@ -3,10 +3,10 @@
       <div id="title" v-title data-title="找货"></div>
       <div id="top">
         找货
-        <div class="messageLDbox" @touchend="lookMessage()">
+        <!--<div class="messageLDbox" @touchend="lookMessage()">
           <div class="messageCorner" v-if="Messageshow"></div>
           <img src="../images/messageLD.png">
-        </div>
+        </div>-->
       </div>
       <div id="setHis">
         <ul>
