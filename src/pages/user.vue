@@ -314,12 +314,12 @@
         },
         shareType:function (index,e) {
           var _this = this;
-          if(index == 0){
+          if(index == 0 || index == 1){
              try{
                var wx = api.require('wx');
                wx.isInstalled(function(ret, err) {
                  if (ret.installed) {
-                   androidIos.second("当前设备已安装微信客户端");
+                   androidIos.second('功能尚在开发');
                  } else {
                    androidIos.second('当前设备未安装微信客户端');
                  }
