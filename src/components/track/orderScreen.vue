@@ -236,7 +236,7 @@
           data:JSON.stringify({
             page:pageNum,
             size:pageSize,
-            type:0,
+            type:1,
             state:8,
             userCode:sessionStorage.getItem("token"),
             source:sessionStorage.getItem("source"),
