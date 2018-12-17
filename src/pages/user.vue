@@ -40,10 +40,10 @@
           <div id="shareBody">
             <div id="shareBodyTab">
               <p>分享至...</p>
-              <label :style="{width:100 / shareList.length + '%'}" v-for="(item,index) in shareList">
-                <img :src="item.icon" @touchend="shareType(index)">
+              <a :style="{width:100 / shareList.length + '%'}" v-for="(item,index) in shareList">
+                <img :src="item.icon" @touchend="shareType(index,$event)">
                 <h6>{{item.name}}</h6>
-              </label>
+              </a>
               <div class="clearBoth"></div>
             </div>
             <button @touchend="shareYes(false)">取消</button>
@@ -312,10 +312,35 @@
           var _this = this;
           _this.shareListTrue = type;
         },
-        shareType:function (index) {
+        shareType:function (index,e) {
           var _this = this;
           if(index == 0){
-
+             try{
+               var wx = api.require('wx');
+               wx.isInstalled(function(ret, err) {
+                 if (ret.installed) {
+                   androidIos.second("当前设备已安装微信客户端");
+                 } else {
+                   androidIos.second('当前设备未安装微信客户端');
+                 }
+               });
+             }
+             catch(e){
+                androidIos.second("浏览器暂不支持分享");
+             }
+          }else if(index == 2){
+            var u = navigator.userAgent;
+            var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1;
+            //android终端
+            var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+            var name = "http://www.xsungroup.com/";
+            var tel= "";
+            if(isiOS){
+              document.getElementsByTagName('a')[index].href="sms://"+tel+"?body="+name;
+            }
+            else{
+              document.getElementsByTagName('a')[index].href="sms://"+tel+"&body="+name;
+            }
           }
         },
         imgChange:function (e) {
@@ -683,14 +708,14 @@
   color:#333;
   line-height: 1rem;
 }
-#shareBodyTab label{
+#shareBodyTab a{
   float: left;
 }
-#shareBodyTab label img{
+#shareBodyTab a img{
    width:30%;
   margin: 0.3rem auto 0.15rem auto;
 }
-#shareBodyTab label h6{
+#shareBodyTab a h6{
    font-size: 0.3125rem;
   color:#333;
   text-align: center;
