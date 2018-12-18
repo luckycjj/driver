@@ -30,8 +30,7 @@
       mounted:function () {
           var _this = this;
           sessionStorage.removeItem("token");
-          androidIos.delCookie("MESSAGEDRIVER");
-          androidIos.delCookie("BAIDUTOKEN");
+
           sessionStorage.removeItem("driverMessage");
           localStorage.removeItem("DRIVERSFETMESSAGE");
           sessionStorage.removeItem("trackTap");
@@ -96,6 +95,7 @@
                 sessionStorage.setItem("token",login.data.userCode);
                 sessionStorage.setItem("tokenBefore",login.data.userCode);
                 userCodeFirst = login.data.userCode;
+                androidIos.jianting(login.data.userCode);
                 $.ajax({
                   type: "POST",
                   url: androidIos.ajaxHttp() + "/getUserInfo",

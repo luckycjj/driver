@@ -49,6 +49,7 @@
         cookie = JSON.parse(cookie);
         sessionStorage.setItem("token",cookie.token);
         sessionStorage.setItem("tokenBefore",cookie.token);
+        androidIos.jianting(cookie.token);
         $.ajax({
           type: "POST",
           url: androidIos.ajaxHttp() + "/getUserInfo",

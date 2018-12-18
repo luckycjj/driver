@@ -633,7 +633,26 @@ var androidIos = {
     catch(e){
       localStorage.setItem("PEOPLEPHOTO",img);
     }
-  }
+  },
+  jianting:function (userCode) {
+    try{
+      var ajpush = api.require('ajpush');
+      var param = {alias:userCode,tags:['tag1','tag2']};
+      ajpush.bindAliasAndTags(param,function(ret) {
+        var statusCode = ret.statusCode;
+      });
+      ajpush.init(function(ret) {
+        if (ret && ret.status) {
+          ajpush.setListener(function(ret) {
+            console.log(ret)
+          });
+        }
+      });
+    }
+    catch(e){
+      console.log("暂不支持推送");
+    }
+  },
 };
 export {
   androidIos

@@ -13,8 +13,8 @@
     </div>
     <div v-for="(item,index) in messageList" :id="'mescroll' + index" :class="index != tabShow ? 'hide' :''" class="mescroll">
       <ul v-if="index == 0" :id="'dataList' + index" class="data-list">
-        <li v-for="(items,indexs) in item.prolist" >
-          <p>承运商更换司机</p>
+        <li v-for="(items,indexs) in item.prolist" @click="lookYes(indexs,items.pk)">
+          <p :style="{paddingLeft: items.readBy == 0 ? '0.2rem' : '0rem'}"><span class="noread" v-if="items.readBy == 0"></span>承运商更换司机</p>
           <h1 v-html="items.tackingTime"></h1>
           <div class="clearBoth"></div>
           <div class="body">
@@ -72,6 +72,38 @@
       androidIos.bridge(_this);
     },
     methods:{
+      lookYes:function (index,pk) {
+        var _this = this;
+        if(_this.messageList[0].prolist[index].readBy == 0){
+          $.ajax({
+            type: "POST",
+            url: androidIos.ajaxHttp() + "/order/driverMessageRead",
+            data:JSON.stringify({
+              pk:pk,
+              userCode: sessionStorage.getItem("token"),
+              source:sessionStorage.getItem("source")
+            }),
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            timeout: 30000,
+            success: function (driverMessageRead) {
+              if (driverMessageRead.success == "1") {
+                _this.messageList[0].prolist[index].readBy = 1;
+              }else{
+                androidIos.second(driverMessageRead.message);
+              }
+            },
+            complete: function (XMLHttpRequest, status) { //请求完成后最终执行参数
+              if (status == 'timeout') { //超时,status还有success,error等值的情况
+                androidIos.second("当前状况下网络状态差，请检查网络！");
+              } else if (status == "error") {
+                androidIos.errorwife();
+              }
+            }
+          });
+        }
+
+      },
       go:function () {
         var _this = this;
         var messageTap = sessionStorage.getItem("messageTap");
@@ -361,5 +393,15 @@
     background:#f9f9f9 ;
     line-height: 0.65rem;
     border-radius: 0.1rem;
+  }
+  .noread{
+    position: absolute;
+    width:0.18rem;
+    height: 0.18rem;
+    border-radius: 50%;
+    background: #E1473C;
+    top:50%;
+    margin-top:-0.09rem;
+    left:0;
   }
 </style>
