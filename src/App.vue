@@ -1,5 +1,6 @@
 <template>
   <div id="app" class="bigbigtest appBox">
+    <div id="containerSSSS" style="display: none;"></div>
     <div id="appBox">
     <div id="carTitleBox">
       <div class="carTitleBox">
@@ -37,6 +38,8 @@
       return {
         title:"",
         doNow:"",
+        mapss:null,
+        time:null,
       }
     },
     mounted:function () {
@@ -45,6 +48,10 @@
       androidIos.judgeIphoneX("carTitleBox",0);
       var cookie = androidIos.getcookie("MESSAGEDRIVER");
       sessionStorage.setItem("source",3);
+      _this.address();
+      _this.time = setInterval(function () {
+        _this.address();
+      },10000);
       if(cookie != "" && sessionStorage.getItem("addPageList")*1 == 0){
         cookie = JSON.parse(cookie);
         sessionStorage.setItem("token",cookie.token);
@@ -164,6 +171,9 @@
     methods:{
       go:function () {
         var _this = this;
+      },
+      address:function () {
+        androidIos.getDriverAddress();
       },
       goback:function () {
            var _this = this;
