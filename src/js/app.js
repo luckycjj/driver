@@ -454,13 +454,37 @@ var androidIos = {
     return Number(num1.toString().replace(".", "")) * Number(num2.toString().replace(".", "")) / Math.pow(10, baseNum);
   },
   setcookie:function (c_name,value,time) {
-    var exdate=new Date();
-    exdate.setDate(exdate.getDate() + time);
-    document.cookie =  c_name + "="  + escape(value)+ ( (time == null) ?  ""  : ";expires="+exdate.toGMTString());
+    var date = new Date();
+    localStorage.setItem(c_name,JSON.stringify({
+      user:value,
+      expiryDate: date.getTime() + time*24*60*60*1000
+    }))
   },
   getcookie:function (c_name) {
+    var name = localStorage.getItem(c_name);
+    var date = new Date();
+    if(name == undefined){
+      return "";
+    }else{
+      if(date.getTime() > JSON.parse(name).expiryDate){
+        localStorage.removeItem(c_name);
+        return "";
+      }else{
+        return JSON.parse(name).user;
+      }
+    }
+  },
+  delCookie:function (c_name){
+    localStorage.removeItem(c_name);
+  },
+  setcookie1:function (c_name,value,time) {
+    var exdate=new Date();
+    exdate = new Date(exdate.getTime() + time*24*60*60*1000);
+    document.cookie =  c_name + "="  + escape(value)+ ( (time == null) ?  ""  : ";expires=" + exdate.toGMTString());
+  },
+  getcookie1:function (c_name) {
     if (document.cookie.length>0){
-       var c_start=document.cookie.indexOf(c_name + "=")
+      var c_start=document.cookie.indexOf(c_name + "=")
       if (c_start != -1 ) {
         c_start=c_start + c_name.length+1
         var c_end=document.cookie.indexOf(";",c_start)
@@ -474,14 +498,14 @@ var androidIos = {
     }
     return ""
   },
-  delCookie:function (name){
-      var exp = new Date();
-      exp.setTime(exp.getTime() - 1);
-      var cval=androidIos.getcookie(name);
-      if(cval!=null){
-        document.cookie= name + "="+cval+";expires="+exp.toGMTString();
-      }
-    },
+  delCookie1:function (name){
+    var exp = new Date();
+    exp.setTime(exp.getTime() - 1);
+    var cval=androidIos.getcookie(name);
+    if(cval!=null){
+      document.cookie= name + "="+cval+";expires="+exp.toGMTString();
+    }
+  },
   getbaidunumber:function () {
     var baidunumber = "";
     var cookie = androidIos.getcookie("BAIDUTOKEN");

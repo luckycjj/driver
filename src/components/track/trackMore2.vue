@@ -42,12 +42,9 @@
               <div class="clearBoth"></div>
             </div>
           </div>
-          <!--<div class="waitForTime" v-if="(type == 3 || type == 6)&& timeShowF != ''">
-            {{timeShowF}}
-          </div>-->
           <div class="message">
             <div class="proStatus">
-              <p :style="{backgroundImage: 'url(' + require('../../images/trackMoreIcon'+ type +'.png') + ')' }">{{item.orderValue}}</p>
+              <p :style="{backgroundImage: 'url(' + require('../../images/trackMoreIcon'+ type +'.png') + ')' }">{{item.orderValue}}<span v-if="(type == 3 || type == 6)&& timeShowF != ''">{{timeShowF}}</span></p>
               <!--<div class="startEnd"><span class="startEndSpan">{{item.goodsmessage.startAddress}}<img src="../../images/addressImg.png">{{item.goodsmessage.endAddress}}</span><div class="clearBoth"></div></div>-->
               <ul>
                 <li v-for="pro in item.goodsmessage.productList">{{item.goodsmessage.tranType}}/{{pro.goods}}&nbsp;&nbsp;&nbsp;{{pro.number}}件<span v-if="pro.weight.replace(/[^0-9]/g,'')*1 > 0 ">/{{pro.weight}}</span><span  v-if="pro.volume.replace(/[^0-9]/g,'')*1 > 0">/{{pro.volume}}</span></li>
@@ -55,7 +52,7 @@
                 <li style="background-image: none;" v-for="abnormalaEventVo in item.abnormalaEventVo">{{abnormalaEventVo.createTime}} {{abnormalaEventVo.memo}}</li>
               </ul>
               <div class="price">
-                <h1>发货时间: {{item.goodsmessage.startTime}}</h1>
+                <h1>提货时间: {{item.goodsmessage.startTime}}</h1>
                 <h1 style="margin-right: auto">收货时间: {{item.goodsmessage.endTime}}</h1>
                 <div class="clearBoth"></div>
               </div>
@@ -1194,10 +1191,15 @@
         }
       },
     },
-    destroyed:function () {
+    beforeDestroy:function () {
       var _this = this;
+      clearInterval(_this.setTimeGoF);
+    },
+    destroy:function () {
+      var _this = this;
+      clearInterval(_this.setTimeGoF);
       clearInterval(_this.setTime);
-    }
+    },
   }
 </script>
 <style scoped>
@@ -1614,6 +1616,12 @@
     color:#373737;
     font-size:0.427rem ;
     border-bottom: 1px solid #F5F5F5;
+  }
+  .proStatus p span{
+    line-height: 1.17rem;
+    color:#373737;
+    font-size:0.427rem ;
+    margin-left: 0.3rem;
   }
   .topStatus ul{
     width:9.56rem;

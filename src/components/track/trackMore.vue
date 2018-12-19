@@ -847,7 +847,15 @@
         }
         return false;
       },
-    }
+    },
+    beforeDestroy:function () {
+      var _this = this;
+      clearInterval(_this.setTimeGoF);
+    },
+    destroy:function () {
+      var _this = this;
+      clearInterval(_this.setTimeGoF);
+    },
   }
   function getListDataFromNet(pageNum,pageSize,successCallback,errorCallback) {
     //延时一秒,模拟联网
