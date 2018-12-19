@@ -13,7 +13,7 @@
             <ul>
                <li>
                  <img src="../../images/robbingTel2.png" @touchend="telphone('021-50929122')">
-                 发货人{{item.pickMessage.name | nameCheck}}
+                 提货人{{item.pickMessage.name | nameCheck}}
                </li>
               <li>
                 <img src="../../images/robbingTel1.png" @touchend="telphone(item.endMessage.tel)">
@@ -24,11 +24,11 @@
             <div class="address">
            <!--   <h1>提货地址：{{item.pickMessage.address}}</h1>
               <h1>发货地址：{{item.endMessage.address}}</h1>-->
-              <h1><h6 >发货地址：</h6><h6 style="width:7rem;">{{item.pickMessage.address}}</h6><div class="clearBoth"></div></h1>
+              <h1><h6 >提货地址：</h6><h6 style="width:7rem;">{{item.pickMessage.address}}</h6><div class="clearBoth"></div></h1>
               <h1><h6>收货地址：</h6><h6 style="width:7rem;">{{item.endMessage.address}}</h6><div class="clearBoth"></div></h1>
             </div>
             <div class="time">
-              <h1>发货时间：{{item.goodsmessage.startTime}}</h1>
+              <h1>提货时间：{{item.goodsmessage.startTime}}</h1>
               <h1>收货时间：{{item.goodsmessage.endTime}}</h1>
               <div class="clearBoth"></div>
             </div>
