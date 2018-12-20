@@ -876,6 +876,10 @@
           return false;
         },
       },
+      beforeDestroy:function () {
+        var _this = this;
+        clearInterval(_this.setTime);
+      },
       destroyed:function () {
         var _this = this;
         clearInterval(_this.setTime);
