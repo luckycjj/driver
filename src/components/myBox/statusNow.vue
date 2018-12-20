@@ -81,6 +81,11 @@
                 corpName:  getUserInfo.corpName,
                 driverType:getUserInfo.type == 1 ? 2 : 1,
               }));
+              androidIos.setcookie("MESSAGEDRIVER",JSON.stringify({
+                token:sessionStorage.getItem("token"),
+                status: getUserInfo.status,
+                driverType:getUserInfo.type == 1 ? 2 : 1,
+              }),80);
             }else{
               androidIos.second(getUserInfo.message);
             }

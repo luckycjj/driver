@@ -78,7 +78,7 @@
             return false;
           };
           androidIos.loading("正在登录");
-          var userCodeFirst,status;
+          var userCodeFirst,status,driverType;
           $.ajax({
             type: "POST",
             url: androidIos.ajaxHttp() + "/login",
@@ -117,6 +117,7 @@
                         corpName:  getUserInfo.corpName,
                         driverType:getUserInfo.type == 1 ? 2 : 1,
                       }));
+                      driverType = getUserInfo.type == 1 ? 2 : 1;
                       status =   getUserInfo.status;
                     }else{
                       androidIos.second(getUserInfo.message);
@@ -133,6 +134,7 @@
                 androidIos.setcookie("MESSAGEDRIVER",JSON.stringify({
                   token:userCodeFirst,
                   status:status,
+                  driverType:driverType
                 }),80);
                 _this.$cjj("登录成功");
                 setTimeout(function () {

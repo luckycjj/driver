@@ -123,7 +123,7 @@
         </li>
       </ul>
     </div>
-    <div id="lookOrderMore" v-if="!boxShow"  @touchend="boxShow = true">
+    <div id="lookOrderMore" v-if="!boxShow"  @click="boxShowTrue()">
       查看
     </div>
     <transition name="slide-fade">
@@ -1097,10 +1097,12 @@
                       }
                     }
                     _this.mapDriver();
-                    var height1 = document.getElementById("trackMore").offsetHeight;
-                    var height2 =  document.getElementsByClassName("proStatus")[0].offsetHeight;
-                    var height = (height1 - height2) / document.getElementsByTagName("html")[0].style.fontSize.replace("px","");
-                    _this.Ultop = height;
+                    if(_this.boxShow){
+                      var height1 = document.getElementById("trackMore").offsetHeight;
+                      var height2 =  document.getElementsByClassName("proStatus")[0].offsetHeight;
+                      var height = (height1 - height2) / document.getElementsByTagName("html")[0].style.fontSize.replace("px","");
+                      _this.Ultop = height;
+                    }
                   });
                 }else{
                   androidIos.second(loadSegmentDetail.message);
@@ -1116,6 +1118,20 @@
                 }
               }
             })
+          }
+
+        })
+      },
+      boxShowTrue:function () {
+        var _this = this;
+        _this.boxShow = true;
+        _this.$nextTick(function () {
+          var mescrollTop = document.getElementById("mescroll").style.top.replace("rem","");
+          if(mescrollTop*1 == 0){
+            var height1 = document.getElementById("trackMore").offsetHeight;
+            var height2 =  document.getElementsByClassName("proStatus")[0].offsetHeight;
+            var height = (height1 - height2) / document.getElementsByTagName("html")[0].style.fontSize.replace("px","");
+            _this.Ultop = height;
           }
 
         })
