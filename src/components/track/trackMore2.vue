@@ -77,6 +77,8 @@
                   <button v-if="type==9 && pdlist[0].exp_sign == 1" @click="uploadbill(1)">确认异常</button>
                   <button v-if="type==9 && pdlist[0].exp_sign == 0"  @click="upImg(3)">上传单据</button>
                   <button v-if="type==9 && pdlist[0].exp_sign == 0"  class="upImg" style="background-image: none;" @click="uploadbill(2)">电子回单</button>
+                  <button v-if="type==10"  @click="upImg(3)">上传单据</button>
+                  <button v-if="type==10"  class="upImg" style="background-image: none;" @click="uploadbill(2)">电子回单</button>
                   <div class="clearBoth"></div>
                 </div>
                 <div class="go"  v-else>
@@ -854,7 +856,7 @@
       daoda:function(type){
         var _this = this;
         if(bomb.hasClass("gogogo","gogogo")){
-          /*if(type == 31 || type == 32 || type == 42 || type == 41){
+          if(type == 31 || type == 32 || type == 42 || type == 41){
             for(var i = 0 ; i < _this.carList.length; i++){
               if(_this.carList[i].length - 0.5 >= 0 ){
                 if(type == 31 || type == 32){
@@ -865,7 +867,7 @@
                 return false;
               }
             }
-          }*/
+          }
           var message = type == '31'?'提货达到':type == '32'?'开始装货':type == '33'?'装货完毕':type == '41'?'运输到达':type == '42'?'开始卸货':'卸货完毕';
           var http = type == '33' || type == '41' ? '/order/arriveOrDelivery':'/order/updateStatus';
           type = type == '33'?'1': type == '41' ?'2':type;
@@ -1072,7 +1074,7 @@
                   _this.pdlist = listData;
                   _this.pick = true;
                   _this.logisticsOk = false;
-                  _this.type = listData[0].orderType == '0'? 0 :listData[0].orderType == '10'?1:listData[0].orderType == '20'?2:listData[0].orderType == '31'?3:listData[0].orderType == '32'?4:listData[0].orderType == '33'?5:listData[0].orderType == '41'?6:listData[0].orderType == '42'?7:listData[0].orderType == '43'?8:listData[0].orderType == '50'?9:10;
+                  _this.type = listData[0].orderType == '0'? 0 :listData[0].orderType == '10'?1:listData[0].orderType == '20'?2:listData[0].orderType == '31'?3:listData[0].orderType == '32'?4:listData[0].orderType == '33'?5:listData[0].orderType == '41'?6:listData[0].orderType == '42'?7:listData[0].orderType == '43'?8:listData[0].orderType == '50'?9:listData[0].orderType == '55'?10:11;
                   _this.tabList = _this.type ==  0  || _this.type == 1 ? [{
                     icon:require("../../images/telTrackMore.png"),
                     name:"联系客服",
