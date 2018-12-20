@@ -78,7 +78,7 @@
     font-size: 0.32rem;
     color:#666;
     resize:none;
-    min-height: 2.1rem;
+    height: 4.1rem;
     padding: 0.3rem;
     width:94%;
     border-radius: 0.2rem;

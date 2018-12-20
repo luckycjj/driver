@@ -9,7 +9,7 @@
         <input @keyup="filterInput()" type="password" placeholder="请输入新密码（6-25位字符，区分大小写）"  maxlength="25" v-model="newPass"/>
       </li>
       <li>
-        <input @keyup="filterInput()" type="password" placeholder="请确认新密码"  maxlength="50" v-model="newPassAgain"/>
+        <input @keyup="filterInput()" type="password" placeholder="请确认新密码"  maxlength="25" v-model="newPassAgain"/>
       </li>
     </ul>
     <button @touchend="saveGo()">保存</button>
