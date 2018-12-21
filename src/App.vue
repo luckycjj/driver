@@ -61,21 +61,25 @@
             _this.$router.push({ path: '/login'});
           }else{
             var cookie = JSON.parse(name).user;
-            if(date.getTime() > JSON.parse(name).expiryDate){
-              _this.showImg = false;
-              _this.$router.push({ path: '/login'});
-            }else{
-              cookie = JSON.parse(cookie);
-              androidIos.jianting(cookie.token);
-              sessionStorage.setItem("token",cookie.token);
-              sessionStorage.setItem("tokenBefore",cookie.token);
-              if(cookie.driverType == 2){
+            if(cookie != "" && sessionStorage.getItem("addPageList")*1 == 0) {
+              if (date.getTime() > JSON.parse(name).expiryDate) {
                 _this.showImg = false;
-                _this.$router.push({ path: '/searchDayOrder'});
-              }else{
-                _this.showImg = false;
-                _this.$router.push({ path: '/taskMoreHomePage'});
+                _this.$router.push({path: '/login'});
+              } else {
+                cookie = JSON.parse(cookie);
+                androidIos.jianting(cookie.token);
+                sessionStorage.setItem("token", cookie.token);
+                sessionStorage.setItem("tokenBefore", cookie.token);
+                if (cookie.driverType == 2) {
+                  _this.showImg = false;
+                  _this.$router.push({path: '/searchDayOrder'});
+                } else {
+                  _this.showImg = false;
+                  _this.$router.push({path: '/taskMoreHomePage'});
+                }
               }
+            }else{
+              _this.showImg = false;
             }
           }
           androidIos.bridge(_this);
@@ -98,6 +102,8 @@
         }else if(cookie == ""){
           _this.showImg = false;
           _this.$router.push({ path: '/login'});
+        }else{
+          _this.showImg = false;
         }
         androidIos.bridge(_this);
       }
