@@ -1044,6 +1044,7 @@
                     pkTransType:loadSegmentDetail.pkTransType,
                     exp_sign:loadSegmentDetail.expSign == "Y" ? "1" : "0",
                     documentImage:loadSegmentDetail.documentImage,
+                    confAbnormal:loadSegmentDetail.confAbnormal == undefined ? '0' : loadSegmentDetail.confAbnormal
                   }]
                   _this.carList= [];
                   _this.actFlag = loadSegmentDetail.actFlag;
@@ -1064,8 +1065,7 @@
                       price:loadSegmentDetail.driverDto[i].score*1,
                       length:loadSegmentDetail.distance/1000,
                       carno:loadSegmentDetail.carNo,
-                      carHangNo:loadSegmentDetail.carHangNo,
-                      confAbnormal:loadSegmentDetail.confAbnormal
+                      carHangNo:loadSegmentDetail.carHangNo
                     }
                     _this.carList.push(json);
                   }
