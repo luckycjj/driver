@@ -74,9 +74,9 @@
                   <button v-if="type==7"  class="upImg" @click="upImg(1)">上传货品</button>
                   <button v-if="type==8 && endtype == '0' && actFlag == 'Y'" @click="qianshou(endtype)">交接</button>
                   <button v-if="type==8 && endtype == '1'" @click="qianshou(endtype)">签收</button>
-                  <button v-if="type==9 && pdlist[0].exp_sign == 1" @click="uploadbill(1)">确认异常</button>
-                  <button v-if="type==9 && pdlist[0].exp_sign == 0"  @click="upImg(3)">上传单据</button>
-                  <button v-if="type==9 && pdlist[0].exp_sign == 0"  class="upImg" style="background-image: none;" @click="uploadbill(2)">电子回单</button>
+                  <button v-if="type==9 && pdlist[0].exp_sign == 1 && pdlist[0].confAbnormal == '0'" @click="uploadbill(1)">确认异常</button>
+                  <button v-if="type==9 && (pdlist[0].exp_sign == 0 || (pdlist[0].exp_sign == 1 && pdlist[0].confAbnormal == '1'))"  @click="upImg(3)">上传单据</button>
+                  <button v-if="type==9 && (pdlist[0].exp_sign == 0 || (pdlist[0].exp_sign == 1 && pdlist[0].confAbnormal == '1'))"  class="upImg" style="background-image: none;" @click="uploadbill(2)">电子回单</button>
                   <button v-if="type==10"  @click="upImg(3)">上传单据</button>
                   <button v-if="type==10"  class="upImg" style="background-image: none;" @click="uploadbill(2)">电子回单</button>
                   <div class="clearBoth"></div>
@@ -1064,7 +1064,8 @@
                       price:loadSegmentDetail.driverDto[i].score*1,
                       length:loadSegmentDetail.distance/1000,
                       carno:loadSegmentDetail.carNo,
-                      carHangNo:loadSegmentDetail.carHangNo
+                      carHangNo:loadSegmentDetail.carHangNo,
+                      confAbnormal:loadSegmentDetail.confAbnormal
                     }
                     _this.carList.push(json);
                   }

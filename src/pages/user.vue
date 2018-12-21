@@ -324,7 +324,20 @@
                var wx = api.require('wx');
                wx.isInstalled(function(ret, err) {
                  if (ret.installed) {
-                   androidIos.second('功能尚在开发');
+                   wx.shareWebpage({
+                     apiKey: 'wxcbc550d2c38c0c63',
+                     scene:index == 0 ? 'session' : 'timeline',
+                     title: '欣阳物流',
+                     description: '欣阳物流',
+                     thumb: '',
+                     contentUrl: 'http://www.xsungroup.com/'
+                   }, function(ret, err) {
+                     if (ret.status) {
+                       _this.$cjj('分享成功');
+                     } else {
+                       androidIos.second(err.code);
+                     }
+                   });
                  } else {
                    androidIos.second('当前设备未安装微信客户端');
                  }
@@ -341,10 +354,10 @@
             var name = "http://www.xsungroup.com/";
             var tel= "";
             if(isiOS){
-              document.getElementsByTagName('a')[index].href="sms://"+tel+"?body="+name;
+              document.getElementById("user").getElementsByTagName('a')[index].href="sms://"+tel+"&body="+name;
             }
             else{
-              document.getElementsByTagName('a')[index].href="sms://"+tel+"&body="+name;
+              document.getElementById("user").getElementsByTagName('a')[index].href="sms://"+tel+"?body="+name;
             }
           }
         },
