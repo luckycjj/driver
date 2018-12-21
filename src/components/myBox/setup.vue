@@ -39,7 +39,13 @@
         },
         methods:{
            go:function () {
-
+             var _this = this;
+             try{
+                 _this.tabList[1].message = api.version;
+               }
+               catch(e){
+                 _this.tabList[1].message = "1.0.0";
+               }
            },
           urlGo:function (url) {
              var _this = this;

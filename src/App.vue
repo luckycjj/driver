@@ -1,7 +1,7 @@
 <template>
   <div id="app" class="bigbigtest appBox">
     <div id="containerSSSS" style="display: none;"></div>
-    <div id="appBox">
+    <div id="appBox" v-if="!showImg">
     <div id="carTitleBox">
       <div class="carTitleBox">
         <div class="carTitleback" @touchend="goback()" ></div>
@@ -17,6 +17,7 @@
       <div id="table"></div>
     </div>
     </div>
+    <img src="./images/driverPng.png" id="PNG" v-if="showImg">
     <router-view/>
   </div>
 </template>
@@ -31,21 +32,18 @@
   import  {androidIos} from './js/app.js'
   export default {
     name: 'app',
-    ready:function () {
-      androidIos.judgeIphoneX("carTitleBox",0);
-    },
     data () {
       return {
         title:"",
         doNow:"",
         mapss:null,
         time:null,
+        showImg:true,
       }
     },
     mounted:function () {
       var _this = this;
       _this.title = document.title;
-      androidIos.judgeIphoneX("carTitleBox",0);
       var cookie = androidIos.getcookie("MESSAGEDRIVER");
       sessionStorage.setItem("source",3);
       _this.address();
@@ -59,10 +57,12 @@
         }, function(ret, err) {
           var name = ret.value;
           if(name == ""){
+            _this.showImg = false;
             _this.$router.push({ path: '/login'});
           }else{
             var cookie = JSON.parse(name).user;
             if(date.getTime() > JSON.parse(name).expiryDate){
+              _this.showImg = false;
               _this.$router.push({ path: '/login'});
             }else{
               cookie = JSON.parse(cookie);
@@ -70,8 +70,10 @@
               sessionStorage.setItem("token",cookie.token);
               sessionStorage.setItem("tokenBefore",cookie.token);
               if(cookie.driverType == 2){
+                _this.showImg = false;
                 _this.$router.push({ path: '/searchDayOrder'});
               }else{
+                _this.showImg = false;
                 _this.$router.push({ path: '/taskMoreHomePage'});
               }
             }
@@ -87,11 +89,14 @@
           sessionStorage.setItem("tokenBefore",cookie.token);
           androidIos.jianting(cookie.token);
           if(cookie.driverType == 2){
+            _this.showImg = false;
             _this.$router.push({ path: '/searchDayOrder'});
           }else{
+            _this.showImg = false;
             _this.$router.push({ path: '/taskMoreHomePage'});
           }
         }else if(cookie == ""){
+          _this.showImg = false;
           _this.$router.push({ path: '/login'});
         }
         androidIos.bridge(_this);
@@ -168,6 +173,7 @@
     methods:{
       go:function () {
         var _this = this;
+        androidIos.judgeIphoneX("carTitleBox",0);
       },
       address:function () {
         androidIos.getDriverAddress();
@@ -506,5 +512,15 @@
   #iphoneXX{
      width:100%;
      height: 0;
+  }
+  #PNG{
+    position: absolute;
+    top:0;
+    bottom:0;
+    left:0;
+    right:0;
+    width:100%;
+    height: 100%;
+    z-index: 10;
   }
 </style>
