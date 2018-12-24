@@ -61,8 +61,8 @@
               </div>
               <div id="sure">
                 <div class="go gogogo" id="gogogo" v-if="peopleType==1">
-                  <button v-if="type==0" @click="tongyi()">同意</button>
-                  <button v-if="type==0"  class="upImg" @click="jvjue()">拒绝</button>
+                  <button v-if="type==0" @click="tongyi()">确认</button>
+                  <button v-if="type==0"  class="upImg" @click="jvjue()">反馈</button>
                   <button v-if="type==1" @click="chufa()">出发</button>
                   <button v-if="type==2" @click="daoda(31)">提货到达</button>
                   <button v-if="type==3" @click="daoda(32)">开始装货</button>
@@ -166,7 +166,7 @@
         <div id="driverResult">
           <div id="driverResultTitle">
             <img src="../../images/closed.png" @touchend="driverResultClosed()">
-            <p>选择拒绝理由</p>
+            <p>选择反馈原因</p>
           </div>
           <ul class="errorUl">
             <li v-for="(item,index) in driverResult" :class="index%2==0?'errorAbnormalLeft':'errorAbnormalRight'" @touchend="driverResultClick($event)">

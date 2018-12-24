@@ -30,7 +30,7 @@
            <p>{{item.name}}</p>
            <div class="lookMore"></div>
            <div class="clearBoth"></div>
-           <input type="file" class="saoyisao"  @change="jiexi($event)" v-if="(item.name).indexOf('扫') != -1">
+           <input type="file" class="saoyisao"  @change="jiexi($event)" v-if="(item.name).indexOf('扫') != -1 && !apicloud">
          </li>
        </ul>
     </div>
@@ -112,6 +112,7 @@
              errorlogo: 'this.src="' + require('../images/userImg.png') + '"',
              httpurl:"",
              shareListTrue:false,
+             apicloud:false,
            }
         },
       mounted:function () {
@@ -206,6 +207,13 @@
         },
         go:function () {
           var _this = this;
+          try{
+            _this.apicloud = true;
+            var scanner = api.require('scanner');
+          }
+          catch(e){
+            _this.apicloud = false;
+          }
           $.ajax({
             type: "POST",
             url: androidIos.ajaxHttp() + "/settings/findParamValueByName ",
@@ -244,6 +252,20 @@
               _this.$nextTick(function () {
                 androidIos.judgeIphoneX("shareBody",1);
               })
+            }else{
+               try{
+                 var scanner = api.require('scanner');
+                 scanner.open(function(ret, err) {
+                   if (ret) {
+                     alert(JSON.stringify(ret));
+                   } else {
+                     alert(JSON.stringify(err));
+                   }
+                 });
+               }
+               catch(e){
+                 console.log("不支持apicloud");
+               }
             }
           }
         },
@@ -329,7 +351,7 @@
                      scene:index == 0 ? 'session' : 'timeline',
                      title: '欣阳物流',
                      description: '欣阳物流',
-                     thumb: '',
+                     thumb: require("../images/logo.png"),
                      contentUrl: 'http://www.xsungroup.com/'
                    }, function(ret, err) {
                      if (ret.status) {
