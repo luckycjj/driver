@@ -18,6 +18,7 @@
     </div>
     </div>
     <img src="./images/driverPng.png" id="PNG" v-if="showImg">
+    <carouselComponent :show="showCarousel"></carouselComponent>
     <router-view/>
   </div>
 </template>
@@ -39,17 +40,55 @@
         mapss:null,
         time:null,
         showImg:true,
+        showCarousel:true,
       }
     },
     mounted:function () {
       var _this = this;
       _this.title = document.title;
       var cookie = androidIos.getcookie("MESSAGEDRIVER");
+      var cookie2 = androidIos.getcookie("carouselDriver");
       sessionStorage.setItem("source",3);
       _this.address();
       _this.time = setInterval(function () {
         _this.address();
       },10000);
+      try{
+        var date = new Date();
+        api.getPrefs({
+          key: "carouselDriver"
+        }, function(ret, err) {
+          var name = ret.value;
+          if(name == ""){
+            _this.showCarousel = true;
+            androidIos.setcookie("carouselDriver",true,100);
+          }else{
+            var cookie = JSON.parse(name).user;
+            if(cookie != "" && sessionStorage.getItem("addPageList")*1 == 0) {
+              if (date.getTime() > JSON.parse(name).expiryDate) {
+                _this.showCarousel = true;
+                androidIos.setcookie("carouselDriver",true,100);
+              } else {
+                _this.showCarousel = false;
+              }
+            }else{
+              _this.showCarousel = false;
+            }
+          }
+          androidIos.bridge(_this);
+        });
+      }
+      catch(e){
+        var cookie = androidIos.getcookie("carouselDriver");
+        if(cookie != "" && sessionStorage.getItem("addPageList")*1 == 0){
+          _this.showCarousel = false;
+        }else if(cookie == ""){
+          _this.showCarousel = true;
+          androidIos.setcookie("carouselDriver",true,100);
+        }else{
+          _this.showCarousel = false;
+        }
+      }
       try{
         var date = new Date();
         api.getPrefs({
@@ -177,6 +216,9 @@
       })
     },
     methods:{
+      showBox:function () {
+        this.showCarousel = false;
+      },
       go:function () {
         var _this = this;
         androidIos.judgeIphoneX("carTitleBox",0);
