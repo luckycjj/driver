@@ -66,7 +66,8 @@ var androidIos = {
   ajaxHttp: function () {
     // var http = 'http://10.10.10.156:8085';
     //var http = 'http://10.10.10.161:8085';
-    var http = 'http://222.73.159.76:8085';
+    //var http = 'http://222.73.159.76:8085';//sql server
+    var http = 'http://www.xsungroup.cn:8085/';//msyql
     return http;
   },
   addPageList: function () {
