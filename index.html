@@ -85,7 +85,13 @@
             },500)
           } else {
             androidIos.addClass("app","appBox");
-            console.log("要出去了")
+            androidIos.first("确定退出吗?");
+            $(".tanBox-yes").unbind('click').click(function(){
+              $(".tanBox-bigBox").remove();
+              api.closeWidget({
+                silent : true
+              });
+            });
           }
         },
       }
