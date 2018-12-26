@@ -1,10 +1,11 @@
 <template>
     <div id="carousel" v-if="show">
-           <ul>
-              <li v-for="(item,index) in imgList" v-show="nowIndex == index" :class="nowIndex == index ? 'in' : ''">
+           <ul :style="{width:10 * imgList.length + 'rem',left:left + 'rem'}">
+              <li v-for="(item,index) in imgList" :class="nowIndex == index ? 'in' : ''">
                 <img :src="item"  @touchstart="liTouchstart($event)" @touchmove="liTouchmove($event)" @touchend="liTouchend($event)">
-                <button v-if="index == imgList.length - 1 " @click="showFalse()">开启接单</button>
+                <button v-if="index == imgList.length - 1 " @click="showFalse()">开启任务</button>
               </li>
+             <li class="clearBoth"></li>
            </ul>
            <div id="circleBox">
              <div class="circle" v-for="(item,index) in imgList" :style="{marginRight:index < imgList.length - 1 ? '0.1rem' : ''}" :class="index == nowIndex ? 'circleTrue' : ''"></div>
@@ -24,6 +25,7 @@
              endX:0,
              startY:0,
              endY:0,
+             left:0,
            }
         },
       props:['show'],
@@ -46,16 +48,41 @@
         liTouchend:function (event) {
           var _this = this;
           var num = _this.endX - _this.startX;
-          if(num < -100){
+          if(num < -75){
              if(_this.nowIndex < _this.imgList.length - 1){
                _this.nowIndex++ ;
+               _this.Leftgo(1);
              }
-          }else if(num > 100){
+          }else if(num > 75){
             if(_this.nowIndex > 0 ){
               _this.nowIndex --;
+              _this.Leftgo(0);
             }
           }
-          console.log( _this.endX - _this.startX);
+        },
+        Leftgo:function (type) {
+           var _this = this;
+           var setTime ;
+           var time = 0;
+           if(type == 0){
+             setTime = setInterval(function () {
+               if(time < 10){
+                 time++;
+                 _this.left ++ ;
+               }else{
+                 clearInterval(setTime);
+               }
+             },20)
+           }else if(type == 1){
+               setTime = setInterval(function () {
+                   if(time < 10){
+                       time++;
+                      _this.left -- ;
+                   }else{
+                      clearInterval(setTime);
+                   }
+               },20)
+           }
         }
       }
     }
@@ -78,11 +105,10 @@
    left:0;
  }
  ul li{
-   width:100%;
-   position: absolute;
+   width:10rem;
+   position: relative;
    height: 100%;
-   top:0;
-   left:0;
+   float: left;
  }
  ul li img{
     width:100%;
@@ -96,12 +122,12 @@
    line-height: 1.3rem;
    color:white;
    border-radius: 0.1rem;
-   border:1px solid white;
+   border:1px solid #1a6bac;
    position: absolute;
    bottom:1.6rem;
    left:50%;
    margin-left: -2rem;
-   background: transparent;
+   background: #1a6bac;
    font-size: 0.4rem;
 
  }
@@ -115,11 +141,11 @@
    width:0.3rem;
    height:0.3rem;
    border-radius: 50%;
-   background: #fafafa;
+   background: #cde8fd;
    display: inline-block;
    transition: all .2s ease-out;
  }
-  #circleBox .circleTrue{
-     background: red;
-  }
+ #circleBox .circleTrue{
+   background: #1a6bac;
+ }
 </style>
