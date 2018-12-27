@@ -73,6 +73,7 @@
       try{
         _this.iflyRecognition = api.require('iflyRecognition');
         _this.iflyRecognition.createUtility({
+          ios_appid: '5c04e56f',
           android_appid: '5c04a475'
         }, function(ret, err) {
           if (ret.status) {
