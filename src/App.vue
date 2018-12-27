@@ -4,7 +4,7 @@
     <div id="appBox" v-if="!showImg">
     <div id="carTitleBox">
       <div class="carTitleBox">
-        <div class="carTitleback" @touchend="goback()" ></div>
+        <div class="carTitleback" @touchend.stop.prevent="goback()" ></div>
         <p>{{title}}</p>
         <h3  id="manage" class="asd"  v-if="doNow==1"><span>管理</span></h3>
         <h3 id="siteCar"  style="display: none" class="asd"  v-if="doNow==2"></h3>
