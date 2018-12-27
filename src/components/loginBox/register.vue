@@ -300,6 +300,11 @@
     left:50%;
     margin-left: -2.2rem;
   }
+  @media (max-height: 400px) {
+    　.checkBox {
+      display: none;
+    }
+  }
   .checked{
     width:0.34rem;
     height: 0.34rem;
