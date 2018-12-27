@@ -195,16 +195,23 @@
     top:0;
     bottom:0;
     height: 100%;
-    padding-top: 3.68rem;
+    border-top: 1px solid #535DAD;
+    box-sizing: border-box;
     width:100%;
     background: -webkit-linear-gradient(135deg, #535DAD , #2A82CC); /* Safari 5.1 - 6.0 */
     background: -o-linear-gradient(135deg, #535DAD, #2A82CC); /* Opera 11.1 - 12.0 */
     background: -moz-linear-gradient(135deg, #535DAD, #2A82CC); /* Firefox 3.6 - 15 */
     background: linear-gradient(135deg, #535DAD , #2A82CC); /* 标准的语法 */
   }
+  @media (max-height: 400px) {
+    　#login {
+      box-sizing: content-box;
+      padding-bottom: 3.68rem ;
+    }
+  }
   #logo{
     width:5.33rem;
-    margin:0rem auto  1.28rem auto;
+    margin:3.68rem auto  1.28rem auto;
   }
   .modelView{
     width:7.8rem;
